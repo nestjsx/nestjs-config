@@ -1,7 +1,7 @@
 import {
     Component,
 } from '@nestjs/common';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 @Component()
 export default class ConfigService {
@@ -9,6 +9,7 @@ export default class ConfigService {
     private readonly config : object;
 
     constructor() {
+        console.log('Loading .env from', process.cwd());
         this.config = dotenv.config();
     }
 

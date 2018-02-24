@@ -5,7 +5,39 @@ A config component for nestJS.
 
 ## Install
 
-A dotenv config module to your application
+```bash
+yarn add @bashleigh/nest-config
+```
+
+```bash
+npx add --save @bashleigh/nest-config
+```
+
+## How to use
+
+### Get
+
+Get a parameter from the config
+
+```typescript
+this.config.get('APP_TEST');
+```
+With a default option
+
+```typescript
+this.config.get('APP_TEST', false);
+```
+
+### Has
+
+Check your config has a parameter defined
+
+```typescript
+this.config.has('APP_TEST');
+```
+
+
+## Integrate with your application
 
 ```typescript
 import {
@@ -54,27 +86,3 @@ export default class UserController {
 }
 
 ```
-
-## Use
-
-### Get
-
-Get a parameter from the config
-
-```typescript
-this.config.get('APP_TEST');
-```
-With a default option
-
-```typescript
-this.config.get('APP_TEST', false);
-```
-
-### Has
-
-Check your config has a parameter defined
-
-```typescript
-this.config.has('APP_TEST');
-```
-
