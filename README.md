@@ -88,3 +88,8 @@ export default class UserController {
 }
 
 ```
+
+## Known issue
+
+I'm not 100% up to speed with either TypeScript nor nestJS. This package isn't particularly great since I'm not aware of a singular sharing method between Modules.  
+It appears components are only relative to their modules and therefore using this service in more than one place will result in loading the the `.env` file several times.
