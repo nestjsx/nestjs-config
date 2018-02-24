@@ -1,0 +1,11 @@
+{
+  "name": "nest-config",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "repository": "git@github.com:bashleigh/nest-config.git",
+  "author": "Aaryanna Simonelli <ashleighsimonelli@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^5.0.0"
+  }
+}
