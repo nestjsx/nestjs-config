@@ -1,7 +1,7 @@
 {
-  "name": "nest-config",
+  "name": "@bashleigh/nest-config",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "description": "A singular config for NestJS",
   "repository": "git@github.com:bashleigh/nest-config.git",
   "author": "Aaryanna Simonelli <ashleighsimonelli@gmail.com>",
   "license": "MIT",

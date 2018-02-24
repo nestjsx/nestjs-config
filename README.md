@@ -12,7 +12,7 @@ import {
     Module,
 } from '@nestjs/common';
 
-import ConfigModule from 'bashleigh/nest-config';
+import ConfigModule from '@bashleigh/nest-config';
 
 @Module({
   imports: [
@@ -35,6 +35,8 @@ touch .env && echo 'APP_TEST=true' > .env
 
 ### Injection
 
+Inject the component into a controller 
+
 ```typescript
 
 import {
@@ -43,7 +45,7 @@ import {
 
 import {
     ConfigService,
-} from 'bashleigh/nest-config';
+} from '@bashleigh/nest-config';
 
 @Controller('user')
 export default class UserController {
@@ -75,3 +77,4 @@ Check your config has a parameter defined
 ```typescript
 this.config.has('APP_TEST');
 ```
+
