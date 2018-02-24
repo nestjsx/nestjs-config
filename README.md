@@ -13,6 +13,12 @@ yarn add @bashleigh/nest-config
 npx add --save @bashleigh/nest-config
 ```
 
+create a `.env` file and insert your configurations
+
+```bash
+touch .env && echo 'APP_TEST=true' > .env
+```
+
 ## How to use
 
 ### Get
@@ -20,12 +26,12 @@ npx add --save @bashleigh/nest-config
 Get a parameter from the config
 
 ```typescript
-this.config.get('APP_TEST');
+const test = this.config.get('APP_TEST');
 ```
 With a default option
 
 ```typescript
-this.config.get('APP_TEST', false);
+const test = this.config.get('APP_TEST', false);
 ```
 
 ### Has
@@ -37,32 +43,28 @@ this.config.has('APP_TEST');
 ```
 
 
-## Integrate with your application
+## Integrating with modules
 
 ```typescript
 import {
     Module,
 } from '@nestjs/common';
 
-import ConfigModule from '@bashleigh/nest-config';
+import {
+    ConfigService,
+} from '@bashleigh/nest-config';
 
 @Module({
-  imports: [
-    ConfigModule,
-  ],
+  imports: [],
   controllers: [],
-  components: [],
+  components: [
+    ConfigService,
+  ],
 })
 export class ApplicationModule {
   constructor() {}
 }
 
-```
-
-create a `.env` file and insert your configurations
-
-```bash
-touch .env && echo 'APP_TEST=true' > .env
 ```
 
 ### Injection
