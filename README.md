@@ -1,12 +1,13 @@
 Nest Config
 ===
 
+A config component for nestJS.
+
 ## Install
 
-Add the config module to your application
+A dotenv config module to your application
 
 ```typescript
-
 import {
     Module,
 } from '@nestjs/common';
