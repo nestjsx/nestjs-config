@@ -1,6 +1,6 @@
 Nest Config
 ===
-
+[![GitHub tag](https://img.shields.io/github/tag/bashleigh/nest-config.svg)](https://github.com/bashleigh/nest-config)  
 A config component for nestJS.
 
 ## Install
