@@ -8,5 +8,8 @@ import ConfigService from './config.service';
     components: [
         ConfigService,
     ],
+    exports: [
+        ConfigService,
+    ],
 })
 export default class ConfigModule {}
