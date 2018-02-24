@@ -50,16 +50,14 @@ import {
     Module,
 } from '@nestjs/common';
 
-import {
-    ConfigService,
-} from '@bashleigh/nest-config';
+import ConfigModule from '@bashleigh/nest-config';
 
 @Module({
-  imports: [],
-  controllers: [],
-  components: [
-    ConfigService,
+  imports: [
+      ConfigModule,
   ],
+  controllers: [],
+  components: [],
 })
 export class ApplicationModule {
   constructor() {}
