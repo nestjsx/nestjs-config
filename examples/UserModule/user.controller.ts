@@ -3,7 +3,9 @@ import {
     Get,
 } from '@nest/common';
 
-import ConfigService from '@bashleigh/config.service';
+import {
+    ConfigService,
+} from '@bashleigh/nest-config';
 
 @Controller('user')
 export default class UserController {
