@@ -9,7 +9,8 @@ export default class ConfigService {
     private readonly config : object;
 
     constructor() {
-        this.config = dotenv.config();
+        const config = dotenv.config();
+        if (config.hasOwnProperty('parsed')) this.config = config.parsed;
     }
 
     /**
