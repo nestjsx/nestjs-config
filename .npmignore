@@ -1,3 +1,7 @@
 examples/
 tsconfig.json
 node_modules/
+src/
+yarn.lock
+yarn-error.log
+package.lock
