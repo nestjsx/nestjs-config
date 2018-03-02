@@ -1,6 +1,6 @@
 {
   "name": "@bashleigh/nest-config",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A singular config for NestJS",
   "repository": "git@github.com:bashleigh/nest-config.git",
   "main": "dist/index.js",
