@@ -9,7 +9,6 @@ export default class ConfigService {
     private readonly config : object;
 
     constructor() {
-        console.log('Loading .env from', process.cwd());
         this.config = dotenv.config();
     }
 

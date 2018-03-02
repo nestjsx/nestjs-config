@@ -4,8 +4,20 @@
   "description": "A singular config for NestJS",
   "repository": "git@github.com:bashleigh/nest-config.git",
   "author": "Aaryanna Simonelli <ashleighsimonelli@gmail.com>",
+  "keywords": [
+    "nestjs",
+    "config",
+    "dotenv",
+    "env"
+  ],
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^5.0.0"
+    "class-validator": "^0.8.1",
+    "dotenv": "^5.0.0",
+    "rxjs": "^5.4.2"
+  },
+  "devDependencies": {
+    "@types/es6-promise": "^3.3.0",
+    "@types/node": "^9.4.6"
   }
 }
