@@ -1,5 +1,6 @@
 import {
     Component,
+    LoggerService,
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 
@@ -7,10 +8,16 @@ import * as dotenv from 'dotenv';
 export default class ConfigService {
 
     private readonly config : object;
+    private readonly logger : LoggerService;
 
-    constructor() {
+    constructor(
+      private readonly logger : LoggerService
+    ) {
         const config = dotenv.config();
+        logger.log(`Loading config from: ${typeof(process) !== 'undefined' ? process.cwd(): 'process is not defined'}`);
         if (config.hasOwnProperty('parsed')) this.config = config.parsed;
+
+        this.logger = logger;
     }
 
     /**
