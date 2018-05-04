@@ -16,7 +16,7 @@ npx add --save @bashleigh/nest-config
 create a `.env` file and insert your configurations
 
 ```bash
-touch .env && echo 'APP_TEST=true' > .env
+touch .env && echo 'APP_TEST=true' >> .env
 ```
 
 ## How to use
