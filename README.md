@@ -86,3 +86,5 @@ export default class UserController {
 }
 
 ```
+
+Built by <a href="http://ashleighsimonelli.co.uk/"><img src="http://www.ashleighsimonelli.co.uk/images/favicon.ico" title="Ashleigh Simonelli" alt="AS"/></a>
