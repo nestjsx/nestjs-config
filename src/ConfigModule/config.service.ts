@@ -1,10 +1,10 @@
 import {
-    Component,
+    Injectable,
     LoggerService,
 } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 
-@Component()
+@Injectable()
 export default class ConfigService {
 
     private readonly config : object;
