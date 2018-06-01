@@ -1,8 +1,7 @@
 {
   "name": "@bashleigh/nest-config",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A singular config for NestJS",
-  "repository": "git@github.com:bashleigh/nest-config.git",
   "main": "dist/index.js",
   "author": "Aaryanna Simonelli <ashleighsimonelli@gmail.com>",
   "keywords": [
@@ -23,5 +22,9 @@
   },
   "scripts": {
     "prepublish": "rm -rf dist && tsc -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bashleigh/nest-config.git"
   }
 }
