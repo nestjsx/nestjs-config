@@ -1,24 +1,19 @@
-import {
-    Controller,
-    Get,
-} from '@nest/common';
+import { Controller, Get } from "@nest/common";
 
-import {
-    ConfigService,
-} from '@bashleigh/nest-config';
+import { ConfigService } from "@bashleigh/nest-config";
 
-@Controller('user')
+@Controller("user")
 export default class UserController {
-    constructor(readonly config: ConfigService) {}
+  constructor(readonly config: ConfigService) {}
 
-    @Get('')
-    index() : object {
-        const username = this.config.get('username', 'test');
-        const live = this.config.has('live');
+  @Get("")
+  index(): object {
+    const username = this.config.get("username", "test");
+    const live = this.config.has("live");
 
-        return {
-            username: username,
-            live: live,
-        };
-    }
+    return {
+      username: username,
+      live: live
+    };
+  }
 }
