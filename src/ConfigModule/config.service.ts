@@ -8,7 +8,6 @@ import * as dotenv from 'dotenv';
 export default class ConfigService {
 
     private readonly config : object;
-    private readonly logger : LoggerService;
 
     constructor(
       private readonly logger : LoggerService
@@ -16,8 +15,6 @@ export default class ConfigService {
         const config = dotenv.config();
         logger.log(`Loading config from: ${typeof(process) !== 'undefined' ? process.cwd(): 'process is not defined'}`);
         if (config.hasOwnProperty('parsed')) this.config = config.parsed;
-
-        this.logger = logger;
     }
 
     /**
