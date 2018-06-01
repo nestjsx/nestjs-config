@@ -47,17 +47,17 @@ this.config.has('APP_TEST');
 
 ```typescript
 import {
-    Module,
+    Injectable,
 } from '@nestjs/common';
 
 import ConfigModule from '@bashleigh/nest-config';
 
-@Module({
+@Injectable({
   imports: [
       ConfigModule,
   ],
   controllers: [],
-  components: [],
+  providers: [],
 })
 export class ApplicationModule {
   constructor() {}
