@@ -12,14 +12,15 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "class-validator": "^0.8.1",
+    "@nestjs/common": "^5.0.1",
     "dotenv": "^5.0.0",
-    "prettier": "^1.13.4",
+    "reflect-metadata": "^0.1.12",
     "rxjs": "^5.4.2"
   },
   "devDependencies": {
     "@types/es6-promise": "^3.3.0",
-    "@types/node": "^9.4.6"
+    "@types/node": "^9.4.6",
+    "prettier": "^1.13.4"
   },
   "scripts": {
     "format": "prettier --write \"**/*.ts\"",
