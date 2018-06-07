@@ -8,7 +8,7 @@ export default class ConfigService {
     private readonly config: object;
     constructor() {
         const config = dotenv.config();
-        if (config.hasOwnProperty('parsed')) this.config = process.env;
+        this.config = process.env;
     }
 
     /**
