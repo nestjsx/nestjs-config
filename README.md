@@ -95,7 +95,7 @@ import {
 } from '@nestjs/common';
 import {
     InjectConfig,
-} from '@bashleigh/enst-config';
+} from '@bashleigh/nest-config';
 
 @Controller('user')
 export default class UserController {
