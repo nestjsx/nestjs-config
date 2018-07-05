@@ -7,3 +7,5 @@ import ConfigService from "./config.service";
   exports: [ConfigService]
 })
 export default class ConfigModule {}
+
+export { ConfigService };

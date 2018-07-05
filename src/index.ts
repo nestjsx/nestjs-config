@@ -1,5 +1,5 @@
-import ConfigService from "./ConfigModule/config.service";
-import ConfigModule from "./ConfigModule/index";
+import ConfigModule, { ConfigService } from "./ConfigModule/index";
+import { InjectConfig } from "./decorators";
 
 export default ConfigModule;
-export { ConfigService };
+export { ConfigService, InjectConfig };
