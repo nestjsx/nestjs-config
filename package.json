@@ -1,6 +1,6 @@
 {
   "name": "@bashleigh/nest-config",
-  "version": "0.1.4",
+  "version": "0.2.1",
   "description": "A singular config for NestJS",
   "main": "dist/index.js",
   "author": "Aaryanna Simonelli <ashleighsimonelli@gmail.com>",
