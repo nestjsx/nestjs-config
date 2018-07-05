@@ -87,4 +87,20 @@ export default class UserController {
 
 ```
 
+### Injection with decorator 
+
+```typescript 
+import {
+    Controller,
+} from '@nestjs/common';
+import {
+    InjectConfig,
+} from '@bashleigh/enst-config';
+
+@Controller('user')
+export default class UserController {
+    constructor(@InjectConfig() private readonly config) {}
+}
+```
+
 Built by <a href="http://ashleighsimonelli.co.uk/"><img src="http://www.ashleighsimonelli.co.uk/images/favicon.ico" title="Ashleigh Simonelli" alt="AS"/></a>
