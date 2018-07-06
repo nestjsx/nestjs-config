@@ -29,4 +29,8 @@ export default class ConfigService {
   has(param: string): boolean {
     return this.config.hasOwnProperty(param);
   }
+
+  root(dir?: string): string {
+    return `${process.cwd()}/${dir}`;
+  }
 }
