@@ -31,6 +31,10 @@ export default class ConfigService {
   }
 
   root(dir?: string): string {
-    return `${process.cwd()}/${dir}`;
+    return `${process.cwd()}/${dir}/`;
+  }
+
+  src(dir?: string): string {
+    return this.root(`src/${dir}`);
   }
 }
