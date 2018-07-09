@@ -31,10 +31,10 @@ export default class ConfigService {
   }
 
   root(dir?: string): string {
-    return `${process.cwd()}/${dir}/`;
+    return `${process.cwd()}/${typeof dir !== 'undefined'? `${dir}` : ''}`;
   }
 
   src(dir?: string): string {
-    return this.root(`src/${dir}`);
+    return this.root(`src/${typeof dir !== 'undefined'? dir : ''}`);
   }
 }
