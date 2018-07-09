@@ -1,9 +1,9 @@
 {
   "name": "nestjs-config",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Easy to use Nest congifuration module",
   "main": "dist/index.js",
-  "repository": "git@github.com:fenos/nestjs-config.git",
+  "repository": "git@github.com:bashleigh/nestjs-config.git",
   "license": "MIT",
   "authors": [
     {
