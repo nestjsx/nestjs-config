@@ -1,5 +1,5 @@
 {
-  "name": "nest-config",
+  "name": "nestjs-config",
   "version": "1.0.0",
   "description": "A singular config for NestJS",
   "main": "dist/index.js",
