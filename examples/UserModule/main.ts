@@ -1,11 +1,10 @@
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common';
+import ConfigModule from 'nestjs-config';
 
-import ConfigModule from "@bashleigh/nest-config";
-
-import UserController from "./user.controller";
+import UserController from './user.controller';
 
 @Module({
   imports: [ConfigModule],
-  controllers: [UserController]
+  controllers: [UserController],
 })
 export default class UserModule {}
