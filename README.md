@@ -6,11 +6,11 @@ A config component for nestJS.
 ## Install
 
 ```bash
-yarn add @bashleigh/nest-config
+yarn add nestjs-config
 ```
 
 ```bash
-npx add --save @bashleigh/nest-config
+npx add --save nestjs-config
 ```
 
 create a `.env` file and insert your configurations
