@@ -3,7 +3,7 @@ import * as get from 'lodash.get';
 import * as set from 'lodash.set';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
-import { Glob } from 'glob';
+import { Glob, sync as globSync } from 'glob';
 import { DotenvOptions } from 'dotenv';
 
 export interface ModuleConfig {
@@ -26,17 +26,6 @@ export class ConfigService {
   }
 
   /**
-   * Default dotenv config point to a .env
-   * on the cwd path
-   * @returns {{path: string}}
-   */
-  protected static defaultDotenvConfig() {
-    return {
-      path: path.join(process.cwd(), '.env'),
-    };
-  }
-
-  /**
    * Load configuration from file system
    * @param glob string
    * @param {DotenvOptions} options
@@ -46,7 +35,18 @@ export class ConfigService {
     glob: string,
     options?: DotenvOptions | false,
   ): Promise<ConfigService> {
-    const configs = await this.loadConfigFromGlob(glob, options);
+    const configs = await this.loadConfigAsync(glob, options);
+
+    return new ConfigService(configs);
+  }
+
+  /**
+   * Load config synchronously
+   * @param {string} glob
+   * @param {DotenvOptions | false} options
+   */
+  static loadSync(glob: string, options?: DotenvOptions | false) {
+    const configs = this.loadConfigSync(glob, options);
 
     return new ConfigService(configs);
   }
@@ -94,7 +94,7 @@ export class ConfigService {
    * @param options
    */
   async merge(glob: string, options?: DotenvOptions): Promise<void> {
-    const config = await ConfigService.loadConfigFromGlob(glob, options);
+    const config = await ConfigService.loadConfigAsync(glob, options);
 
     Object.keys(config).forEach(configName => {
       this.config[configName] = config[configName];
@@ -102,11 +102,27 @@ export class ConfigService {
   }
 
   /**
+   * Merge configuration synchronously
+   * @param {string} glob
+   * @param {DotenvOptions} options
+   * @returns {ConfigService}
+   */
+  mergeSync(glob: string, options?: DotenvOptions): ConfigService {
+    const config = ConfigService.loadConfigSync(glob, options);
+
+    Object.keys(config).forEach(configName => {
+      this.config[configName] = config[configName];
+    });
+
+    return this;
+  }
+
+  /**
    * @param {string} dir
    * @returns {string}
    */
   static root(dir: string = ''): string {
-    return `${process.cwd()}${dir || `/${dir}`}`;
+    return `${process.cwd()}${dir ? `/${dir}` : ''}`;
   }
 
   /**
@@ -114,7 +130,7 @@ export class ConfigService {
    * @returns {string}
    */
   static src(dir: string = ''): string {
-    return ConfigService.root(`src${dir || `/${dir}`}`);
+    return ConfigService.root(`src${dir ? `/${dir}` : ''}`);
   }
 
   /**
@@ -122,7 +138,7 @@ export class ConfigService {
    * @param {DotenvOptions | false} options
    * @returns {Promise<Config>}
    */
-  protected static loadConfigFromGlob(
+  protected static loadConfigAsync(
     glob: string,
     options?: DotenvOptions | false,
   ): Promise<Config> {
@@ -142,6 +158,25 @@ export class ConfigService {
         }
       });
     });
+  }
+
+  /**
+   * Load config synchronously
+   * @param {string} glob
+   * @param {DotenvOptions | false} options
+   * @returns {Config}
+   */
+  protected static loadConfigSync(
+    glob: string,
+    options?: DotenvOptions | false,
+  ): Config {
+    const matches = globSync(glob);
+
+    if (options !== false) {
+      dotenv.load(options || ConfigService.defaultDotenvConfig());
+    }
+
+    return this.configGraph(matches);
   }
 
   /**
@@ -173,4 +208,17 @@ export class ConfigService {
       .replace('.js', '')
       .replace('.ts', '');
   }
+
+  /**
+   * Default dotenv config point to a .env
+   * on the cwd path
+   * @returns {{path: string}}
+   */
+  protected static defaultDotenvConfig() {
+    return {
+      path: path.join(process.cwd(), '.env'),
+    };
+  }
 }
+
+export default ConfigService;

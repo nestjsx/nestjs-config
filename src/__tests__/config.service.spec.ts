@@ -1,6 +1,5 @@
 import * as path from 'path';
-import { ConfigService } from '../module/index';
-import { async } from 'rxjs/internal/scheduler/async';
+import { ConfigService } from '../module';
 
 describe('Config Service', () => {
   describe('Will load configurations from given a glob', () => {
@@ -37,6 +36,23 @@ describe('Config Service', () => {
 
       expect(configService.get(['config.server', 'port'])).toEqual(2000);
     });
+
+    it('Will load config synchronously', () => {
+      const syncConfigService = ConfigService.loadSync(
+        path.resolve(__dirname, '__stubs__', '*.stub.ts'),
+        false,
+      );
+
+      expect(syncConfigService.get(['config.stub', 'port'])).toEqual(2000);
+    });
+
+    it('Will merge other config from file system synchronously', () => {
+      configService.mergeSync(
+        path.resolve(__dirname, '__stubs__', '*.server.ts'),
+      );
+
+      expect(configService.get(['config.server', 'port'])).toEqual(2000);
+    });
   });
 
   describe('Will load configuration with a .env file', () => {
@@ -52,6 +68,30 @@ describe('Config Service', () => {
       expect(configService.get(['config.env', 'project'])).toEqual(
         'nest-config',
       );
+    });
+
+    it('Will return a root directory', () => {
+      const realProcessCwd = process.cwd;
+
+      const mockedCwdPath = __dirname;
+      process.cwd = () => mockedCwdPath;
+
+      const expectedPath = path.join(mockedCwdPath, 'app');
+      expect(ConfigService.root('app')).toEqual(expectedPath);
+
+      process.cwd = realProcessCwd;
+    });
+
+    it('Will return a src directory', () => {
+      const realProcessCwd = process.cwd;
+
+      const mockedCwdPath = __dirname;
+      process.cwd = () => mockedCwdPath;
+
+      const expectedPath = path.join(mockedCwdPath, 'src', 'config');
+      expect(ConfigService.src('config')).toEqual(expectedPath);
+
+      process.cwd = realProcessCwd;
     });
   });
 });
