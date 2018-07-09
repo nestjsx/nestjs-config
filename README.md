@@ -47,14 +47,15 @@ this.config.has('APP_TEST');
 Get a root path like `/var/www/mypath`
 
 ```typescript
-this.config.root('mypath'); //returns /var/www/mypath/
+this.config.root('mypath'); //returns /var/www/mypath
+this.config.root('file.txt'); //returns /var/www/file.txt
 ```
 ### Src 
 
 Get a path within src (uses root)
 
 ```typescript
-this.config.src('mypath'); //returns /var/www/src/mypath/
+this.config.src('mypath'); //returns /var/www/src/mypath
 ```
 
 ## Integrating with modules
