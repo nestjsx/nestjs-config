@@ -5,8 +5,12 @@
   "main": "dist/index.js",
   "authors": [
     {
-      "Aaryanna Simonelli": "<ashleighsimonelli@gmail.com>",
-      "fenos": "<fabri.feno@gmail.com>"
+      "name": "Aaryanna Simonelli",
+      "email": "ashleighsimonelli@gmail.com"
+    }, 
+    {
+      "name": "Fenos",
+      "email": "fabri.feno@gmail.com"
     }
   ],
   "keywords": [
