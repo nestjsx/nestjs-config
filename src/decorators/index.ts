@@ -1,3 +1,3 @@
-import InjectConfig from "./injectConfig";
+import InjectConfig from './injectConfig';
 
 export { InjectConfig };

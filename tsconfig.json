@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "moduleResolution": "node",
     "module": "commonjs",
     "declaration": true,
     "noImplicitAny": false,
@@ -13,7 +14,8 @@
     "allowJs": false,
     "rootDir": "./src",
     "baseUrl": "./",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "lib": ["es2017"]
   },
   "include": [
     "*.ts",
