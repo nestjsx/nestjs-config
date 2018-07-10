@@ -131,6 +131,54 @@ class SomeService {
 }
 ```
 
+### Customer Helpers
+This feature allows you to create small helper function that computes values from configurations.
+
+example `isProduction` helper:
+
+```ts
+// app/config/express.ts
+
+
+export default {
+
+    environment: process.env.EXPRESS_PORT
+    port: process.env.EXPRESS_PORT,
+    
+    // helpers
+    isProduction() {
+        return this.get('express.environment') === 'production;
+    }
+}
+```
+
+usage:
+
+```ts
+this.config.get('express').isProduction();
+
+// or
+
+this.config._isProduction(); // note the underscore prefix.
+```
+
+**Global Helpers**
+
+You can also attach helpers to the global instance as follow:
+
+```ts
+
+this.config.registerHelper('isProduction', () => {
+    return this.get('express.environment') === 'production;
+});
+```
+
+Then use it:
+
+```ts
+this.config.isProduction();
+```
+
 ### ConfigService API
 
 #### get(param: string | string[], value: any = undefined): any
@@ -169,5 +217,15 @@ export class PackageModule implements NestModule {
     }
 }
 ```
+
+
+#### registerHelper(name: string, fn: (...args:any[]) => any): ConfigService
+Register custom global helper
+
+
+```ts
+this.config.registerHelper('isProduction', () => {
+    return this.get('express.environment') === 'production;
+});
 
 Built from Fenos and Bashleigh

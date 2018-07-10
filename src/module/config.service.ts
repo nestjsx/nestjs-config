@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { Glob, sync as globSync } from 'glob';
 import { DotenvOptions } from 'dotenv';
+import { ProxyProperty } from '../decorators/proxy';
 
 export interface ModuleConfig {
   [key: string]: any;
@@ -14,14 +15,23 @@ export interface Config {
   [key: string]: ModuleConfig;
 }
 
+export type CustomHelper = {
+  [key: string]: (...args: any[]) => any;
+};
+
 @Injectable()
+@ProxyProperty('helpers')
 export class ConfigService {
-  private readonly config: object;
+  [key: string]: Config | CustomHelper | ((...args: any[]) => any) | any;
+
+  private readonly config: Config;
+  private readonly helpers: CustomHelper = {};
 
   /**
    * @param {Config} config
    */
   constructor(config: Config = {}) {
+    this.bindCustomHelpers(config);
     this.config = config;
   }
 
@@ -36,7 +46,6 @@ export class ConfigService {
     options?: DotenvOptions | false,
   ): Promise<ConfigService> {
     const configs = await this.loadConfigAsync(glob, options);
-
     return new ConfigService(configs);
   }
 
@@ -118,6 +127,17 @@ export class ConfigService {
   }
 
   /**
+   * @param {string} name
+   * @param {CustomHelper} fn
+   * @returns {ConfigService}
+   */
+  registerHelper(name: string, fn: (...args: any[]) => any): ConfigService {
+    this.helpers[name] = fn.bind(this);
+
+    return this;
+  }
+
+  /**
    * @param {string} dir
    * @returns {string}
    */
@@ -194,6 +214,26 @@ export class ConfigService {
 
       return configs;
     }, {});
+  }
+
+  /**
+   * @param config
+   * @returns {string}
+   */
+  protected bindCustomHelpers(config) {
+    return Object.keys(config).reduce((configObj, configName) => {
+      if (typeof configObj[configName] === 'function') {
+        const helper = configObj[configName].bind(this);
+        configObj[configName] = helper;
+        this.helpers[`_${configName}`] = helper;
+      }
+
+      if (typeof configObj[configName] === 'object') {
+        configObj[configName] = this.bindCustomHelpers(configObj[configName]);
+      }
+
+      return configObj;
+    }, config);
   }
 
   /**

@@ -53,6 +53,21 @@ describe('Config Service', () => {
 
       expect(configService.get(['config.server', 'port'])).toEqual(2000);
     });
+
+    it('Will invoke custom helper methods', () => {
+      expect(configService._isProductionPort()).toEqual(true);
+    });
+
+    it('Will invoke custom helper methods from config', () => {
+      expect(configService.get('config.stub').isProductionPort()).toEqual(true);
+    });
+
+    it('Will register custom helper', () => {
+      configService.registerHelper('environment', () => {
+        return 'custom';
+      });
+      expect(configService.environment()).toEqual('custom');
+    });
   });
 
   describe('Will load configuration with a .env file', () => {
