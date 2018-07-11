@@ -42,10 +42,13 @@ export class ConfigService {
    * @returns {Promise<any>}
    */
   static async load(
-    glob: string,
+    glob?: string,
     options?: DotenvOptions | false,
   ): Promise<ConfigService> {
-    const configs = await this.loadConfigAsync(glob, options);
+    const configs = await this.loadConfigAsync(
+      typeof glob === 'undefined' ? this.src('config/**/*.{ts,js}') : glob,
+      options,
+    );
     return new ConfigService(configs);
   }
 
