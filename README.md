@@ -28,11 +28,11 @@ npm install nestjs-config --save
 
 ### Getting Started
 
-Let's imagine that we have a folder called `config` in our project under `app/config`
+Let's imagine that we have a folder called `config` in our project under `src`
 
 ```bash
 
-/app
+/src
 ├── app.module.ts
 ├── config
 │   ├── express.ts
@@ -49,7 +49,25 @@ import { ConfigModule } from "nestjs-config";
 
 @Module({
     imports: [
-        ConfigModule.load( 
+        ConfigModule.load(),
+    ],
+})
+export class AppModule {
+
+}
+```
+That's it!
+
+Now let's say that your application isn't in a folder called `src`, it's in `./app`.
+
+```ts
+import * as path from 'path';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from "nestjs-config";
+
+@Module({
+    imports: [
+        ConfigModule.load(
             path.resolve(__dirname, 'config/**/*.{ts,js}')
         ),
     ],
@@ -58,10 +76,8 @@ export class AppModule {
 
 }
 ```
+
 We provide as first argument the glob of our interested configuration that we want to load.
-
-That's it!
-
 
 ### Environment configuration
 
@@ -71,15 +87,15 @@ a `.env` file in your preferred location.
 let's create one!
 
 ```bash
-# app/.env
+# .env
 
 EXPRESS_PORT=3000
 ```
 
-now in our `app/config/epxress.ts` file we can refer to that environment variable 
+now in our `src/config/epxress.ts` file we can refer to that environment variable 
 
 ```ts
-// app/config/express.ts
+// src/config/express.ts
 
 
 export default {
@@ -137,7 +153,7 @@ This feature allows you to create small helper function that computes values fro
 example `isProduction` helper:
 
 ```ts
-// app/config/express.ts
+// src/config/express.ts
 
 
 export default {
@@ -205,7 +221,6 @@ this.config.has('server.port'); // true or false
 #### merge(glob: string, options?: DotenvOptions): Promise<void>
 You can load other configuration at runtime. Great for package development.
 
-
 ```ts
 @Module({})
 export class PackageModule implements NestModule {
@@ -218,14 +233,13 @@ export class PackageModule implements NestModule {
 }
 ```
 
-
 #### registerHelper(name: string, fn: (...args:any[]) => any): ConfigService
 Register custom global helper
-
 
 ```ts
 this.config.registerHelper('isProduction', () => {
     return this.get('express.environment') === 'production';
 });
+```
 
 Built from Fenos and Bashleigh
