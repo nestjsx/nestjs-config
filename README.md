@@ -119,7 +119,7 @@ class SomeService {
 You can also use the `@InjectConfig` decorator instead, as following:
 
 ```ts
-import {InjectConfig} from 'nestjs-config'
+import {InjectConfig} from 'nestjs-config';
 
 
 @Injectable()
@@ -147,7 +147,7 @@ export default {
     
     // helpers
     isProduction() {
-        return this.get('express.environment') === 'production;
+        return this.get('express.environment') === 'production';
     }
 }
 ```
@@ -169,7 +169,7 @@ You can also attach helpers to the global instance as follow:
 ```ts
 
 this.config.registerHelper('isProduction', () => {
-    return this.get('express.environment') === 'production;
+    return this.get('express.environment') === 'production';
 });
 ```
 
@@ -225,7 +225,7 @@ Register custom global helper
 
 ```ts
 this.config.registerHelper('isProduction', () => {
-    return this.get('express.environment') === 'production;
+    return this.get('express.environment') === 'production';
 });
 
 Built from Fenos and Bashleigh
