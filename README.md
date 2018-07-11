@@ -227,8 +227,8 @@ export class PackageModule implements NestModule {
 
     constructor(@InjectConfig() private readonly config) {}
 
-    configure(consumer: MiddlewareConsumer) {
-        this.config.merge(path.join(__dirname, '**/*.config.{ts,js}');
+    async configure(consumer: MiddlewareConsumer) {
+        await this.config.merge(path.join(__dirname, '**/*.config.{ts,js}');
     }
 }
 ```
