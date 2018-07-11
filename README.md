@@ -28,11 +28,11 @@ npm install nestjs-config --save
 
 ### Getting Started
 
-Let's imagine that we have a folder called `config` in our project under `app/config`
+Let's imagine that we have a folder called `config` in our project under `src`
 
 ```bash
 
-/app
+/src
 ├── app.module.ts
 ├── config
 │   ├── express.ts
@@ -49,9 +49,7 @@ import { ConfigModule } from "nestjs-config";
 
 @Module({
     imports: [
-        ConfigModule.load( 
-            path.resolve(__dirname, 'config/**/*.{ts,js}')
-        ),
+        ConfigModule.load(),
     ],
 })
 export class AppModule {
@@ -62,6 +60,24 @@ We provide as first argument the glob of our interested configuration that we wa
 
 That's it!
 
+Now let's say that your application isn't in a folder called `src`, it's in `./app`.
+
+```ts
+import * as path from 'path';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from "nestjs-config";
+
+@Module({
+    imports: [
+        ConfigModule.load(
+            path.resolve(__dirname, 'config/**/*.{ts,js}')
+        ),
+    ],
+})
+export class AppModule {
+
+}
+```
 
 ### Environment configuration
 
