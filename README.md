@@ -3,10 +3,10 @@
 Configuration component for NestJs.
 
 
-[![Build Status](https://travis-ci.org/bashleigh/nestjs-config.svg?branch=master)](https://travis-ci.org/bashleigh/nestjs-config)
+[![Build Status](https://travis-ci.org/nestjs-community/nestjs-config.svg?branch=master)](https://travis-ci.org/nestjs-community/nestjs-config)
 [![GitHub version](https://img.shields.io/npm/v/nestjs-config.svg)](https://www.npmjs.com/package/nestjs-config)
-[![GitHub license](https://img.shields.io/github/license/bashleigh/nestjs-config.svg)](https://github.com/bashleigh/nestjs-config/blob/master/LICENSE)
-[![Coverage Status](https://coveralls.io/repos/github/bashleigh/nestjs-config/badge.svg?branch=master)](https://coveralls.io/github/bashleigh/nestjs-config?branch=master)
+[![GitHub license](https://img.shields.io/github/license/nestjs-community/nestjs-config.svg)](https://github.com/nestjs-community/nestjs-config/blob/master/LICENSE)
+[![Coverage Status](https://coveralls.io/repos/github/nestjs-community/nestjs-config/badge.svg?branch=master)](https://coveralls.io/github/bashleigh/nestjs-config?branch=master)
 
 ## Features
 
