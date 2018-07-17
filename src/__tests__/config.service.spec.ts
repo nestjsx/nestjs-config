@@ -10,7 +10,6 @@ describe('Config Service', () => {
         false,
       );
     });
-
     it('Will return the value from a previously loaded config', () => {
       expect(configService.get(['config.stub', 'port'])).toEqual(2000);
     });
@@ -69,7 +68,6 @@ describe('Config Service', () => {
       expect(configService.environment()).toEqual('custom');
     });
   });
-
   describe('Will load configuration with a .env file', () => {
     let configService: ConfigService;
     beforeEach(async () => {

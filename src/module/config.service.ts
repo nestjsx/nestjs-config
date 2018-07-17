@@ -24,7 +24,7 @@ export type CustomHelper = {
 export class ConfigService {
   [key: string]: Config | CustomHelper | ((...args: any[]) => any) | any;
 
-  private readonly config: Config;
+  private static config: Config;
   private readonly helpers: CustomHelper = {};
 
   /**
@@ -32,7 +32,7 @@ export class ConfigService {
    */
   constructor(config: Config = {}) {
     this.bindCustomHelpers(config);
-    this.config = config;
+    ConfigService.config = config;
   }
 
   /**
@@ -66,12 +66,22 @@ export class ConfigService {
   /**
    * Get the param or use default
    *
+   * @param {String} key
+   * @returns {String|undefined}
+   */
+  static getEnv(key: string): string | undefined {
+    return get(ConfigService.config, key);
+  }
+
+  /**
+   * Get the param or use default
+   *
    * @param param
    * @param value default
    * @returns {any}
    */
   get(param: string | string[], value: any = undefined): any {
-    const configValue = get(this.config, param);
+    const configValue = get(ConfigService.config, param);
 
     if (configValue === undefined) {
       return value;
@@ -87,7 +97,7 @@ export class ConfigService {
    * @returns {Config}
    */
   set(param: string | string[], value: any = null): Config {
-    return set(this.config, param, value);
+    return set(ConfigService.config, param, value);
   }
 
   /**
@@ -97,7 +107,7 @@ export class ConfigService {
    * @returns {boolean}
    */
   has(param: string | string[]): boolean {
-    return get(this.config, param) !== undefined;
+    return get(ConfigService.config, param) !== undefined;
   }
 
   /**
@@ -109,7 +119,7 @@ export class ConfigService {
     const config = await ConfigService.loadConfigAsync(glob, options);
 
     Object.keys(config).forEach(configName => {
-      this.config[configName] = config[configName];
+      ConfigService.config[configName] = config[configName];
     });
   }
 
@@ -123,7 +133,7 @@ export class ConfigService {
     const config = ConfigService.loadConfigSync(glob, options);
 
     Object.keys(config).forEach(configName => {
-      this.config[configName] = config[configName];
+      ConfigService.config[configName] = config[configName];
     });
 
     return this;
