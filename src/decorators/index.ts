@@ -1,3 +1,4 @@
 import InjectConfig from './injectConfig';
-
-export { InjectConfig };
+import ConfigParam from './ConfigParam';
+import Configurable from './Configurable';
+export { InjectConfig, ConfigParam, Configurable };
