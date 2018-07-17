@@ -43,6 +43,7 @@
     "@nestjs/testing": "^5.1.0",
     "@types/dotenv": "^4.0.3",
     "@types/glob": "^5.0.35",
+    "@types/jest": "^23.3.0",
     "coveralls": "^3.0.2",
     "jest": "^23.3.0",
     "prettier": "^1.13.7",
