@@ -10,7 +10,6 @@ export const Configurable = (): MethodDecorator => {
     descriptor: PropertyDescriptor,
   ) => {
     const originalMethod = descriptor.value;
-    console.warn({ target, descriptor: descriptor.value });
     descriptor.value = (...args: any[]) => {
       const paramsMetadata = (
         Reflect.getMetadata(CONFIG_PARAMS, target) || []
