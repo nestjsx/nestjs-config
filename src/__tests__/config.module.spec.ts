@@ -35,7 +35,7 @@ describe('Config Nest Module', () => {
 
       @Configurable()
       testConfig(@ConfigParam('config.server') configKey: string) {
-        return true;
+        return configKey;
       }
     }
 
@@ -46,6 +46,6 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig(null)).toBeTruthy();
+    expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
   });
 });
