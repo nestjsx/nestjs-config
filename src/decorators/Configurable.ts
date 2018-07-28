@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { CONFIG_CONFIGURABLE, CONFIG_PARAM, CONFIG_PARAMS } from '../constants';
+import { CONFIG_CONFIGURABLE, CONFIG_PARAMS } from '../constants';
 import { applyParamsMetadataDecorator } from '../utils';
 import { ConfigService } from '../module';
 
