@@ -29,8 +29,10 @@
     "format": "prettier **/**/*.ts --ignore-path ./.prettierignore --write && git status",
     "prepublish": "npm run format && npm run build"
   },
+  "peerDependencies": {
+    "@nestjs/common": "^5.1.0"
+  },
   "dependencies": {
-    "@nestjs/common": "^5.1.0",
     "dotenv": "^6.0.0",
     "glob": "^7.1.2",
     "lodash.get": "^4.4.2",
@@ -39,6 +41,7 @@
     "rxjs": "^6.0.0"
   },
   "devDependencies": {
+    "@nestjs/common": "^5.1.0",
     "@nestjs/core": "^5.1.0",
     "@nestjs/testing": "^5.1.0",
     "@types/dotenv": "^4.0.3",
