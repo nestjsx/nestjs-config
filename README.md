@@ -242,4 +242,23 @@ this.config.registerHelper('isProduction', () => {
 });
 ```
 
-Built from Fenos and Bashleigh
+## Decorators 
+
+It's possible to use decorators instead of injecting the ConfigService
+
+```ts
+import {Injectable, Get} from '@nestjs/common';
+import {Configurable, ConfigParam} from 'nestjs-config';
+
+@Injectable()
+export default class UserController {
+    
+    @Configurable()
+    @Get("/")
+    index(@ConfigParam('my.parameter', 'deafult value') parameter) {
+        return parameter;
+    }
+}
+```
+
+Built from Fenos, Shekohex and Bashleigh
