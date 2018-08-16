@@ -21,7 +21,7 @@ export const Configurable = (): MethodDecorator => {
         applyParamsMetadataDecorator(
           paramsMetadata,
           args,
-          ConfigService.getEnv,
+          ConfigService.get,
         ),
       );
     };
