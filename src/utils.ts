@@ -1,7 +1,7 @@
 export function applyParamsMetadataDecorator(
   paramsMetadata: any[],
   args: any[],
-  fn: (key: string) => string,
+  fn: (key: string, def?: string) => string,
 ): any[] {
   if (paramsMetadata.length && args.length) {
     // Override the original parameter value
@@ -14,7 +14,7 @@ export function applyParamsMetadataDecorator(
         }
         // get the value from config here !
         // a better way ?
-        args[param.parameterIndex] = fn(param.configKey);
+        args[param.parameterIndex] = fn(param.configKey, param.fallback);
       }
     }
   }

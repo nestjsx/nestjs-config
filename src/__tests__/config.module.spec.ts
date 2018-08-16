@@ -48,4 +48,25 @@ describe('Config Nest Module', () => {
     const componentTest = module.get<ComponentTest>(ComponentTest);
     expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
   });
+
+  it('ConfigParam decorator default value', async () => {
+    @Injectable()
+    class ComponentTest {
+      constructor() {}
+
+      @Configurable()
+      testConfig(@ConfigParam('config.doesntexists', 'test123') configKey: string) {
+        return configKey;
+      }
+    }
+
+    const module = await Test.createTestingModule({
+      imports: [
+        ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts')),
+      ],
+      providers: [ComponentTest],
+    }).compile();
+    const componentTest = module.get<ComponentTest>(ComponentTest);
+    expect(componentTest.testConfig(null)).toEqual('test123');
+  });
 });
