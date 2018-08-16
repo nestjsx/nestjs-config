@@ -70,7 +70,7 @@ export class ConfigService {
    * @param {any} value default
    * @returns {any|undefined}
    */
-  static get(param: string, value: any = undefined): any | undefined {
+  static get(param: string | string[], value: any = undefined): any {
     const configValue = get(ConfigService.config, param);
 
     if (configValue === undefined) {
@@ -87,13 +87,7 @@ export class ConfigService {
    * @returns {any}
    */
   get(param: string | string[], value: any = undefined): any {
-    const configValue = get(ConfigService.config, param);
-
-    if (configValue === undefined) {
-      return value;
-    }
-
-    return configValue;
+    return ConfigService.get(param, value);
   }
 
   /**
