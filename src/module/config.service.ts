@@ -69,8 +69,13 @@ export class ConfigService {
    * @param {String} key
    * @returns {String|undefined}
    */
-  static getEnv(key: string): string | undefined {
-    return get(ConfigService.config, key);
+  static getEnv(key: string, value: any = undefined): string | undefined {
+    const configValue = get(ConfigService.config, key);
+
+    if (configValue === undefined) {
+      return value;
+    } 
+    return configValue;
   }
 
   /**
