@@ -55,7 +55,10 @@ describe('Config Nest Module', () => {
       constructor() {}
 
       @Configurable()
-      testConfig(@ConfigParam('config.doesntexists', 'test123') configKey: string) {
+      testConfig(
+        @ConfigParam('config.doesntexists', 'test123')
+        configKey: string,
+      ) {
         return configKey;
       }
     }

@@ -75,7 +75,7 @@ export class ConfigService {
 
     if (configValue === undefined) {
       return value;
-    } 
+    }
     return configValue;
   }
 
