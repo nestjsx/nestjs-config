@@ -1,12 +1,16 @@
-# NestJS Config
+<p align="center"><img src="https://avatars1.githubusercontent.com/u/41109786?s=200&v=4"/></p>
+<p align="center">
+    <a href="https://travis-ci.org/nestjs-community/nestjs-config"><img src="https://travis-ci.org/nestjs-community/nestjs-config.svg?branch=master"/></a>
+    <a href="https://www.npmjs.com/package/nestjs-config"><img src="https://img.shields.io/npm/v/nestjs-config.svg"/></a>
+    <a href="https://github.com/nestjs-community/nestjs-config/blob/master/LICENSE"><img src="https://img.shields.io/github/license/nestjs-community/nestjs-config.svg"/></a>
+    <a href="https://coveralls.io/github/nestjs-community/nestjs-config?branch=master"><img src="https://coveralls.io/repos/github/nestjs-community/nestjs-config/badge.svg?branch=master"/></a>
+</p>
+<h1 align="center">Nestjs Config</h1>
 
-Configuration component for NestJs.
+<p align="center">Configuration component for NestJs.</p>
 
 
-[![Build Status](https://travis-ci.org/nestjs-community/nestjs-config.svg?branch=master)](https://travis-ci.org/nestjs-community/nestjs-config)
-[![GitHub version](https://img.shields.io/npm/v/nestjs-config.svg)](https://www.npmjs.com/package/nestjs-config)
-[![GitHub license](https://img.shields.io/github/license/nestjs-community/nestjs-config.svg)](https://github.com/nestjs-community/nestjs-config/blob/master/LICENSE)
-[![Coverage Status](https://coveralls.io/repos/github/nestjs-community/nestjs-config/badge.svg?branch=master)](https://coveralls.io/github/nestjs-community/nestjs-config?branch=master)
+
 
 ## Features
 
