@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import ConfigModule from 'nestjs-config';
+import {ConfigModule} from 'nestjs-config';
+import * as path from 'path';
 
 import UserController from './user.controller';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule.load(path.resolve(__dirname, 'config', '*/**.{ts,js}'))],
   controllers: [UserController],
 })
 export default class UserModule {}

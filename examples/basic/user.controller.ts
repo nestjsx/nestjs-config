@@ -1,15 +1,15 @@
 import { Controller, Get } from '@nest/common';
-import { ConfigService } from 'nestjs-config';
+import { InjectConfig } from 'nestjs-config';
 import * as pug from 'pug';
 
 @Controller('user')
 export default class UserController {
-  constructor(readonly config: ConfigService) {}
+  constructor(@InjectConfig() config) {}
 
   @Get('')
   index(): object {
-    const username = this.config.get('username', 'test');
-    const live = this.config.has('live');
+    const username = this.config.get('user.name', 'test');
+    const live = this.config.has('app.development');
 
     return {
       username: username,
