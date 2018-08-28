@@ -7,4 +7,5 @@ export default {
     logging: process.env.DB_LOGGING == 'true',
     sync: process.env.DB_SYNC == 'true',
     entities: ['src/entities/*.entity.ts'],
+    port: parseInt(process.env.DB_PORT),
 };
