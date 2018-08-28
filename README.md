@@ -265,4 +265,39 @@ export default class UserController {
 }
 ```
 
+## Typeorm 
+
+Usage with typeorm requires the use of the `forRootAsync` function supplied by the typeorm package for nestjs
+
+```typescript
+import {Module} from '@nestjs/common';
+import {ConfigModule, ConfigService} from 'nestjs-config';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import * as path from 'path';
+
+@Module({
+    imports: [
+        ConfigModule.load(path.resolve(__dirname, 'config', '*/**.{ts,js}')),
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: async (config: ConfigService) => config.get('database'),
+            inject: [ConfigService],
+        }),
+    ],
+})
+export default AppModule {}
+```
+
+And your config file: 
+
+```typescript 
+export default {
+    type: 'mysql',
+    host: process.env.DB_HOST,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+};
+```
+
 Built from Fenos, Shekohex and Bashleigh
