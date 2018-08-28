@@ -288,7 +288,7 @@ ConfigService.load(path.resolve(__dirname, 'config/**/*.{ts,js}'));
         }),
     ],
 })
-export default AppModule {}
+export default class AppModule {}
 ```
 
 And your config file: 
