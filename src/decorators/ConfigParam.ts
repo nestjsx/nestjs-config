@@ -3,7 +3,7 @@ import { CONFIG_PARAMS } from '../constants';
 
 export const ConfigParam = (
   configKey: string,
-  fallback: string | undefined = undefined,
+  fallback: any | undefined = undefined,
 ): ParameterDecorator => (target, propertyKey, parameterIndex) => {
   // Pull existing parameters for this method or create an empty array
   const existingParameters: any[] =
