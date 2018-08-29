@@ -17,7 +17,7 @@ export const Configurable = (): MethodDecorator => {
         return p.propertyKey === key;
       });
       return originalMethod.apply(
-        this,
+        target,
         applyParamsMetadataDecorator(
           paramsMetadata,
           args,
