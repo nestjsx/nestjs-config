@@ -48,4 +48,74 @@ describe('Config Nest Module', () => {
     const componentTest = module.get<ComponentTest>(ComponentTest);
     expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
   });
+
+  it('Will get the right `this` from class', async () => {
+    @Injectable()
+    class ComponentTest {
+      constructor() {}
+
+      @Configurable()
+      testConfig(@ConfigParam('config.server') configKey: string) {
+        let result = this.testConfig2('testConfig');
+        expect(result).toBeTruthy();
+        return configKey;
+      }
+
+      testConfig2(from: string) {
+        console.log('it works now from', from);
+        return true;
+      }
+    }
+
+    const module = await Test.createTestingModule({
+      imports: [
+        ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts')),
+      ],
+      providers: [ComponentTest],
+    }).compile();
+    const componentTest = module.get<ComponentTest>(ComponentTest);
+    expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
+  });
+
+  it('Will get the right `this` from class and its parents', async () => {
+
+    @Injectable()
+    class ComponentParentTest {
+      constructor() { }
+      testConfig3(from: string) {
+        console.log('it works now in parent from', from);
+        return true;
+      }
+    }
+
+    @Injectable()
+    class ComponentTest extends ComponentParentTest {
+      constructor() {
+        super()
+      }
+
+      @Configurable()
+      testConfig(@ConfigParam('config.server') configKey: string) {
+        let result = this.testConfig2('testConfig');
+        let resultFromParent = this.testConfig3('testConfig');
+        expect(result).toBeTruthy();
+        expect(resultFromParent).toBeTruthy();
+        return configKey;
+      }
+
+      testConfig2(from: string) {
+        console.log('it works now from', from);
+        return true;
+      }
+    }
+
+    const module = await Test.createTestingModule({
+      imports: [
+        ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts')),
+      ],
+      providers: [ComponentTest],
+    }).compile();
+    const componentTest = module.get<ComponentTest>(ComponentTest);
+    expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
+  });
 });
