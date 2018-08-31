@@ -75,19 +75,23 @@ describe('Config Nest Module', () => {
   it('Will get the right `this` from class', async () => {
     @Injectable()
     class ComponentTest {
-      constructor() {}
-       @Configurable()
+      foo: string;
+      constructor() {
+        this.foo = 'bar';
+      }
+      @Configurable()
       testConfig(@ConfigParam('config.server') configKey: string) {
         let result = this.testConfig2('testConfig');
         expect(result).toBeTruthy();
+        expect(this.foo).toEqual('bar');
         return configKey;
       }
-       testConfig2(from: string) {
+      testConfig2(from: string) {
         console.log('it works now from', from);
         return true;
       }
     }
-     const module = await Test.createTestingModule({
+    const module = await Test.createTestingModule({
       imports: [
         ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts')),
       ],
@@ -96,34 +100,38 @@ describe('Config Nest Module', () => {
     const componentTest = module.get<ComponentTest>(ComponentTest);
     expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
   });
-   it('Will get the right `this` from class and its parents', async () => {
-     @Injectable()
+  it('Will get the right `this` from class and its parents', async () => {
+    @Injectable()
     class ComponentParentTest {
-      constructor() { }
+      parentFoo: string;
+      constructor() {
+        this.parentFoo = 'bar';
+      }
       testConfig3(from: string) {
         console.log('it works now in parent from', from);
         return true;
       }
     }
-     @Injectable()
+    @Injectable()
     class ComponentTest extends ComponentParentTest {
       constructor() {
-        super()
+        super();
       }
-       @Configurable()
+      @Configurable()
       testConfig(@ConfigParam('config.server') configKey: string) {
         let result = this.testConfig2('testConfig');
         let resultFromParent = this.testConfig3('testConfig');
         expect(result).toBeTruthy();
         expect(resultFromParent).toBeTruthy();
+        expect(this.parentFoo).toEqual('bar');
         return configKey;
       }
-       testConfig2(from: string) {
+      testConfig2(from: string) {
         console.log('it works now from', from);
         return true;
       }
     }
-     const module = await Test.createTestingModule({
+    const module = await Test.createTestingModule({
       imports: [
         ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts')),
       ],
@@ -132,5 +140,4 @@ describe('Config Nest Module', () => {
     const componentTest = module.get<ComponentTest>(ComponentTest);
     expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
   });
-  
 });
