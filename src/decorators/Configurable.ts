@@ -10,14 +10,14 @@ export const Configurable = (): MethodDecorator => {
     descriptor: PropertyDescriptor,
   ) => {
     const originalMethod = descriptor.value;
-    descriptor.value = (...args: any[]) => {
+    descriptor.value = function(...args: any[]) {
       const paramsMetadata = (
         Reflect.getMetadata(CONFIG_PARAMS, target) || []
       ).filter(p => {
         return p.propertyKey === key;
       });
       return originalMethod.apply(
-        target,
+        this,
         applyParamsMetadataDecorator(paramsMetadata, args, ConfigService.get),
       );
     };
