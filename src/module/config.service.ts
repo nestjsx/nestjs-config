@@ -255,8 +255,11 @@ export class ConfigService {
    * @returns {string}
    */
   protected static getConfigName(file: string) {
+    // Workaround: Glob is replacing '\' by '/' on Windows
+    // If it contains the file system's path separator, then that's it, or we get the opposite one.
+    const fileSeparator = file.indexOf(path.sep) >= 0 ? path.sep : path.sep === '/' ? '/' : '\\';
     return file
-      .split(path.sep)
+      .split(fileSeparator)
       .pop()
       .replace('.js', '')
       .replace('.ts', '');
