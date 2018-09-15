@@ -96,7 +96,7 @@ let's create one!
 EXPRESS_PORT=3000
 ```
 
-now in our `src/config/epxress.ts` file we can refer to that environment variable 
+now in our `src/config/express.ts` file we can refer to that environment variable 
 
 ```ts
 // src/config/express.ts
