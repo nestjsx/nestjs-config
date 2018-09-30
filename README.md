@@ -279,8 +279,7 @@ import * as path from 'path';
     imports: [
         ConfigModule.load(path.resolve(__dirname, 'config/**/*.{ts,js}')),
         TypeOrmModule.forRootAsync({
-            imports: [ConfigModule],
-            useFactory: async (config: ConfigService) => config.get('database'),
+            useFactory: (config: ConfigService) => config.get('database'),
             inject: [ConfigService],
         }),
     ],
