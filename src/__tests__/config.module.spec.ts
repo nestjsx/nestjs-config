@@ -49,6 +49,109 @@ describe('Config Nest Module', () => {
     expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
   });
 
+  it('Multiple ConfigParam decorators', async () => {
+    @Injectable()
+    class ComponentTest {
+      constructor() {}
+
+      @Configurable()
+      testConfig(
+        @ConfigParam('config.server') server: any,
+        @ConfigParam('config.stub') stub: any
+      ) {
+        return { serverPort: server.port, stubPort: stub.port };
+      }
+    }
+
+    const module = await Test.createTestingModule({
+      imports: [
+        ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts')),
+      ],
+      providers: [ComponentTest],
+    }).compile();
+    const componentTest = module.get<ComponentTest>(ComponentTest);
+    expect(componentTest.testConfig(null, null)).toEqual({ serverPort: 2000, stubPort: 2000 });
+  });
+  it('ConfigParam decorators in a static factory method with injected service', async () => {
+    class ComponentTest {
+      constructor(
+        private readonly serverPort: number,
+        private readonly stubPort: number
+      ) {}
+
+      testConfig() {
+        return { serverPort: this.serverPort, stubPort: this.stubPort };
+      }
+    }
+
+    class ComponentTestFactory {
+      @Configurable()
+      static async get(
+        @ConfigParam('config.server') server: any,
+        @ConfigParam('config.stub') stub: any
+      ) {
+        return new ComponentTest(server.port, stub.port);
+      }
+    }
+
+    const module = await Test.createTestingModule({
+      imports: [
+        ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts')),
+      ],
+      providers: [{
+        provide: 'ComponentTest',
+        useFactory: ComponentTestFactory.get,
+        inject: [ConfigService]
+      }],
+    }).compile();
+
+    const componentTest = module.get<ComponentTest>('ComponentTest');
+    expect(componentTest.testConfig()).toEqual({serverPort: 2000, stubPort: 2000});
+  });
+
+  it('ConfigParam decorators in a static factory method with injected class', async () => {
+    class ComponentTest {
+      constructor(
+        private readonly serverPort: number,
+        private readonly stubPort: number
+      ) {}
+
+      testConfig() {
+        return {serverPort: this.serverPort, stubPort: this.stubPort};
+      }
+    }
+
+    class ComponentTestFactory {
+      @Configurable()
+      static async get(
+        @ConfigParam('config.server') server: any,
+        @ConfigParam('config.stub') stub: any
+      ) {
+        return new ComponentTest(server.port, stub.port);
+      }
+    }
+
+    const module = await Test.createTestingModule({
+      imports: [
+        ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts')),
+      ],
+      providers: [
+        {
+          provide: 'CONFIG_SERVICE_CLASS',
+          useValue: ConfigService
+        },
+        {
+          provide: 'ComponentTest',
+          useFactory: ComponentTestFactory.get,
+          inject: ['CONFIG_SERVICE_CLASS']
+        }
+      ],
+    }).compile();
+
+    const componentTest = module.get<ComponentTest>('ComponentTest');
+    expect(componentTest.testConfig()).toEqual({serverPort: 2000, stubPort: 2000});
+  });
+
   it('ConfigParam decorator default value', async () => {
     @Injectable()
     class ComponentTest {
