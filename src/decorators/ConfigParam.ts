@@ -11,7 +11,7 @@ export const ConfigParam = (
   // Add this parameter
   existingParameters.push({ parameterIndex, propertyKey, configKey, fallback });
   // Update the required parameters for this method
-  Reflect.defineMetadata(CONFIG_PARAMS, existingParameters, target);
+  Reflect.defineMetadata(CONFIG_PARAMS, existingParameters, target, propertyKey);
   return target;
 };
 export default ConfigParam;

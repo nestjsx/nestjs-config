@@ -1,20 +1,25 @@
+import { ConfigService } from "./module";
+
 export function applyParamsMetadataDecorator(
   paramsMetadata: any[],
   args: any[],
   fn: (key: string, def?: string) => string,
 ): any[] {
-  if (paramsMetadata.length && args.length) {
+  if (paramsMetadata.length) {
     // Override the original parameter value
     // with the expected property of the value even a deep property.
     for (const param of paramsMetadata) {
-      if (typeof args[param.parameterIndex] === 'object') {
-        if (!param.configKey) {
-          args[param.parameterIndex] = args[param.parameterIndex];
-          continue;
+      if (param.configKey) {
+        const i = param.parameterIndex;
+        if (args[i] instanceof ConfigService || args[i] === ConfigService) {
+          // if parameter is a ConfigService instance or ConfigService cass itself
+          // then retrieve required config param from this instance
+          args[param.parameterIndex] = args[i].get(param.configKey, param.fallback);
+        } else if (args[i] === undefined || args[i] === null) {
+          // if parameter is null or undefined
+          // then retrieve required config param from passed fn
+          args[param.parameterIndex] = fn(param.configKey, param.fallback);
         }
-        // get the value from config here !
-        // a better way ?
-        args[param.parameterIndex] = fn(param.configKey, param.fallback);
       }
     }
   }

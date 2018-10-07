@@ -12,7 +12,7 @@ export const Configurable = (): MethodDecorator => {
     const originalMethod = descriptor.value;
     descriptor.value = function(...args: any[]) {
       const paramsMetadata = (
-        Reflect.getMetadata(CONFIG_PARAMS, target) || []
+        Reflect.getMetadata(CONFIG_PARAMS, target, key) || []
       ).filter(p => {
         return p.propertyKey === key;
       });
@@ -24,7 +24,7 @@ export const Configurable = (): MethodDecorator => {
 
     Reflect.defineMetadata(
       CONFIG_CONFIGURABLE,
-      Reflect.getMetadata(CONFIG_PARAMS, target) || [],
+      Reflect.getMetadata(CONFIG_PARAMS, target, key) || [],
       descriptor.value,
     );
     return descriptor;
