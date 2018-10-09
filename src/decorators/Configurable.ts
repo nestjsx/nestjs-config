@@ -30,4 +30,3 @@ export const Configurable = (): MethodDecorator => {
     return descriptor;
   };
 };
-export default Configurable;

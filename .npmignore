@@ -1,6 +1,7 @@
 tsconfig.json
 node_modules/
 src/
+/index.ts
 yarn.lock
 yarn-error.log
 package-lock.json

@@ -19,4 +19,3 @@ export const ConfigParam = (
   );
   return target;
 };
-export default ConfigParam;

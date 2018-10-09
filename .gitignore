@@ -10,4 +10,6 @@ node_modules/
 !src/__tests__/__stubs__/.env
 
 dist/
+/index.js
+/index.d.ts
 .idea
