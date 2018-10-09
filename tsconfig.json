@@ -18,9 +18,11 @@
     "lib": ["es2017"]
   },
   "include": [
-    "src/**/*.ts"
+    "*.ts",
+    "**/*.ts"
   ],
   "exclude": [
+    "./index.ts",
     "node_modules",
     "./**/*.spec.ts",
     "examples"
