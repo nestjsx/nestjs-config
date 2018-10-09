@@ -267,8 +267,8 @@ export default class UserController {
     
     @Get("/")
     @Configurable()
-    index(@ConfigParam('my.parameter', 'deafult value') parameter) {
-        return parameter;
+    index(@ConfigParam('my.parameter', 'deafult value') parameter?: string) {
+        return { data: parameter };
     }
 }
 ```
@@ -284,8 +284,8 @@ export default class UserController {
     @Configurable()
     @Get("/")   // <-- nestjs decorator won't work because it placed after @Configurable()
     @UseInterceptors(TransformInterceptor)// <-- nestjs decorator won't work because it placed after @Configurable()
-    index(@ConfigParam('my.parameter', 'deafult value') parameter) {
-        return parameter;
+    index(@ConfigParam('my.parameter', 'deafult value') parameter?: string) {
+        return { data: parameter };
     }
 }
 ```
@@ -303,8 +303,8 @@ export default class UserController {
     @Get("/") // <-- nestjs decorator will work fine because it placed after @Configurable()
     @Configurable()
     @UseInterceptors(TransformInterceptor) // <-- nestjs decorator won't work because it placed after @Configurable()
-    index(@ConfigParam('my.parameter', 'deafult value') parameter) {
-        return parameter;
+    index(@ConfigParam('my.parameter', 'deafult value') parameter?: string) {
+        return { data: parameter };
     }
 }
 ```
