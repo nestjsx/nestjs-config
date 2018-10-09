@@ -34,7 +34,7 @@ describe('Config Nest Module', () => {
       constructor() {}
 
       @Configurable()
-      testConfig(@ConfigParam('config.server') configKey: string) {
+      testConfig(@ConfigParam('config.server') configKey?: { port: number }) {
         return configKey;
       }
     }
@@ -46,7 +46,7 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
+    expect(componentTest.testConfig()).toEqual({ port: 2000 });
   });
 
   it('Multiple ConfigParam decorators', async () => {
@@ -56,8 +56,8 @@ describe('Config Nest Module', () => {
 
       @Configurable()
       testConfig(
-        @ConfigParam('config.server') server: any,
-        @ConfigParam('config.stub') stub: any
+        @ConfigParam('config.server') server?: { port: 2000 },
+        @ConfigParam('config.stub') stub?: { port: 2000 }
       ) {
         return { serverPort: server.port, stubPort: stub.port };
       }
@@ -70,7 +70,7 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig(null, null)).toEqual({ serverPort: 2000, stubPort: 2000 });
+    expect(componentTest.testConfig()).toEqual({ serverPort: 2000, stubPort: 2000 });
   });
   it('ConfigParam decorators in a static factory method with injected service', async () => {
     class ComponentTest {
@@ -160,7 +160,7 @@ describe('Config Nest Module', () => {
       @Configurable()
       testConfig(
         @ConfigParam('config.doesntexists', 'test123')
-        configKey: string,
+        configKey?: string,
       ) {
         return configKey;
       }
@@ -173,7 +173,7 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig(null)).toEqual('test123');
+    expect(componentTest.testConfig()).toEqual('test123');
   });
   it('Will get the right `this` from class', async () => {
     @Injectable()
@@ -183,7 +183,7 @@ describe('Config Nest Module', () => {
         this.foo = 'bar';
       }
       @Configurable()
-      testConfig(@ConfigParam('config.server') configKey: string) {
+      testConfig(@ConfigParam('config.server') configKey?: { port: 2000 }) {
         let result = this.testConfig2('testConfig');
         expect(result).toBeTruthy();
         expect(this.foo).toEqual('bar');
@@ -201,7 +201,7 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
+    expect(componentTest.testConfig()).toEqual({ port: 2000 });
   });
   it('Will get the right `this` from class and its parents', async () => {
     @Injectable()
@@ -221,7 +221,7 @@ describe('Config Nest Module', () => {
         super();
       }
       @Configurable()
-      testConfig(@ConfigParam('config.server') configKey: string) {
+      testConfig(@ConfigParam('config.server') configKey?: { port: 2000 }) {
         let result = this.testConfig2('testConfig');
         let resultFromParent = this.testConfig3('testConfig');
         expect(result).toBeTruthy();
@@ -241,6 +241,6 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig(null)).toEqual({ port: 2000 });
+    expect(componentTest.testConfig()).toEqual({ port: 2000 });
   });
 });
