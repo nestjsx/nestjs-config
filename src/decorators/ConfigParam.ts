@@ -14,4 +14,3 @@ export const ConfigParam = (
   Reflect.defineMetadata(CONFIG_PARAMS, existingParameters, target);
   return target;
 };
-export default ConfigParam;

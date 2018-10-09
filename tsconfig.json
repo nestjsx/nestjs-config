@@ -18,8 +18,7 @@
     "lib": ["es2017"]
   },
   "include": [
-    "*.ts",
-    "**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",

@@ -1,9 +1,5 @@
 import 'reflect-metadata';
 import { DynamicModule, Module, Global } from '@nestjs/common';
-import {
-  Module as NestModule,
-  ComponentMetatype,
-} from '@nestjs/core/injector/module';
 import { ConfigService } from './config.service';
 import { DotenvOptions } from 'dotenv';
 
