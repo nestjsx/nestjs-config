@@ -248,17 +248,61 @@ this.config.registerHelper('isProduction', () => {
 
 ## Decorators 
 
-It's possible to use decorators instead of injecting the ConfigService
+It's possible to use decorators instead of injecting the ConfigService. 
+But note that `@Configurable()` decorator replaces `descriptor.value` for the
+method with own function. Regarding to the current nestjs implementation
+([Issue-1180](https://github.com/nestjs/nest/issues/1180)) this behavior will 
+break all decorators that follow after `Configurable()` decorator.
 
-```ts
+For the right behavior `@Configurable()` decorator **MUST** be placed at 
+the last place when you use several decorators for one method.
+
+**Working example:**
+```typescript
 import {Injectable, Get} from '@nestjs/common';
 import {Configurable, ConfigParam} from 'nestjs-config';
 
 @Injectable()
 export default class UserController {
     
-    @Configurable()
     @Get("/")
+    @Configurable()
+    index(@ConfigParam('my.parameter', 'deafult value') parameter) {
+        return parameter;
+    }
+}
+```
+**Broken example:**
+```typescript
+import {Injectable, Get, UseInterceptors} from '@nestjs/common';
+import {Configurable, ConfigParam} from 'nestjs-config';
+import {TransformInterceptor} from '../interceptors';
+
+@Injectable()
+export default class UserController {
+    
+    @Configurable()
+    @Get("/")   // <-- nestjs decorator won't work because it placed after @Configurable()
+    @UseInterceptors(TransformInterceptor)// <-- nestjs decorator won't work because it placed after @Configurable()
+    index(@ConfigParam('my.parameter', 'deafult value') parameter) {
+        return parameter;
+    }
+}
+```
+
+**Broken example 2:**
+```typescript
+import {Injectable, Get, UseInterceptors} from '@nestjs/common';
+import {Configurable, ConfigParam} from 'nestjs-config';
+import {TransformInterceptor} from '../interceptors';
+
+@Injectable()
+export default class UserController {
+    
+    
+    @Get("/") // <-- nestjs decorator will work fine because it placed after @Configurable()
+    @Configurable()
+    @UseInterceptors(TransformInterceptor) // <-- nestjs decorator won't work because it placed after @Configurable()
     index(@ConfigParam('my.parameter', 'deafult value') parameter) {
         return parameter;
     }
