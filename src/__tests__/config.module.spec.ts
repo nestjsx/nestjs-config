@@ -55,7 +55,7 @@ describe('Config Nest Module', () => {
 
       @Configurable()
       testConfig(server: { port: number }) {
-        return {serverPort: server.port};
+        return { serverPort: server.port };
       }
     }
 
@@ -66,7 +66,7 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig({port: 42})).toEqual({serverPort: 42});
+    expect(componentTest.testConfig({ port: 42 })).toEqual({ serverPort: 42 });
   });
   it('ConfigParam decorator on null argument', async () => {
     @Injectable()
@@ -74,8 +74,10 @@ describe('Config Nest Module', () => {
       constructor() {}
 
       @Configurable()
-      testConfig(@ConfigParam('config.server') server: null | { port: number },) {
-        return {serverPort: server.port };
+      testConfig(
+        @ConfigParam('config.server') server: null | { port: number },
+      ) {
+        return { serverPort: server.port };
       }
     }
 
@@ -86,7 +88,7 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig(null)).toEqual({serverPort: 2000});
+    expect(componentTest.testConfig(null)).toEqual({ serverPort: 2000 });
   });
   it('Multiple ConfigParam decorators', async () => {
     @Injectable()
@@ -96,7 +98,7 @@ describe('Config Nest Module', () => {
       @Configurable()
       testConfig(
         @ConfigParam('config.server') server?: { port: number },
-        @ConfigParam('config.stub') stub?: { port: number }
+        @ConfigParam('config.stub') stub?: { port: number },
       ) {
         return { serverPort: server.port, stubPort: stub.port };
       }
@@ -109,13 +111,16 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig()).toEqual({ serverPort: 2000, stubPort: 2000 });
+    expect(componentTest.testConfig()).toEqual({
+      serverPort: 2000,
+      stubPort: 2000,
+    });
   });
   it('ConfigParam decorators in a static factory method with injected service', async () => {
     class ComponentTest {
       constructor(
         private readonly serverPort: number,
-        private readonly stubPort: number
+        private readonly stubPort: number,
       ) {}
 
       testConfig() {
@@ -127,7 +132,7 @@ describe('Config Nest Module', () => {
       @Configurable()
       static async get(
         @ConfigParam('config.server') server: any,
-        @ConfigParam('config.stub') stub: any
+        @ConfigParam('config.stub') stub: any,
       ) {
         return new ComponentTest(server.port, stub.port);
       }
@@ -137,26 +142,31 @@ describe('Config Nest Module', () => {
       imports: [
         ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts')),
       ],
-      providers: [{
-        provide: 'ComponentTest',
-        useFactory: ComponentTestFactory.get,
-        inject: [ConfigService]
-      }],
+      providers: [
+        {
+          provide: 'ComponentTest',
+          useFactory: ComponentTestFactory.get,
+          inject: [ConfigService],
+        },
+      ],
     }).compile();
 
     const componentTest = module.get<ComponentTest>('ComponentTest');
-    expect(componentTest.testConfig()).toEqual({serverPort: 2000, stubPort: 2000});
+    expect(componentTest.testConfig()).toEqual({
+      serverPort: 2000,
+      stubPort: 2000,
+    });
   });
 
   it('ConfigParam decorators in a static factory method with injected class', async () => {
     class ComponentTest {
       constructor(
         private readonly serverPort: number,
-        private readonly stubPort: number
+        private readonly stubPort: number,
       ) {}
 
       testConfig() {
-        return {serverPort: this.serverPort, stubPort: this.stubPort};
+        return { serverPort: this.serverPort, stubPort: this.stubPort };
       }
     }
 
@@ -164,7 +174,7 @@ describe('Config Nest Module', () => {
       @Configurable()
       static async get(
         @ConfigParam('config.server') server: any,
-        @ConfigParam('config.stub') stub: any
+        @ConfigParam('config.stub') stub: any,
       ) {
         return new ComponentTest(server.port, stub.port);
       }
@@ -177,18 +187,21 @@ describe('Config Nest Module', () => {
       providers: [
         {
           provide: 'CONFIG_SERVICE_CLASS',
-          useValue: ConfigService
+          useValue: ConfigService,
         },
         {
           provide: 'ComponentTest',
           useFactory: ComponentTestFactory.get,
-          inject: ['CONFIG_SERVICE_CLASS']
-        }
+          inject: ['CONFIG_SERVICE_CLASS'],
+        },
       ],
     }).compile();
 
     const componentTest = module.get<ComponentTest>('ComponentTest');
-    expect(componentTest.testConfig()).toEqual({serverPort: 2000, stubPort: 2000});
+    expect(componentTest.testConfig()).toEqual({
+      serverPort: 2000,
+      stubPort: 2000,
+    });
   });
 
   it('ConfigParam decorator default value', async () => {
