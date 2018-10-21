@@ -35,19 +35,17 @@ npm install nestjs-config --save
 Let's imagine that we have a folder called `config` in our project under `src`
 
 ```bash
-
 /src
 ├── app.module.ts
 ├── config
-│   ├── express.ts
-│   ├── graphql.ts
-│   └── grpc.ts
+│   ├── express.ts
+│   ├── graphql.ts
+│   └── grpc.ts
 ```
 
 Let's register the config module in `app.module.ts`
 
-```ts
-import * as path from 'path';
+```typescript
 import { Module } from '@nestjs/common';
 import { ConfigModule } from "nestjs-config";
 
@@ -56,15 +54,13 @@ import { ConfigModule } from "nestjs-config";
         ConfigModule.load(),
     ],
 })
-export class AppModule {
-
-}
+export class AppModule {}
 ```
 That's it!
 
 Now let's say that your application isn't in a folder called `src`, it's in `./app`.
 
-```ts
+```typescript
 import * as path from 'path';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from "nestjs-config";
@@ -76,12 +72,114 @@ import { ConfigModule } from "nestjs-config";
         ),
     ],
 })
-export class AppModule {
-
-}
+export class AppModule {}
 ```
 
 We provide as first argument the glob of our interested configuration that we want to load.
+
+#### Complex project structure
+For example project has the next structure:
+```
+/
+├── dist/
+├── src/
+│   ├── app/
+│   │   ├── app.module.ts
+│   │   └── bootstrap/
+│   │   │   ├── index.ts
+│   │   │   └── bootstrap.module.ts
+│   ├── migrations/
+│   ├── cli/
+│   ├── config/
+│   │   ├── app.ts
+│   │   └── database.ts
+│   └── main.ts
+├── tsconfig.json
+└── package.json
+```
+
+On this example, config files are located near the app folder, because they are shared 
+between app, migrations and cli scripts. 
+
+Also during typescript compilation all files from `src/` folder will be moved to the `dist/` folder. 
+
+Moreover `ConfigModule` is imported in `BootstrapModule`, but not directly in `AppModule`.
+
+```typescript
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { BootstrapModule } from "./bootstrap";
+
+@Module({
+    imports: [BootstrapModule],
+})
+export class AppModule {}
+```
+
+```typescript
+// bootstrap.module.ts
+import * as path from 'path';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from "nestjs-config";
+
+@Module({
+    imports: [
+      ConfigModule.load(path.resolve(__dirname, '../../config/**/*.{ts,js}')),
+    ],
+})
+export class BootstrapModule {}
+```
+We still provide as first argument the glob of our configuration, but an example above looks a little bit ugly. 
+
+Also we will always have to remember about this glob path when we want to move the `BootstrapModule` 
+to different place.
+
+There is two ways to avoid such situations:
+
+- Explicitly set absolute path to the project sources from `AppModule` and use glob with relative path:
+  ```typescript
+  // app.module.ts
+  import { Module } from '@nestjs/common';
+  import { ConfigService } from "nestjs-config";
+  import * as path from "path";
+  import { BootstrapModule } from "./bootstrap";
+  
+  ConfigService.srcPath = path.resolve(__dirname, '..');
+  
+  @Module({
+      imports: [BootstrapModule],
+  })
+  export class AppModule {}
+  ```
+  
+  ```typescript
+  // bootstrap.module.ts
+  import { Module } from '@nestjs/common';
+  import { ConfigModule } from "nestjs-config";
+  
+  @Module({
+      imports: [
+        ConfigModule.load('config/**/*.{ts,js}')
+      ],
+  })
+  export class BootstrapModule {}
+  ```
+
+- Invoke `ConfigModule.resolveSrcPath(__dirname)` from any your module before config loading and use glob with relative path.
+  ```typescript
+  // bootstrap.module.ts
+  import { Module } from '@nestjs/common';
+  import { ConfigModule } from "nestjs-config";
+  
+  @Module({
+      imports: [
+        ConfigModule.resolveSrcPath(__dirname).load('config/**/*.{ts,js}')
+      ],
+  })
+  export class BootstrapModule {}
+  ```
+
+On these examples we provide as first argument the glob of our configuration, but it is relative to the `src/` folder.
 
 ### Environment configuration
 

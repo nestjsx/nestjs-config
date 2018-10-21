@@ -91,12 +91,12 @@ describe('Config Service', () => {
       realProcessCwd = process.cwd;
       process.cwd = () => __dirname;
 
-      currentAppRoot = ConfigService.appSrcPath;
-      ConfigService.appSrcPath = undefined;
+      currentAppRoot = ConfigService.srcPath;
+      ConfigService.srcPath = undefined;
     });
 
     afterEach(() => {
-      ConfigService.appSrcPath = currentAppRoot;
+      ConfigService.srcPath = currentAppRoot;
       process.cwd = realProcessCwd;
     });
 
@@ -113,8 +113,8 @@ describe('Config Service', () => {
       const expectedAppRoot = path.join(__dirname, 'dist');
       const currentFilePath = path.join(__dirname, 'dist', 'app', 'app.module.js');
 
-      ConfigService.resolveAppSrcPath(currentFilePath);
-      expect(ConfigService.appSrcPath).toEqual(expectedAppRoot);
+      ConfigService.resolveSrcPath(currentFilePath);
+      expect(ConfigService.srcPath).toEqual(expectedAppRoot);
     });
 
     it('Will resolve application src path only once', () => {
@@ -122,14 +122,14 @@ describe('Config Service', () => {
       const firstStartPath = path.join(__dirname, 'src', 'app', 'app.module.js');
       const secondStartPath = path.join(__dirname, 'dist', 'app', 'app.module.js');
 
-      ConfigService.resolveAppSrcPath(firstStartPath);
-      ConfigService.resolveAppSrcPath(secondStartPath);
-      expect(ConfigService.appSrcPath).toEqual(expectedAppRoot);
+      ConfigService.resolveSrcPath(firstStartPath);
+      ConfigService.resolveSrcPath(secondStartPath);
+      expect(ConfigService.srcPath).toEqual(expectedAppRoot);
     });
 
     it('Will throw error if start path for app src resolution is not an absolute path', (done) => {
       try {
-        ConfigService.resolveAppSrcPath('some/relative/path');
+        ConfigService.resolveSrcPath('some/relative/path');
       } catch (e) {
         done();
       }
@@ -143,7 +143,7 @@ describe('Config Service', () => {
       const appSrcRoot = path.join(__dirname, 'dist');
       const startPath = path.join(appSrcRoot, 'app', 'app.module.js');
 
-      ConfigService.resolveAppSrcPath(startPath);
+      ConfigService.resolveSrcPath(startPath);
       expect(ConfigService.src()).toEqual(appSrcRoot);
     });
 
@@ -152,7 +152,7 @@ describe('Config Service', () => {
       const startPath = path.join(appSrcRoot, 'app', 'app.module.js');
       const expectedPath = path.join(appSrcRoot, 'config');
 
-      ConfigService.resolveAppSrcPath(startPath);
+      ConfigService.resolveSrcPath(startPath);
       expect(ConfigService.src('config')).toEqual(expectedPath);
     });
 
