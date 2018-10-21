@@ -95,7 +95,7 @@ describe('Config Service', () => {
       process.cwd = realProcessCwd;
     });
 
-    it('Will return a src directory', () => {
+    it('Will return a src directory for relative path', () => {
       const realProcessCwd = process.cwd;
 
       const mockedCwdPath = __dirname;
@@ -105,6 +105,11 @@ describe('Config Service', () => {
       expect(ConfigService.src('config')).toEqual(expectedPath);
 
       process.cwd = realProcessCwd;
+    });
+
+    it('Will return a src directory for absolute path', () => {
+      const expectedPath = '/tmp/config';
+      expect(ConfigService.src('/tmp/config')).toEqual(expectedPath);
     });
   });
 });

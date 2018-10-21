@@ -3,6 +3,7 @@ import * as get from 'lodash.get';
 import * as set from 'lodash.set';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import { ok } from 'assert';
 import { Glob, sync as globSync } from 'glob';
 import { DotenvOptions } from 'dotenv';
 import { ProxyProperty } from '../decorators/proxy';
@@ -45,10 +46,8 @@ export class ConfigService {
     glob?: string,
     options?: DotenvOptions | false,
   ): Promise<ConfigService> {
-    const configs = await this.loadConfigAsync(
-      typeof glob === 'undefined' ? this.src('config/**/*.{ts,js}') : glob,
-      options,
-    );
+    glob = typeof glob === 'undefined' ? 'config/**/*.{ts,js}' : glob;
+    const configs = await this.loadConfigAsync(glob, options);
     return new ConfigService(configs);
   }
 
@@ -155,7 +154,7 @@ export class ConfigService {
    * @returns {string}
    */
   static root(dir: string = ''): string {
-    return `${process.cwd()}${dir ? `/${dir}` : ''}`;
+    return path.resolve(process.cwd(), dir);
   }
 
   /**
@@ -163,7 +162,7 @@ export class ConfigService {
    * @returns {string}
    */
   static src(dir: string = ''): string {
-    return ConfigService.root(`src${dir ? `/${dir}` : ''}`);
+    return path.resolve(this.root('src'), dir);
   }
 
   /**
@@ -176,17 +175,13 @@ export class ConfigService {
     options?: DotenvOptions | false,
   ): Promise<Config> {
     return new Promise((resolve, reject) => {
-      new Glob(glob, {}, (err, matches) => {
+      new Glob(this.src(glob), {}, (err, matches) => {
         /* istanbul ignore if */
         if (err) {
           reject(err);
         } else {
-          if (options !== false) {
-            dotenv.load(options || ConfigService.defaultDotenvConfig());
-          }
-
+          this.loadEnv(options);
           const configs = this.configGraph(matches);
-
           resolve(configs);
         }
       });
@@ -203,12 +198,8 @@ export class ConfigService {
     glob: string,
     options?: DotenvOptions | false,
   ): Config {
-    const matches = globSync(glob);
-
-    if (options !== false) {
-      dotenv.load(options || ConfigService.defaultDotenvConfig());
-    }
-
+    this.loadEnv(options);
+    const matches = globSync(this.src(glob));
     return this.configGraph(matches);
   }
 
@@ -255,12 +246,18 @@ export class ConfigService {
    * @returns {string}
    */
   protected static getConfigName(file: string) {
-    // Workaround: Glob is replacing '\' by '/' on Windows, so only use posix separator
-    return file
-      .split(path.posix.sep)
-      .pop()
-      .replace('.js', '')
-      .replace('.ts', '');
+    const ext = path.extname(file);
+    return path.basename(file, ext);
+  }
+
+  /**
+   * Loads env variables via dotenv.
+   * @param {DotenvOptions | false} options
+   */
+  protected static loadEnv(options?: DotenvOptions | false): void {
+    if (options !== false) {
+      dotenv.load(options || ConfigService.defaultDotenvConfig());
+    }
   }
 
   /**
