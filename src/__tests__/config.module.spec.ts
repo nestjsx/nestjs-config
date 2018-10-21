@@ -29,16 +29,16 @@ describe('Config Nest Module', () => {
   });
 
   it('Will resolve application sources path', async() => {
-    const spy = jest.spyOn(ConfigService, 'resolveAppSrcPath');
+    const spy = jest.spyOn(ConfigService, 'resolveSrcPath');
 
     await Test.createTestingModule({
-      imports: [ConfigModule.resolveAppSrcPath(__dirname).load()],
+      imports: [ConfigModule.resolveSrcPath(__dirname).load()],
     }).compile();
 
     const expectedAppSrcPath = path.resolve(process.cwd(), 'src');
 
     expect(spy).toHaveBeenCalled();
-    expect(ConfigService.appSrcPath).toEqual(expectedAppSrcPath);
+    expect(ConfigService.srcPath).toEqual(expectedAppSrcPath);
   });
 
   it('Will Setup Modules with its Components', async () => {

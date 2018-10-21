@@ -7,8 +7,8 @@ import { DotenvOptions } from 'dotenv';
 @Module({})
 export class ConfigModule {
 
-  static resolveAppSrcPath(startPath: string): typeof ConfigModule {
-    ConfigService.resolveAppSrcPath(startPath);
+  static resolveSrcPath(startPath: string): typeof ConfigModule {
+    ConfigService.resolveSrcPath(startPath);
     return this;
   }
 

@@ -29,7 +29,7 @@ export class ConfigService {
   private readonly helpers: CustomHelper = {};
 
   protected static defaultGlob: string = 'src/config/**/*.{ts,js}';
-  static appSrcPath?: string;
+  static srcPath?: string;
 
   /**
    * @param {Config} config
@@ -165,7 +165,7 @@ export class ConfigService {
    * @returns {string}
    */
   static src(dir: string = ''): string {
-    const srcPath = this.appSrcPath || this.root();
+    const srcPath = this.srcPath || this.root();
     return path.resolve(srcPath, dir);
   }
 
@@ -174,10 +174,10 @@ export class ConfigService {
    * @param {string} startPath
    *  The path for search starting. Can be any path under app sources path.
    */
-  static resolveAppSrcPath(startPath: string): typeof ConfigService {
+  static resolveSrcPath(startPath: string): typeof ConfigService {
     ok(path.isAbsolute(startPath), 'Start path must be an absolute path.');
 
-    if (!this.appSrcPath) {
+    if (!this.srcPath) {
       const root = this.root();
 
       let src = startPath;
@@ -188,7 +188,7 @@ export class ConfigService {
         parent = path.dirname(src);
       }
 
-      this.appSrcPath = src;
+      this.srcPath = src;
     }
 
     return this;
