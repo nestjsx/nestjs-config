@@ -6,6 +6,12 @@ import { DotenvOptions } from 'dotenv';
 @Global()
 @Module({})
 export class ConfigModule {
+
+  static resolveAppSrcPath(startPath: string): typeof ConfigModule {
+    ConfigService.resolveAppSrcPath(startPath);
+    return this;
+  }
+
   /**
    * From Glob
    * @param glob

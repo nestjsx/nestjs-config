@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigParam, Configurable } from '../decorators';
 
 describe('Config Nest Module', () => {
-  it('Will boot nest-config modoule succesfully', async () => {
+  it('Will boot nest-config module succesfully', async () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts')),
@@ -26,6 +26,19 @@ describe('Config Nest Module', () => {
     const configService = module.get<ConfigService>(ConfigService);
 
     expect(configService).toBeInstanceOf(ConfigService);
+  });
+
+  it('Will resolve application sources path', async() => {
+    const spy = jest.spyOn(ConfigService, 'resolveAppSrcPath');
+
+    await Test.createTestingModule({
+      imports: [ConfigModule.resolveAppSrcPath(__dirname).load()],
+    }).compile();
+
+    const expectedAppSrcPath = path.resolve(process.cwd(), 'src');
+
+    expect(spy).toHaveBeenCalled();
+    expect(ConfigService.appSrcPath).toEqual(expectedAppSrcPath);
   });
 
   it('Will Setup Modules with its Components', async () => {

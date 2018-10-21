@@ -28,6 +28,9 @@ export class ConfigService {
   private static config: Config;
   private readonly helpers: CustomHelper = {};
 
+  protected static defaultGlob: string = 'src/config/**/*.{ts,js}';
+  static appSrcPath?: string;
+
   /**
    * @param {Config} config
    */
@@ -46,7 +49,7 @@ export class ConfigService {
     glob?: string,
     options?: DotenvOptions | false,
   ): Promise<ConfigService> {
-    glob = typeof glob === 'undefined' ? 'config/**/*.{ts,js}' : glob;
+    glob = typeof glob === 'undefined' ? this.defaultGlob : glob;
     const configs = await this.loadConfigAsync(glob, options);
     return new ConfigService(configs);
   }
@@ -162,7 +165,33 @@ export class ConfigService {
    * @returns {string}
    */
   static src(dir: string = ''): string {
-    return path.resolve(this.root('src'), dir);
+    const srcPath = this.appSrcPath || this.root();
+    return path.resolve(srcPath, dir);
+  }
+
+  /**
+   * Resolves and stores sources directory for application.
+   * @param {string} startPath
+   *  The path for search starting. Can be any path under app sources path.
+   */
+  static resolveAppSrcPath(startPath: string): typeof ConfigService {
+    ok(path.isAbsolute(startPath), 'Start path must be an absolute path.');
+
+    if (!this.appSrcPath) {
+      const root = this.root();
+
+      let src = startPath;
+      let parent = path.dirname(startPath);
+
+      while (src !== root && parent !== root && parent !== src) {
+        src = parent;
+        parent = path.dirname(src);
+      }
+
+      this.appSrcPath = src;
+    }
+
+    return this;
   }
 
   /**
@@ -174,14 +203,17 @@ export class ConfigService {
     glob: string,
     options?: DotenvOptions | false,
   ): Promise<Config> {
+    glob = this.src(glob);
     return new Promise((resolve, reject) => {
-      new Glob(this.src(glob), {}, (err, matches) => {
+      new Glob(glob, {}, (err, matches) => {
         /* istanbul ignore if */
         if (err) {
           reject(err);
         } else {
           this.loadEnv(options);
+
           const configs = this.configGraph(matches);
+
           resolve(configs);
         }
       });
@@ -198,8 +230,10 @@ export class ConfigService {
     glob: string,
     options?: DotenvOptions | false,
   ): Config {
+    glob = this.src(glob);
+    const matches = globSync(glob);
     this.loadEnv(options);
-    const matches = globSync(this.src(glob));
+
     return this.configGraph(matches);
   }
 
