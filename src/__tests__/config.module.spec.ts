@@ -75,7 +75,7 @@ describe('Config Nest Module', () => {
 
       @Configurable()
       testConfig(
-        @ConfigParam('config.server') server: null | { port: number },
+        @ConfigParam('config.server') server?: { port: number },
       ) {
         return { serverPort: server.port };
       }
@@ -88,7 +88,7 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig(null)).toEqual({ serverPort: 2000 });
+    expect(componentTest.testConfig()).toEqual({ serverPort: 2000 });
   });
   it('Multiple ConfigParam decorators', async () => {
     @Injectable()
