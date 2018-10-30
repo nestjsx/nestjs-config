@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import * as assert from 'assert';
 import * as get from 'lodash.get';
 import * as set from 'lodash.set';
 import * as dotenv from 'dotenv';
-import * as path from 'path';
-import { ok } from 'assert';
-import { Glob, sync as globSync } from 'glob';
 import { DotenvOptions } from 'dotenv';
+import * as path from 'path';
+import { Glob, sync as globSync } from 'glob';
 import { ProxyProperty } from '../decorators/proxy';
 
 export interface ModuleConfig {
@@ -175,7 +175,7 @@ export class ConfigService {
    *  The path for search starting. Can be any path under app sources path.
    */
   static resolveSrcPath(startPath: string): typeof ConfigService {
-    ok(path.isAbsolute(startPath), 'Start path must be an absolute path.');
+    assert.ok(path.isAbsolute(startPath), 'Start path must be an absolute path.');
 
     if (!this.srcPath) {
       const root = this.root();
