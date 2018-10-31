@@ -28,7 +28,7 @@ describe('Config Nest Module', () => {
     expect(configService).toBeInstanceOf(ConfigService);
   });
 
-  it('Will resolve application sources path', async() => {
+  it('Will resolve application sources path', async () => {
     const spy = jest.spyOn(ConfigService, 'resolveSrcPath');
 
     await Test.createTestingModule({
@@ -87,9 +87,7 @@ describe('Config Nest Module', () => {
       constructor() {}
 
       @Configurable()
-      testConfig(
-        @ConfigParam('config.server') server?: { port: number },
-      ) {
+      testConfig(@ConfigParam('config.server') server?: { port: number }) {
         return { serverPort: server.port };
       }
     }

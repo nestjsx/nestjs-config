@@ -175,7 +175,10 @@ export class ConfigService {
    *  The path for search starting. Can be any path under app sources path.
    */
   static resolveSrcPath(startPath: string): typeof ConfigService {
-    assert.ok(path.isAbsolute(startPath), 'Start path must be an absolute path.');
+    assert.ok(
+      path.isAbsolute(startPath),
+      'Start path must be an absolute path.',
+    );
 
     if (!this.srcPath) {
       const root = this.root();

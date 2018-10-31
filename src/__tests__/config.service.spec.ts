@@ -73,7 +73,7 @@ describe('Config Service', () => {
     beforeEach(async () => {
       configService = await ConfigService.load(
         path.resolve(__dirname, '__stubs__', '*.env.ts'),
-        {path: path.resolve(__dirname, '__stubs__', '.env')},
+        { path: path.resolve(__dirname, '__stubs__', '.env') },
       );
     });
 
@@ -111,7 +111,12 @@ describe('Config Service', () => {
 
     it('Will resolve application src path', () => {
       const expectedAppRoot = path.join(__dirname, 'dist');
-      const currentFilePath = path.join(__dirname, 'dist', 'app', 'app.module.js');
+      const currentFilePath = path.join(
+        __dirname,
+        'dist',
+        'app',
+        'app.module.js',
+      );
 
       ConfigService.resolveSrcPath(currentFilePath);
       expect(ConfigService.srcPath).toEqual(expectedAppRoot);
@@ -119,15 +124,25 @@ describe('Config Service', () => {
 
     it('Will resolve application src path only once', () => {
       const expectedAppRoot = path.join(__dirname, 'src');
-      const firstStartPath = path.join(__dirname, 'src', 'app', 'app.module.js');
-      const secondStartPath = path.join(__dirname, 'dist', 'app', 'app.module.js');
+      const firstStartPath = path.join(
+        __dirname,
+        'src',
+        'app',
+        'app.module.js',
+      );
+      const secondStartPath = path.join(
+        __dirname,
+        'dist',
+        'app',
+        'app.module.js',
+      );
 
       ConfigService.resolveSrcPath(firstStartPath);
       ConfigService.resolveSrcPath(secondStartPath);
       expect(ConfigService.srcPath).toEqual(expectedAppRoot);
     });
 
-    it('Will throw error if start path for app src resolution is not an absolute path', (done) => {
+    it('Will throw error if start path for app src resolution is not an absolute path', done => {
       try {
         ConfigService.resolveSrcPath('some/relative/path');
       } catch (e) {
