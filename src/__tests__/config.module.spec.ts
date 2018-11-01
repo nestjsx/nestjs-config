@@ -253,7 +253,6 @@ describe('Config Nest Module', () => {
         return configKey;
       }
       testConfig2(from: string) {
-        console.log('it works now from', from);
         return true;
       }
     }
@@ -274,7 +273,6 @@ describe('Config Nest Module', () => {
         this.parentFoo = 'bar';
       }
       testConfig3(from: string) {
-        console.log('it works now in parent from', from);
         return true;
       }
     }
@@ -293,7 +291,6 @@ describe('Config Nest Module', () => {
         return configKey;
       }
       testConfig2(from: string) {
-        console.log('it works now from', from);
         return true;
       }
     }
