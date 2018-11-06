@@ -28,7 +28,7 @@ export class ConfigService {
   private static config: Config;
   private readonly helpers: CustomHelper = {};
 
-  protected static defaultGlob: string = 'src/config/**/*.{ts,js}';
+  protected static defaultGlob: string = 'config/**/*.{ts,js}';
   static srcPath?: string;
 
   /**
@@ -49,7 +49,8 @@ export class ConfigService {
     glob?: string,
     options?: DotenvOptions | false,
   ): Promise<ConfigService> {
-    glob = typeof glob === 'undefined' ? this.defaultGlob : glob;
+    glob = typeof glob === 'undefined' ? ConfigService.defaultGlob : glob;
+
     const configs = await this.loadConfigAsync(glob, options);
     return new ConfigService(configs);
   }
