@@ -28,7 +28,7 @@ export class ConfigService {
   private static config: Config;
   private readonly helpers: CustomHelper = {};
 
-  protected static defaultGlob: string = 'config/**/*.{ts,js}';
+  protected static defaultGlob: string = 'config/**/!(*.d).{ts,js}';
   static srcPath?: string;
 
   /**
