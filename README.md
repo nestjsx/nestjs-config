@@ -10,12 +10,10 @@
 <p align="center">Configuration component for NestJs.</p>
 
 
-
-
 ## Features
 
-- Load your configurations with globs
-- Support for different environment configuration, thanks to [dotenv](https://github.com/motdotla/dotenv)
+- Load your configuration files using globs
+- Support for different environment configurations, thanks to [dotenv](https://github.com/motdotla/dotenv)
 - Change and Load configuration at runtime
 
 ### Installation
@@ -32,7 +30,7 @@ npm install nestjs-config --save
 
 ### Getting Started
 
-Let's imagine that we have a folder called `config` in our project under `src`
+Let's imagine that we have a folder called `src/config` in our project that contains several configuration files.
 
 ```bash
 /src
@@ -45,7 +43,7 @@ Let's imagine that we have a folder called `config` in our project under `src`
 
 Let's register the config module in `app.module.ts`
 
-```typescript
+```ts
 import { Module } from '@nestjs/common';
 import { ConfigModule } from "nestjs-config";
 
@@ -58,9 +56,11 @@ export class AppModule {}
 ```
 That's it!
 
-Now let's say that your application isn't in a folder called `src`, it's in `./app`.
+-----
 
-```typescript
+Now let's say that your application isn't located in a folder called `src`, but it's located in `./app`.
+
+```ts
 import * as path from 'path';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from "nestjs-config";
@@ -77,8 +77,10 @@ export class AppModule {}
 
 We provide as first argument the glob of our interested configuration that we want to load.
 
-#### Complex project structure
-For example project has the next structure:
+#### Complex Project Structure
+
+Imagine a more complex project structure:
+
 ```
 /
 ├── dist/
@@ -98,14 +100,14 @@ For example project has the next structure:
 └── package.json
 ```
 
-On this example, config files are located near the app folder, because they are shared 
+In this example, config files are located near the `/src/app` folder, because they are shared 
 between app, migrations and cli scripts. 
 
 Also during typescript compilation all files from `src/` folder will be moved to the `dist/` folder. 
 
-Moreover `ConfigModule` is imported in `BootstrapModule`, but not directly in `AppModule`.
+Moreover, the `ConfigModule` is imported in the `BootstrapModule`, but not directly in `AppModule`.
 
-```typescript
+```ts
 // app.module.ts
 import { Module } from '@nestjs/common';
 import { BootstrapModule } from "./bootstrap";
@@ -129,21 +131,23 @@ import { ConfigModule } from "nestjs-config";
 })
 export class BootstrapModule {}
 ```
-We still provide as first argument the glob of our configuration, but an example above looks a little bit ugly. 
 
-Also we will always have to remember about this glob path when we want to move the `BootstrapModule` 
-to different place.
+In this example, we still provide the glob describing the locations of our configuration files as first argument. This approach has some drawbacks:
+- First, the example above looks a little bit complicated and messy.
+- Second, we would have to remember about this glob path in case we want to move the `BootstrapModule` 
+to a different location.
 
-There is two ways to avoid such situations:
+Fortunately, there are two ways to avoid such situations:
 
-- Explicitly set absolute path to the project sources from `AppModule` and use glob with relative path:
-  ```typescript
+- Explicitly set an absolute path to the project sources from `AppModule` and use glob with relative path:
+  ```ts
   // app.module.ts
   import { Module } from '@nestjs/common';
   import { ConfigService } from "nestjs-config";
   import * as path from "path";
   import { BootstrapModule } from "./bootstrap";
   
+  // define a "global root path" for this module
   ConfigService.srcPath = path.resolve(__dirname, '..');
   
   @Module({
@@ -152,11 +156,12 @@ There is two ways to avoid such situations:
   export class AppModule {}
   ```
   
-  ```typescript
+  ```ts
   // bootstrap.module.ts
   import { Module } from '@nestjs/common';
   import { ConfigModule } from "nestjs-config";
   
+  // the following load() statement is relative to the defined root path
   @Module({
       imports: [
         ConfigModule.load('config/**/*.{ts,js}')
@@ -165,8 +170,8 @@ There is two ways to avoid such situations:
   export class BootstrapModule {}
   ```
 
-- Invoke `ConfigModule.resolveSrcPath(__dirname)` from any your module before config loading and use glob with relative path.
-  ```typescript
+- Invoke `ConfigModule.resolveSrcPath(__dirname)` from any module before loading the config and use glob with a relative path.
+  ```ts
   // bootstrap.module.ts
   import { Module } from '@nestjs/common';
   import { ConfigModule } from "nestjs-config";
@@ -179,35 +184,33 @@ There is two ways to avoid such situations:
   export class BootstrapModule {}
   ```
 
-On these examples we provide as first argument the glob of our configuration, but it is relative to the `src/` folder.
+In both cases we provide the glob of our configuration as first argument, but it is relative to the `src/` folder.
 
-### Environment configuration
+### Environment Configuration
 
-This package ship with the amazing [dotenv](https://github.com/motdotla/dotenv) so that you can create
+This package ship with the amazing [dotenv](https://github.com/motdotla/dotenv) package that allows you to create
 a `.env` file in your preferred location.
 
-let's create one!
+Let's create one, for demo purposes!
 
 ```bash
 # .env
-
 EXPRESS_PORT=3000
 ```
 
-now in our `src/config/express.ts` file we can refer to that environment variable 
+Now, in our `src/config/express.ts` configuration file, we can refer to that environment variable 
 
 ```ts
 // src/config/express.ts
-
-
 export default {
 
-    port: process.env.EXPRESS_PORT
+    port: process.env.EXPRESS_PORT || 3000,
+
 }
 ```
 
-**Note:** By default the package look for a `.env` file in the path that you started your server from.
-If you want to specify a path for your `.env` file use the second parameter of `ConfigModule.load`.
+> **Note:** By default the package look for a `.env` file in the path that you have started your server from.
+If you want to specify another path for your `.env` file, use the second parameter of `ConfigModule.load()`.
 
 
 ### Usage
@@ -217,7 +220,6 @@ Now we are ready to inject our `ConfigService` everywhere we'd like.
 ```ts
 import {ConfigService} from 'nestjs-config'
 
-
 @Injectable()
 class SomeService {
 
@@ -226,7 +228,6 @@ class SomeService {
     }
     
     isProduction() {
-        
         const env = this.config.get('app.environment');
         
         return env === 'production';
@@ -234,11 +235,10 @@ class SomeService {
 }
 ```
 
-You can also use the `@InjectConfig` decorator instead, as following:
+You may also use the `@InjectConfig` decorator as following:
 
 ```ts
 import {InjectConfig} from 'nestjs-config';
-
 
 @Injectable()
 class SomeService {
@@ -250,17 +250,16 @@ class SomeService {
 ```
 
 ### Customer Helpers
-This feature allows you to create small helper function that computes values from configurations.
+This feature allows you to create small helper function that computes values from your configurations.
 
-example `isProduction` helper:
+Reconsider the `isProduction()` method from above. But in this case, let's define it as a helper:
 
 ```ts
 // src/config/express.ts
 
-
 export default {
 
-    environment: process.env.EXPRESS_PORT
+    environment: process.env.EXPRESS_ENVIRONMENT,
     port: process.env.EXPRESS_PORT,
     
     // helpers
@@ -270,58 +269,58 @@ export default {
 }
 ```
 
-usage:
+You can use the helper function as follows:
 
 ```ts
+// this.config is the ConfigService!
 this.config.get('express').isProduction();
 
 // or
-
 this.config._isProduction(); // note the underscore prefix.
 ```
 
-**Global Helpers**
+#### Global Helpers
 
 You can also attach helpers to the global instance as follow:
 
 ```ts
-
 this.config.registerHelper('isProduction', () => {
     return this.get('express.environment') === 'production';
 });
 ```
 
-Then use it:
+And then use it like this:
 
 ```ts
-this.config.isProduction();
+this.config.isProduction(); // note the missing underscore prefix
 ```
 
 ### ConfigService API
 
 #### get(param: string | string[], value: any = undefined): any
-Get a configuration value via path, you can use `dot notation` to traverse nested object.
+Get a configuration value via path, you can use `dot notation` to traverse nested object. It returns a default value if the key does not exist.
 
 ```ts
 this.config.get('server.port'); // 3000
+this.config.get('an.undefined.value', 'foobar'); // 'foobar' if the key does not exist
 ```
 
 #### set(param: string | string[], value: any = null): Config
-Set a value at runtime, it creates one if doesn't exists.
+Set a value at runtime, it creates the specified key / value if it doesn't already exists.
 
 ```ts
 this.config.set('server.port', 2000); // {server:{ port: 2000 }}
 ```
 
 #### has(param: string | string[]): boolean
-Determine if the given path for a configuration exists and set
+Determine if the given path for a configuration exists and is set.
 
 ```ts
 this.config.has('server.port'); // true or false
 ```
 
 #### merge(glob: string, options?: DotenvOptions): Promise<void>
-You can load other configuration at runtime. Great for package development.
+Load other configuration files at runtime. This is great for package development.
 
 ```ts
 @Module({})
@@ -336,7 +335,7 @@ export class PackageModule implements NestModule {
 ```
 
 #### registerHelper(name: string, fn: (...args:any[]) => any): ConfigService
-Register custom global helper
+Register a custom global helper function
 
 ```ts
 this.config.registerHelper('isProduction', () => {
@@ -346,17 +345,17 @@ this.config.registerHelper('isProduction', () => {
 
 ## Decorators 
 
-It's possible to use decorators instead of injecting the ConfigService. 
-But note that `@Configurable()` decorator replaces `descriptor.value` for the
-method with own function. Regarding to the current nestjs implementation
-([Issue-1180](https://github.com/nestjs/nest/issues/1180)) this behavior will 
-break all decorators that follow after `Configurable()` decorator.
+It's possible to use decorators instead of injecting the `ConfigService`. 
+Note that the `@Configurable()` decorator replaces the `descriptor.value` for the
+method with its own function. Regarding to the current nestjs implementation
+([Issue-1180](https://github.com/nestjs/nest/issues/1180)), this behavior will 
+break all decorators that **FOLLOW AFTER** the `@Configurable()` decorator.
 
-For the right behavior `@Configurable()` decorator **MUST** be placed at 
-the last place when you use several decorators for one method.
+For the expected behavior, the `@Configurable()` decorator **MUST** be placed at 
+the last position for one method.
 
-**Working example:**
-```typescript
+**Working Example:**
+```ts
 import {Injectable, Get} from '@nestjs/common';
 import {Configurable, ConfigParam} from 'nestjs-config';
 
@@ -365,13 +364,14 @@ export default class UserController {
     
     @Get("/")
     @Configurable()
-    index(@ConfigParam('my.parameter', 'deafult value') parameter?: string) {
+    index(@ConfigParam('my.parameter', 'default value') parameter?: string) {
         return { data: parameter };
     }
 }
 ```
-**Broken example:**
-```typescript
+
+**Broken Example:**
+```ts
 import {Injectable, Get, UseInterceptors} from '@nestjs/common';
 import {Configurable, ConfigParam} from 'nestjs-config';
 import {TransformInterceptor} from '../interceptors';
@@ -382,14 +382,14 @@ export default class UserController {
     @Configurable()
     @Get("/")   // <-- nestjs decorator won't work because it placed after @Configurable()
     @UseInterceptors(TransformInterceptor)// <-- nestjs decorator won't work because it placed after @Configurable()
-    index(@ConfigParam('my.parameter', 'deafult value') parameter?: string) {
+    index(@ConfigParam('my.parameter', 'default value') parameter?: string) {
         return { data: parameter };
     }
 }
 ```
 
-**Broken example 2:**
-```typescript
+**Broken Example 2:**
+```ts
 import {Injectable, Get, UseInterceptors} from '@nestjs/common';
 import {Configurable, ConfigParam} from 'nestjs-config';
 import {TransformInterceptor} from '../interceptors';
@@ -398,20 +398,20 @@ import {TransformInterceptor} from '../interceptors';
 export default class UserController {
     
     
-    @Get("/") // <-- nestjs decorator will work fine because it placed after @Configurable()
+    @Get("/") // <-- nestjs decorator will work fine because it placed before @Configurable()
     @Configurable()
     @UseInterceptors(TransformInterceptor) // <-- nestjs decorator won't work because it placed after @Configurable()
-    index(@ConfigParam('my.parameter', 'deafult value') parameter?: string) {
+    index(@ConfigParam('my.parameter', 'default value') parameter?: string) {
         return { data: parameter };
     }
 }
 ```
 
-## Typeorm 
+## TypeORM 
 
-Usage with typeorm requires the use of the `forRootAsync` function supplied by the typeorm package for nestjs
+Using the `ConfigModule` in combination with [TypeORM](https://github.com/typeorm/typeorm) (e.g., in order to configure TypeORM) requires using the `forRootAsync()` function supplied by the typeorm package for nestjs (`@nestjs/typeorm`)
 
-```typescript
+```ts
 import {Module} from '@nestjs/common';
 import {ConfigModule, ConfigService} from 'nestjs-config';
 import {TypeOrmModule} from '@nestjs/typeorm';
@@ -429,9 +429,9 @@ import * as path from 'path';
 export default class AppModule {}
 ```
 
-And your config file: 
+Your config file may look something like this: 
 
-```typescript 
+```ts
 //config/database.ts
 export default {
     type: 'mysql',
@@ -442,5 +442,7 @@ export default {
     port: parseInt(process.env.DB_PORT),
 };
 ```
+
+-----
 
 Built from Fenos, Shekohex and Bashleigh
