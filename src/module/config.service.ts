@@ -22,7 +22,7 @@ export type CustomHelper = {
 
 
 export interface ConfigOptions {
-  modifyConfigName: (name: string) => string
+  modifyConfigName?: (name: string) => string
 }
 
 export type Options = DotenvOptions & ConfigOptions;
