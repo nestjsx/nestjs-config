@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { DynamicModule, Module, Global } from '@nestjs/common';
-import { ConfigService } from './config.service';
-import { DotenvOptions } from 'dotenv';
+import {ConfigService, Options} from './config.service';
 
 @Global()
 @Module({})
@@ -14,10 +13,10 @@ export class ConfigModule {
   /**
    * From Glob
    * @param glob
-   * @param {DotenvOptions} options
+   * @param {Options} options
    * @returns {DynamicModule}
    */
-  static load(glob?: string, options?: DotenvOptions): DynamicModule {
+  static load(glob?: string, options?: Options): DynamicModule {
     const configProvider = {
       provide: ConfigService,
       useFactory: async (): Promise<ConfigService> => {
