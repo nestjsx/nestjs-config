@@ -20,6 +20,13 @@ export type CustomHelper = {
   [key: string]: (...args: any[]) => any;
 };
 
+
+export interface ConfigOptions {
+  modifyConfigName: (name: string) => string
+}
+
+export type Options = DotenvOptions & ConfigOptions;
+
 @Injectable()
 @ProxyProperty('helpers')
 export class ConfigService {
@@ -47,7 +54,7 @@ export class ConfigService {
    */
   static async load(
     glob?: string,
-    options?: DotenvOptions | false,
+    options?: Options| false,
   ): Promise<ConfigService> {
     glob = typeof glob === 'undefined' ? ConfigService.defaultGlob : glob;
 
@@ -60,7 +67,7 @@ export class ConfigService {
    * @param {string} glob
    * @param {DotenvOptions | false} options
    */
-  static loadSync(glob: string, options?: DotenvOptions | false) {
+  static loadSync(glob: string, options?: Options | false) {
     const configs = this.loadConfigSync(glob, options);
 
     return new ConfigService(configs);
@@ -118,7 +125,7 @@ export class ConfigService {
    * @param glob
    * @param options
    */
-  async merge(glob: string, options?: DotenvOptions): Promise<void> {
+  async merge(glob: string, options?: Options): Promise<void> {
     const config = await ConfigService.loadConfigAsync(glob, options);
 
     Object.keys(config).forEach(configName => {
@@ -132,7 +139,7 @@ export class ConfigService {
    * @param {DotenvOptions} options
    * @returns {ConfigService}
    */
-  mergeSync(glob: string, options?: DotenvOptions): ConfigService {
+  mergeSync(glob: string, options?: Options): ConfigService {
     const config = ConfigService.loadConfigSync(glob, options);
 
     Object.keys(config).forEach(configName => {
@@ -205,7 +212,7 @@ export class ConfigService {
    */
   protected static loadConfigAsync(
     glob: string,
-    options?: DotenvOptions | false,
+    options?: Options | false,
   ): Promise<Config> {
     glob = this.src(glob);
     return new Promise((resolve, reject) => {
@@ -216,7 +223,7 @@ export class ConfigService {
         } else {
           this.loadEnv(options);
 
-          const configs = this.configGraph(matches);
+          const configs = this.configGraph(matches, options && options.modifyConfigName);
 
           resolve(configs);
         }
@@ -232,25 +239,28 @@ export class ConfigService {
    */
   protected static loadConfigSync(
     glob: string,
-    options?: DotenvOptions | false,
+    options?: Options | false,
   ): Config {
     glob = this.src(glob);
     const matches = globSync(glob);
     this.loadEnv(options);
 
-    return this.configGraph(matches);
+    return this.configGraph(matches, options && options.modifyConfigName);
   }
 
   /**
    * Config graph from an array of paths
    * @param configPaths
+   * @param modifyConfigName
    * @returns {any}
    */
-  protected static configGraph(configPaths: string[]) {
+  protected static configGraph(configPaths: string[], modifyConfigName?: (name: string) => string) {
     return configPaths.reduce((configs: Config, file: string) => {
       const module = require(file);
       const config = module.default || module;
-      const configName = this.getConfigName(file);
+      const configName = modifyConfigName
+          ? modifyConfigName(this.getConfigName(file))
+          : this.getConfigName(file);
 
       configs[configName] = config;
 
