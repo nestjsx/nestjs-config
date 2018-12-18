@@ -445,4 +445,4 @@ export default {
 
 -----
 
-Built from Fenos, Shekohex and Bashleigh
+Built by Fenos, Shekohex and Bashleigh
