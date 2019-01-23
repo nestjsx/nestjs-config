@@ -46,10 +46,11 @@ Let's register the config module in `app.module.ts`
 ```ts
 import { Module } from '@nestjs/common';
 import { ConfigModule } from "nestjs-config";
+import * as path from 'path';
 
 @Module({
     imports: [
-        ConfigModule.load(),
+        ConfigModule.load(path.resolve(__dirname, 'config', '**/(!*.d).{ts,js}')),
     ],
 })
 export class AppModule {}
@@ -68,7 +69,7 @@ import { ConfigModule } from "nestjs-config";
 @Module({
     imports: [
         ConfigModule.load(
-            path.resolve(__dirname, 'config/**/*.{ts,js}')
+            path.resolve(__dirname, 'config/**/(!*.d).{ts,js}')
         ),
     ],
 })
@@ -100,7 +101,7 @@ Imagine a more complex project structure:
 └── package.json
 ```
 
-In this example, config files are located near the `/src/app` folder, because they are shared 
+In this example, config files are located near the `/src/config` folder, because they are shared 
 between app, migrations and cli scripts. 
 
 Also during typescript compilation all files from `src/` folder will be moved to the `dist/` folder. 
@@ -126,7 +127,7 @@ import { ConfigModule } from "nestjs-config";
 
 @Module({
     imports: [
-      ConfigModule.load(path.resolve(__dirname, '../../config/**/*.{ts,js}')),
+      ConfigModule.load(path.resolve(__dirname, '../../config/**/(!*.d).{ts,js}')),
     ],
 })
 export class BootstrapModule {}
