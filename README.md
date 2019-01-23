@@ -341,13 +341,19 @@ Your config file may look something like this:
 //config/database.ts
 export default {
     type: 'mysql',
-    host: process.env.DB_HOST,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: parseInt(process.env.DB_PORT),
+    host: process.env.TYPEORM_HOST,
+    username: process.env.TYPEORM_USERNAME,
+    password: process.env.TYPEORM_PASSWORD,
+    name: process.env.TYPEORM_DATABASE,
+    port: parseInt(process.env.TYPEORM_PORT),
+    logging: process.env.TYPEORM_LOGGING === 'true',
+    entities: process.env.TYPEORM_ENTITIES.split(','),
+    migrationsRun: process.env.TYPEORM_MIGRATIONS_RUN === 'true',
+    synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
 };
 ```
+
+> We recommend using a `TYPEORM_` prefix so when running in production environments you're also able to use the same envs for runnning the typeorm cli. [More options here](http://typeorm.io/#/using-ormconfig/using-environment-variables)
 
 ## ConfigService API
 
