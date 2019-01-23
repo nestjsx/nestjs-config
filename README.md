@@ -59,26 +59,11 @@ That's it!
 
 -----
 
+#### Complex Project Structure
+
 Now let's say that your application isn't located in a folder called `src`, but it's located in `./app`.
 
-```ts
-import * as path from 'path';
-import { Module } from '@nestjs/common';
-import { ConfigModule } from "nestjs-config";
-
-@Module({
-    imports: [
-        ConfigModule.load(
-            path.resolve(__dirname, 'config/**/(!*.d).{ts,js}')
-        ),
-    ],
-})
-export class AppModule {}
-```
-
 We provide as first argument the glob of our interested configuration that we want to load.
-
-#### Complex Project Structure
 
 Imagine a more complex project structure:
 
@@ -101,7 +86,7 @@ Imagine a more complex project structure:
 └── package.json
 ```
 
-In this example, config files are located near the `/src/config` folder, because they are shared 
+In this example, config files are located in the `/src/config` folder, because they are shared 
 between app, migrations and cli scripts. 
 
 Also during typescript compilation all files from `src/` folder will be moved to the `dist/` folder. 
@@ -112,6 +97,8 @@ Moreover, the `ConfigModule` is imported in the `BootstrapModule`, but not direc
 // app.module.ts
 import { Module } from '@nestjs/common';
 import { BootstrapModule } from "./bootstrap";
+
+ConfigService.srcPath = path.resolve(__dirname, '..');
 
 @Module({
     imports: [BootstrapModule],
@@ -127,51 +114,14 @@ import { ConfigModule } from "nestjs-config";
 
 @Module({
     imports: [
-      ConfigModule.load(path.resolve(__dirname, '../../config/**/(!*.d).{ts,js}')),
+      ConfigModule.load(path.resolve('config', '**/(!*.d).{ts,js}')),
     ],
 })
 export class BootstrapModule {}
 ```
+Setting the `ConfigService.srcPath` before calling `ConfigModule.load(...)` will change the default root dir of where your configs are loaded from.
 
-In this example, we still provide the glob describing the locations of our configuration files as first argument. This approach has some drawbacks:
-- First, the example above looks a little bit complicated and messy.
-- Second, we would have to remember about this glob path in case we want to move the `BootstrapModule` 
-to a different location.
-
-Fortunately, there are two ways to avoid such situations:
-
-- Explicitly set an absolute path to the project sources from `AppModule` and use glob with relative path:
-  ```ts
-  // app.module.ts
-  import { Module } from '@nestjs/common';
-  import { ConfigService } from "nestjs-config";
-  import * as path from "path";
-  import { BootstrapModule } from "./bootstrap";
-  
-  // define a "global root path" for this module
-  ConfigService.srcPath = path.resolve(__dirname, '..');
-  
-  @Module({
-      imports: [BootstrapModule],
-  })
-  export class AppModule {}
-  ```
-  
-  ```ts
-  // bootstrap.module.ts
-  import { Module } from '@nestjs/common';
-  import { ConfigModule } from "nestjs-config";
-  
-  // the following load() statement is relative to the defined root path
-  @Module({
-      imports: [
-        ConfigModule.load('config/**/*.{ts,js}')
-      ],
-  })
-  export class BootstrapModule {}
-  ```
-
-- Invoke `ConfigModule.resolveSrcPath(__dirname)` from any module before loading the config and use glob with a relative path.
+Another method is to invoke `ConfigModule.resolveSrcPath(__dirname)` from any module before loading the config and use glob with a relative path.
   ```ts
   // bootstrap.module.ts
   import { Module } from '@nestjs/common';
@@ -179,7 +129,7 @@ Fortunately, there are two ways to avoid such situations:
   
   @Module({
       imports: [
-        ConfigModule.resolveSrcPath(__dirname).load('config/**/*.{ts,js}')
+        ConfigModule.resolveSrcPath(__dirname).load('config/**/(!*.d).{ts,js}')
       ],
   })
   export class BootstrapModule {}
@@ -204,9 +154,7 @@ Now, in our `src/config/express.ts` configuration file, we can refer to that env
 ```ts
 // src/config/express.ts
 export default {
-
     port: process.env.EXPRESS_PORT || 3000,
-
 }
 ```
 
@@ -216,10 +164,10 @@ If you want to specify another path for your `.env` file, use the second paramet
 
 ### Usage
 
-Now we are ready to inject our `ConfigService` everywhere we'd like.
+Now we are ready to inject our `ConfigService` anywhere we'd like.
 
 ```ts
-import {ConfigService} from 'nestjs-config'
+import {ConfigService} from 'nestjs-config';
 
 @Injectable()
 class SomeService {
@@ -296,54 +244,6 @@ And then use it like this:
 this.config.isProduction(); // note the missing underscore prefix
 ```
 
-### ConfigService API
-
-#### get(param: string | string[], value: any = undefined): any
-Get a configuration value via path, you can use `dot notation` to traverse nested object. It returns a default value if the key does not exist.
-
-```ts
-this.config.get('server.port'); // 3000
-this.config.get('an.undefined.value', 'foobar'); // 'foobar' if the key does not exist
-```
-
-#### set(param: string | string[], value: any = null): Config
-Set a value at runtime, it creates the specified key / value if it doesn't already exists.
-
-```ts
-this.config.set('server.port', 2000); // {server:{ port: 2000 }}
-```
-
-#### has(param: string | string[]): boolean
-Determine if the given path for a configuration exists and is set.
-
-```ts
-this.config.has('server.port'); // true or false
-```
-
-#### merge(glob: string, options?: DotenvOptions): Promise<void>
-Load other configuration files at runtime. This is great for package development.
-
-```ts
-@Module({})
-export class PackageModule implements NestModule {
-
-    constructor(@InjectConfig() private readonly config) {}
-
-    async configure(consumer: MiddlewareConsumer) {
-        await this.config.merge(path.join(__dirname, '**/*.config.{ts,js}'));
-    }
-}
-```
-
-#### registerHelper(name: string, fn: (...args:any[]) => any): ConfigService
-Register a custom global helper function
-
-```ts
-this.config.registerHelper('isProduction', () => {
-    return this.get('express.environment') === 'production';
-});
-```
-
 ## Decorators 
 
 It's possible to use decorators instead of injecting the `ConfigService`. 
@@ -410,7 +310,7 @@ export default class UserController {
 
 ## TypeORM 
 
-Using the `ConfigModule` in combination with [TypeORM](https://github.com/typeorm/typeorm) (e.g., in order to configure TypeORM) requires using the `forRootAsync()` function supplied by the typeorm package for nestjs (`@nestjs/typeorm`)
+Using the `ConfigModule` in combination with [TypeORM](https://github.com/typeorm/typeorm) (e.g. in order to configure TypeORM) requires using the `forRootAsync()` function supplied by the typeorm package for nestjs (`@nestjs/typeorm`)
 
 ```ts
 import {Module} from '@nestjs/common';
@@ -420,7 +320,7 @@ import * as path from 'path';
 
 @Module({
     imports: [
-        ConfigModule.load(path.resolve(__dirname, 'config/**/*.{ts,js}')),
+        ConfigModule.load(path.resolve(__dirname, 'config', '**', '(!*.d).{ts,js}')),
         TypeOrmModule.forRootAsync({
             useFactory: (config: ConfigService) => config.get('database'),
             inject: [ConfigService],
@@ -442,6 +342,54 @@ export default {
     database: process.env.DB_NAME,
     port: parseInt(process.env.DB_PORT),
 };
+```
+
+## ConfigService API
+
+#### get(param: string | string[], value: any = undefined): any
+Get a configuration value via path, you can use `dot notation` to traverse nested object. It returns a default value if the key does not exist.
+
+```ts
+this.config.get('server.port'); // 3000
+this.config.get('an.undefined.value', 'foobar'); // 'foobar' is returned if the key does not exist
+```
+
+#### set(param: string | string[], value: any = null): Config
+Set a value at runtime, it creates the specified key / value if it doesn't already exists.
+
+```ts
+this.config.set('server.port', 2000); // {server:{ port: 2000 }}
+```
+
+#### has(param: string | string[]): boolean
+Determine if the given path for a configuration exists and is set.
+
+```ts
+this.config.has('server.port'); // true or false
+```
+
+#### merge(glob: string, options?: DotenvOptions): Promise<void>
+Load other configuration files at runtime. This is great for package development.
+
+```ts
+@Module({})
+export class PackageModule implements NestModule {
+
+    constructor(@InjectConfig() private readonly config) {}
+
+    async configure(consumer: MiddlewareConsumer) {
+        await this.config.merge(path.resolve(__dirname, '**/(!.*).config.{ts,js}'));
+    }
+}
+```
+
+#### registerHelper(name: string, fn: (...args:any[]) => any): ConfigService
+Register a custom global helper function
+
+```ts
+this.config.registerHelper('isProduction', () => {
+    return this.get('express.environment') === 'production';
+});
 ```
 
 -----
