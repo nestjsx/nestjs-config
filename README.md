@@ -61,11 +61,11 @@ That's it!
 
 #### Complex Project Structure
 
-Now let's say that your application isn't located in a folder called `src`, but it's located in `./app`.
+Now let's say that your application isn't located in a folder called `src`, but it's located in `src/app`.
 
-We provide as first argument the glob of our interested configuration that we want to load.
+We want to be able to set a different 'root path' to load our configurations from. Be it `src` or `dist`.
 
-Imagine a more complex project structure:
+Imagine a more complex project structure like this:
 
 ```
 /
@@ -97,6 +97,7 @@ Moreover, the `ConfigModule` is imported in the `BootstrapModule`, but not direc
 // app.module.ts
 import { Module } from '@nestjs/common';
 import { BootstrapModule } from "./bootstrap";
+import { ConfigService } from 'nestjs-config';
 
 ConfigService.srcPath = path.resolve(__dirname, '..');
 
@@ -135,7 +136,11 @@ Another method is to invoke `ConfigModule.resolveSrcPath(__dirname)` from any mo
   export class BootstrapModule {}
   ```
 
-In both cases we provide the glob of our configuration as first argument, but it is relative to the `src/` folder.
+In both cases we provide the glob of our configuration as first argument, but it is relative to the `src/` folder (or eventually `dist/`).
+
+## Production environments
+
+You might have notice the use of `config/**/(!*.d).{ts,js}` in the glob. When running in production (running in JavaScript after TypeScript compilation) we want to disinclude the TypeScript definition files. The use of `config/**/*.ts` is fine in dev environments but we recommend using this example `config/**/(!*.d).{ts,js}` to avoid issues later on when running in a production environment.
 
 ### Environment Configuration
 
