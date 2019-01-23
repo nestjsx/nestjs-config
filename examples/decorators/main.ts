@@ -5,7 +5,7 @@ import * as path from 'path';
 
 @Module({
   imports: [
-    ConfigModule.load(path.resolve(__dirname, 'config', '*/**.{ts,js}')),
+    ConfigModule.load(path.resolve(__dirname, 'config', '**/(!*.d).{ts,js}')),
   ],
   controllers: [UserController],
 })
