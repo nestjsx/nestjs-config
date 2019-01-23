@@ -22,7 +22,11 @@ describe('Config Nest Module', () => {
     const spy = jest.spyOn(ConfigService, 'resolveSrcPath');
 
     await Test.createTestingModule({
-      imports: [ConfigModule.resolveSrcPath(__dirname).load(path.resolve('__stubs__', 'config.*.ts'))],
+      imports: [
+        ConfigModule.resolveSrcPath(__dirname).load(
+          path.resolve('__stubs__', 'config.*.ts'),
+        ),
+      ],
     }).compile();
 
     const expectedAppSrcPath = path.resolve(process.cwd(), 'src');
