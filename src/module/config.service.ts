@@ -32,7 +32,6 @@ export class ConfigService {
   private static config: Config;
   private readonly helpers: CustomHelper = {};
 
-  protected static defaultGlob: string = 'config/**/!(*.d).{ts,js}';
   static srcPath?: string;
 
   /**
@@ -50,11 +49,9 @@ export class ConfigService {
    * @returns {Promise<any>}
    */
   static async load(
-    glob?: string,
+    glob: string,
     options?: ConfigOptions | false,
   ): Promise<ConfigService> {
-    glob = typeof glob === 'undefined' ? ConfigService.defaultGlob : glob;
-
     const configs = await this.loadConfigAsync(glob, options);
     return new ConfigService(configs);
   }

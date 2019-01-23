@@ -18,21 +18,11 @@ describe('Config Nest Module', () => {
     expect(configService.get('config.stub')).toBeTruthy();
   });
 
-  it('Will boot without glob', async () => {
-    const module = await Test.createTestingModule({
-      imports: [ConfigModule.load()],
-    }).compile();
-
-    const configService = module.get<ConfigService>(ConfigService);
-
-    expect(configService).toBeInstanceOf(ConfigService);
-  });
-
   it('Will resolve application sources path', async () => {
     const spy = jest.spyOn(ConfigService, 'resolveSrcPath');
 
     await Test.createTestingModule({
-      imports: [ConfigModule.resolveSrcPath(__dirname).load()],
+      imports: [ConfigModule.resolveSrcPath(__dirname).load(path.resolve('__stubs__', 'config.*.ts'))],
     }).compile();
 
     const expectedAppSrcPath = path.resolve(process.cwd(), 'src');
@@ -222,7 +212,8 @@ describe('Config Nest Module', () => {
 
       @Configurable()
       testConfig(
-        @ConfigParam('config.doesntexists', 'test123') configKey?: string,
+        @ConfigParam('config.doesntexists', 'test123')
+        configKey?: string,
       ) {
         return configKey;
       }
