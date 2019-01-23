@@ -389,7 +389,7 @@ export class PackageModule implements NestModule {
     constructor(@InjectConfig() private readonly config) {}
 
     async configure(consumer: MiddlewareConsumer) {
-        await this.config.merge(path.resolve(__dirname, '**/(!.*).config.{ts,js}'));
+        await this.config.merge(path.resolve(__dirname, '**/(!*.d).config.{ts,js}'));
     }
 }
 ```
@@ -403,6 +403,20 @@ this.config.registerHelper('isProduction', () => {
 });
 ```
 
+#### resolveSrcPath(path: string): typeof ConfigService
+change the root path from where configs files are loaded
+
+```ts
+import { Module } from '@nestjs/common';
+import { ConfigModule } from 'nestjs-config';
+
+@Module({
+    imports: [
+        ConfigModule.resolveSrcPath(__dirname).load(path.resolve(__dirname, '**/(!*.d).config.{ts,js}')),
+    ],
+})
+export class AppModule {}
+```
 -----
 
 Built by Fenos, Shekohex and Bashleigh
