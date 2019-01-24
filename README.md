@@ -142,7 +142,7 @@ In both cases we provide the glob of our configuration as first argument, but it
 
 You might have notice the use of `config/**/(!*.d).{ts,js}` in the glob. When running in production (running in JavaScript after TypeScript compilation) we want to disinclude the TypeScript definition files. The use of `config/**/*.ts` is fine in dev environments but we recommend using this example `config/**/(!*.d).{ts,js}` to avoid issues later on when running in a production environment.
 
-### Environment Configuration
+## Environment Configuration
 
 This package ship with the amazing [dotenv](https://github.com/motdotla/dotenv) package that allows you to create
 a `.env` file in your preferred location.
@@ -203,7 +203,7 @@ class SomeService {
 }
 ```
 
-### Customer Helpers
+## Customer Helpers
 This feature allows you to create small helper function that computes values from your configurations.
 
 Reconsider the `isProduction()` method from above. But in this case, let's define it as a helper:
