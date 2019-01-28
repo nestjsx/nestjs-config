@@ -138,6 +138,43 @@ Another method is to invoke `ConfigModule.resolveSrcPath(__dirname)` from any mo
 
 In both cases we provide the glob of our configuration as first argument, but it is relative to the `src/` folder (or eventually `dist/`).
 
+## Multi-modular config usage
+
+In some cases your structure might take on this shape
+
+```
+/
+├── src/
+│   ├── cats/
+│   │   ├── cats.module.ts
+│   │   └── cats.config.ts
+│   ├── dogs/
+│   │   ├── dogs.module.ts
+│   │   └── dogs.config.ts
+│   ├── app.module.ts
+│   └── main.ts
+├── tsconfig.json
+└── package.json
+```
+
+With the examples above you'd have to call your config like so `ConfigService.get('dogs.config.bark')`. You can use the `modifyConfigName` method option to change the name of your configs 
+
+```ts
+import { Module } from '@nestjs/common';
+import { ConfigModule } from "nestjs-config";
+import * as path from 'path';
+
+@Module({
+    imports: [
+        ConfigModule.load(path.resolve(__dirname, '**/!(*.d).config.{ts,js}'), {
+            modifyConfigName: name => name.replace('.config', ''),
+        }),
+    ],
+})
+export class AppModule {}
+```
+Now you can call your config like so `ConfigService.get('dogs.bark')`.
+
 ## Production environments
 
 You might have notice the use of `config/**/(!*.d).{ts,js}` in the glob. When running in production (running in JavaScript after TypeScript compilation) we want to disinclude the TypeScript definition files. The use of `config/**/*.ts` is fine in dev environments but we recommend using this example `config/**/(!*.d).{ts,js}` to avoid issues later on when running in a production environment.
