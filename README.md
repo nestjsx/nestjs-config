@@ -177,7 +177,7 @@ Now you can call your config like so `ConfigService.get('dogs.bark')`.
 
 ## Production environments
 
-You might have notice the use of `config/**/(!*.d).{ts,js}` in the glob. When running in production (running in JavaScript after TypeScript compilation) we want to disinclude the TypeScript definition files. The use of `config/**/*.ts` is fine in dev environments but we recommend using this example `config/**/(!*.d).{ts,js}` to avoid issues later on when running in a production environment.
+You might have notice the use of `config/**/!(*.d).{ts,js}` in the glob. When running in production (running in JavaScript after TypeScript compilation) we want to disinclude the TypeScript definition files. The use of `config/**/*.ts` is fine in dev environments but we recommend using this example `config/**/!(*.d).{ts,js}` to avoid issues later on when running in a production environment.
 
 ## Environment Configuration
 
