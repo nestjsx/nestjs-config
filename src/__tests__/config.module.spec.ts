@@ -318,12 +318,14 @@ describe('Config Nest Module', () => {
   it('Load in production', async () => {
     const module = await Test.createTestingModule({
       imports: [
-        ConfigModule.load(path.resolve(__dirname, '__prod_stubs__', '**/!(*.d).{ts,js}')),
+        ConfigModule.load(
+          path.resolve(__dirname, '__prod_stubs__', '**/!(*.d).{ts,js}'),
+        ),
       ],
     }).compile();
 
     const configService = module.get<ConfigService>(ConfigService);
 
     expect(configService.get('config.env').project).toBe('nest-config-prod');
-  })
+  });
 });
