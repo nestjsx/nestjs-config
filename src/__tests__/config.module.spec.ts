@@ -318,7 +318,7 @@ describe('Config Nest Module', () => {
   it('Load in production', async () => {
     const module = await Test.createTestingModule({
       imports: [
-        ConfigModule.load(path.resolve(__dirname, '__stubs__', 'prod', '**/!(*.d).{ts,js}')),
+        ConfigModule.load(path.resolve(__dirname, '__prod_stubs__', '**/!(*.d).{ts,js}')),
       ],
     }).compile();
 
