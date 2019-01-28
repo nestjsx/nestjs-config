@@ -314,4 +314,16 @@ describe('Config Nest Module', () => {
     expect(configService.get('server')).toBeTruthy();
     expect(configService.get('stub')).toBeTruthy();
   });
+
+  it('Load in production', async () => {
+    const module = await Test.createTestingModule({
+      imports: [
+        ConfigModule.load(path.resolve(__dirname, '__stubs__', 'prod', '**/!(*.d).{ts,js}')),
+      ],
+    }).compile();
+
+    const configService = module.get<ConfigService>(ConfigService);
+
+    expect(configService.get('config.env').project).toBe('nest-config-prod');
+  })
 });

@@ -50,7 +50,7 @@ import * as path from 'path';
 
 @Module({
     imports: [
-        ConfigModule.load(path.resolve(__dirname, 'config', '**/(!*.d).{ts,js}')),
+        ConfigModule.load(path.resolve(__dirname, 'config', '**/!(*.d).{ts,js}')),
     ],
 })
 export class AppModule {}
@@ -115,7 +115,7 @@ import { ConfigModule } from "nestjs-config";
 
 @Module({
     imports: [
-      ConfigModule.load(path.resolve('config', '**/(!*.d).{ts,js}')),
+      ConfigModule.load(path.resolve('config', '**/!(*.d).{ts,js}')),
     ],
 })
 export class BootstrapModule {}
@@ -130,7 +130,7 @@ Another method is to invoke `ConfigModule.resolveSrcPath(__dirname)` from any mo
   
   @Module({
       imports: [
-        ConfigModule.resolveSrcPath(__dirname).load('config/**/(!*.d).{ts,js}')
+        ConfigModule.resolveSrcPath(__dirname).load('config/**/!(*.d).{ts,js}')
       ],
   })
   export class BootstrapModule {}
@@ -325,7 +325,7 @@ import * as path from 'path';
 
 @Module({
     imports: [
-        ConfigModule.load(path.resolve(__dirname, 'config', '**', '(!*.d).{ts,js}')),
+        ConfigModule.load(path.resolve(__dirname, 'config', '**', '!(*.d).{ts,js}')),
         TypeOrmModule.forRootAsync({
             useFactory: (config: ConfigService) => config.get('database'),
             inject: [ConfigService],
@@ -389,7 +389,7 @@ export class PackageModule implements NestModule {
     constructor(@InjectConfig() private readonly config) {}
 
     async configure(consumer: MiddlewareConsumer) {
-        await this.config.merge(path.resolve(__dirname, '**/(!*.d).config.{ts,js}'));
+        await this.config.merge(path.resolve(__dirname, '**/!(*.d).{ts,js}'));
     }
 }
 ```
@@ -412,7 +412,7 @@ import { ConfigModule } from 'nestjs-config';
 
 @Module({
     imports: [
-        ConfigModule.resolveSrcPath(__dirname).load(path.resolve(__dirname, '**/(!*.d).config.{ts,js}')),
+        ConfigModule.resolveSrcPath(__dirname).load(path.resolve(__dirname, '**/!(*.d).{ts,js}')),
     ],
 })
 export class AppModule {}

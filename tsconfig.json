@@ -26,6 +26,7 @@
     "./index.d.ts",
     "node_modules",
     "./**/*.spec.ts",
-    "examples"
+    "examples",
+    "__tests__"
   ]
 }
