@@ -20,7 +20,7 @@ export type CustomHelper = {
   [key: string]: (...args: any[]) => any;
 };
 
-export interface ConfigOptions extends DotenvOptions {
+export interface ConfigOptions extends Partial<DotenvOptions> {
   modifyConfigName?: (name: string) => string;
 }
 
