@@ -45,7 +45,7 @@ Let's register the config module in `app.module.ts`
 
 ```ts
 import { Module } from '@nestjs/common';
-import { ConfigModule } from "nestjs-config";
+import { ConfigModule } from 'nestjs-config';
 import * as path from 'path';
 
 @Module({
@@ -96,7 +96,7 @@ Moreover, the `ConfigModule` is imported in the `BootstrapModule`, but not direc
 ```ts
 // app.module.ts
 import { Module } from '@nestjs/common';
-import { BootstrapModule } from "./bootstrap";
+import { BootstrapModule } from './bootstrap';
 import { ConfigService } from 'nestjs-config';
 
 ConfigService.srcPath = path.resolve(__dirname, '..');
@@ -111,7 +111,7 @@ export class AppModule {}
 // bootstrap.module.ts
 import * as path from 'path';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from "nestjs-config";
+import { ConfigModule } from 'nestjs-config';
 
 @Module({
     imports: [
@@ -126,7 +126,7 @@ Another method is to invoke `ConfigModule.resolveSrcPath(__dirname)` from any mo
   ```ts
   // bootstrap.module.ts
   import { Module } from '@nestjs/common';
-  import { ConfigModule } from "nestjs-config";
+  import { ConfigModule } from 'nestjs-config';
   
   @Module({
       imports: [
@@ -161,7 +161,7 @@ With the examples above you'd have to call your config like so `ConfigService.ge
 
 ```ts
 import { Module } from '@nestjs/common';
-import { ConfigModule } from "nestjs-config";
+import { ConfigModule } from 'nestjs-config';
 import * as path from 'path';
 
 @Module({
@@ -305,7 +305,7 @@ import {Configurable, ConfigParam} from 'nestjs-config';
 @Injectable()
 export default class UserController {
     
-    @Get("/")
+    @Get('/')
     @Configurable()
     index(@ConfigParam('my.parameter', 'default value') parameter?: string) {
         return { data: parameter };
@@ -323,7 +323,7 @@ import {TransformInterceptor} from '../interceptors';
 export default class UserController {
     
     @Configurable()
-    @Get("/")   // <-- nestjs decorator won't work because it placed after @Configurable()
+    @Get('/')   // <-- nestjs decorator won't work because it placed after @Configurable()
     @UseInterceptors(TransformInterceptor)// <-- nestjs decorator won't work because it placed after @Configurable()
     index(@ConfigParam('my.parameter', 'default value') parameter?: string) {
         return { data: parameter };
@@ -341,7 +341,7 @@ import {TransformInterceptor} from '../interceptors';
 export default class UserController {
     
     
-    @Get("/") // <-- nestjs decorator will work fine because it placed before @Configurable()
+    @Get('/') // <-- nestjs decorator will work fine because it placed before @Configurable()
     @Configurable()
     @UseInterceptors(TransformInterceptor) // <-- nestjs decorator won't work because it placed after @Configurable()
     index(@ConfigParam('my.parameter', 'default value') parameter?: string) {
