@@ -240,7 +240,7 @@ class SomeService {
 }
 ```
 
-## Customer Helpers
+## Custom Helpers
 This feature allows you to create small helper function that computes values from your configurations.
 
 Reconsider the `isProduction()` method from above. But in this case, let's define it as a helper:
