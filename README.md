@@ -100,7 +100,7 @@ import { Module } from '@nestjs/common';
 import { BootstrapModule } from './bootstrap';
 import { ConfigService } from 'nestjs-config';
 
-ConfigService.srcPath = path.resolve(__dirname, '..');
+ConfigService.rootPath = path.resolve(__dirname, '..');
 
 @Module({
     imports: [BootstrapModule],
@@ -121,9 +121,9 @@ import { ConfigModule } from 'nestjs-config';
 })
 export class BootstrapModule {}
 ```
-Setting the `ConfigService.srcPath` before calling `ConfigModule.load(...)` will change the default root dir of where your configs are loaded from.
+Setting the `ConfigService.rootPath` before calling `ConfigModule.load(...)` will change the default root dir of where your configs are loaded from.
 
-Another method is to invoke `ConfigModule.resolveSrcPath(__dirname)` from any module before loading the config and use glob with a relative path.
+Another method is to invoke `ConfigModule.resolveRootPath(__dirname)` from any module before loading the config and use glob with a relative path.
   ```ts
   // bootstrap.module.ts
   import { Module } from '@nestjs/common';
@@ -131,7 +131,7 @@ Another method is to invoke `ConfigModule.resolveSrcPath(__dirname)` from any mo
   
   @Module({
       imports: [
-        ConfigModule.resolveSrcPath(__dirname).load('config/**/!(*.d).{ts,js}')
+        ConfigModule.resolveRootPath(__dirname).load('config/**/!(*.d).{ts,js}')
       ],
   })
   export class BootstrapModule {}
@@ -441,7 +441,7 @@ this.config.registerHelper('isProduction', () => {
 });
 ```
 
-#### resolveSrcPath(path: string): typeof ConfigService
+#### resolveRootPath(path: string): typeof ConfigService
 change the root path from where configs files are loaded
 
 ```ts
@@ -450,7 +450,7 @@ import { ConfigModule } from 'nestjs-config';
 
 @Module({
     imports: [
-        ConfigModule.resolveSrcPath(__dirname).load(path.resolve(__dirname, '**/!(*.d).{ts,js}')),
+        ConfigModule.resolveRootPath(__dirname).load(path.resolve(__dirname, '**/!(*.d).{ts,js}')),
     ],
 })
 export class AppModule {}
@@ -458,3 +458,14 @@ export class AppModule {}
 -----
 
 Built by Fenos, Shekohex and Bashleigh
+
+#### root(path: string = ''): string
+
+Returns the current working dir or defined rootPath. 
+
+```ts
+ConfigService.root(); // /var/www/src
+ConfigService.root('some/path/file.html'); // /var/www/src/some/path/file.html
+
+ConfigService.resolveRootPath(__dirname).root(); // /var/www/src/app (or wherever resolveRootPath has been called with)
+```
