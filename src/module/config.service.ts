@@ -3,7 +3,7 @@ import * as assert from 'assert';
 import * as get from 'lodash.get';
 import * as set from 'lodash.set';
 import * as dotenv from 'dotenv';
-import { DotenvOptions } from 'dotenv';
+import { DotenvConfigOptions } from 'dotenv';
 import * as path from 'path';
 import { Glob, sync as globSync } from 'glob';
 import { ProxyProperty } from '../decorators/proxy';
@@ -20,7 +20,7 @@ export type CustomHelper = {
   [key: string]: (...args: any[]) => any;
 };
 
-export interface ConfigOptions extends Partial<DotenvOptions> {
+export interface ConfigOptions extends Partial<DotenvConfigOptions> {
   modifyConfigName?: (name: string) => string;
 }
 
@@ -300,9 +300,9 @@ export class ConfigService {
 
   /**
    * Loads env variables via dotenv.
-   * @param {DotenvOptions | false} options
+   * @param {DotenvConfigOptions | false} options
    */
-  protected static loadEnv(options?: DotenvOptions | false): void {
+  protected static loadEnv(options?: DotenvConfigOptions | false): void {
     if (options !== false) {
       dotenv.load(options || ConfigService.defaultDotenvConfig());
     }
