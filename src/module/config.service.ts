@@ -32,7 +32,12 @@ export class ConfigService {
   private static config: Config;
   private readonly helpers: CustomHelper = {};
 
-  static srcPath?: string;
+  public static rootPath?: string;
+
+  /**
+   * @deprecated use rootPath instead
+   */
+  public static srcPath?: string;
 
   /**
    * @param {Config} config
@@ -158,17 +163,20 @@ export class ConfigService {
    * @param {string} dir
    * @returns {string}
    */
-  static root(dir: string = ''): string {
-    return path.resolve(process.cwd(), dir);
+  public static root(dir: string = ''): string {
+    const rootPath =
+      this.rootPath || this.srcPath || path.resolve(process.cwd());
+    return path.resolve(rootPath, dir);
   }
 
   /**
    * @param {string} dir
    * @returns {string}
+   *
+   * @deprecated use configService.root() instead
    */
-  static src(dir: string = ''): string {
-    const srcPath = this.srcPath || this.root();
-    return path.resolve(srcPath, dir);
+  public static src(dir: string = ''): string {
+    return this.root(dir);
   }
 
   /**
@@ -176,27 +184,37 @@ export class ConfigService {
    * @param {string} startPath
    *  The path for search starting. Can be any path under app sources path.
    */
-  static resolveSrcPath(startPath: string): typeof ConfigService {
+  public static resolveRootPath(startPath: string): typeof ConfigService {
     assert.ok(
       path.isAbsolute(startPath),
       'Start path must be an absolute path.',
     );
 
-    if (!this.srcPath) {
+    if (!this.rootPath) {
       const root = this.root();
 
-      let src = startPath;
+      let workingDir = startPath;
       let parent = path.dirname(startPath);
 
-      while (src !== root && parent !== root && parent !== src) {
-        src = parent;
-        parent = path.dirname(src);
+      while (workingDir !== root && parent !== root && parent !== workingDir) {
+        workingDir = parent;
+        parent = path.dirname(workingDir);
       }
 
-      this.srcPath = src;
+      this.rootPath = workingDir;
+      this.srcPath = workingDir;
     }
 
     return this;
+  }
+
+  /**
+   * @param startPath
+   *
+   * @deprecated use configService.resolveRootPath() instead
+   */
+  public static resolveSrcPath(startPath: string): typeof ConfigService {
+    return this.resolveRootPath(startPath);
   }
 
   /**

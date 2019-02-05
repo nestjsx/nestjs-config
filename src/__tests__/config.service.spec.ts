@@ -123,6 +123,9 @@ describe('Config Service', () => {
     });
 
     it('Will resolve application src path only once', () => {
+      ConfigService.rootPath = undefined;
+      ConfigService.srcPath = undefined;
+      
       const expectedAppRoot = path.join(__dirname, 'src');
       const firstStartPath = path.join(
         __dirname,
@@ -139,7 +142,7 @@ describe('Config Service', () => {
 
       ConfigService.resolveSrcPath(firstStartPath);
       ConfigService.resolveSrcPath(secondStartPath);
-      expect(ConfigService.srcPath).toEqual(expectedAppRoot);
+      expect(ConfigService.rootPath).toEqual(expectedAppRoot);
     });
 
     it('Will throw error if start path for app src resolution is not an absolute path', done => {
@@ -151,6 +154,8 @@ describe('Config Service', () => {
     });
 
     it('Will return a src path equal to process root by default', () => {
+      ConfigService.srcPath = undefined;
+      ConfigService.rootPath = undefined;
       expect(ConfigService.src()).toEqual(__dirname);
     });
 
