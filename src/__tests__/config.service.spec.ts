@@ -93,10 +93,12 @@ describe('Config Service', () => {
 
       currentAppRoot = ConfigService.srcPath;
       ConfigService.srcPath = undefined;
+      ConfigService.rootPath = undefined;
     });
 
     afterEach(() => {
-      ConfigService.srcPath = currentAppRoot;
+      ConfigService.srcPath = undefined;
+      ConfigService.rootPath = undefined;
       process.cwd = realProcessCwd;
     });
 
@@ -123,9 +125,6 @@ describe('Config Service', () => {
     });
 
     it('Will resolve application src path only once', () => {
-      ConfigService.rootPath = undefined;
-      ConfigService.srcPath = undefined;
-      
       const expectedAppRoot = path.join(__dirname, 'src');
       const firstStartPath = path.join(
         __dirname,
@@ -154,8 +153,6 @@ describe('Config Service', () => {
     });
 
     it('Will return a src path equal to process root by default', () => {
-      ConfigService.srcPath = undefined;
-      ConfigService.rootPath = undefined;
       expect(ConfigService.src()).toEqual(__dirname);
     });
 
@@ -179,6 +176,23 @@ describe('Config Service', () => {
     it('Will return a src directory for absolute path', () => {
       const expectedPath = '/tmp/config';
       expect(ConfigService.src('/tmp/config')).toEqual(expectedPath);
+    });
+
+    it('Will resolve root with param', () => {
+      expect(ConfigService.root('config')).toEqual(path.join(__dirname, 'config'));
+    });
+
+    it('Will resolve root', () => {
+      expect(ConfigService.root()).toEqual(path.join(__dirname));
+    });
+
+    it('Will return path, reolated to resolved app root path', () => {
+      const root = path.join(__dirname, 'dist');
+      const startPath = path.join(root, 'app', 'app.module.js');
+      const expectedPath = path.join(root, 'config');
+
+      ConfigService.resolveRootPath(startPath);
+      expect(ConfigService.root('config')).toEqual(expectedPath);
     });
   });
 });
