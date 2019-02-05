@@ -226,7 +226,7 @@ export class ConfigService {
     glob: string,
     options?: ConfigOptions | false,
   ): Promise<Config> {
-    glob = this.src(glob);
+    glob = this.root(glob);
     return new Promise((resolve, reject) => {
       new Glob(glob, {}, (err, matches) => {
         /* istanbul ignore if */
@@ -256,7 +256,7 @@ export class ConfigService {
     glob: string,
     options?: ConfigOptions | false,
   ): Config {
-    glob = this.src(glob);
+    glob = this.root(glob);
     const matches = globSync(glob);
     this.loadEnv(options);
 
