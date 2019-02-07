@@ -176,6 +176,10 @@ export class ConfigService {
    * @deprecated use configService.root() instead
    */
   public static src(dir: string = ''): string {
+    console.log(
+      `\x1b[33m%s\x1b[0m`,
+      `WARNING: Method 'src' has been deprecated. Please use 'root'`,
+    );
     return this.root(dir);
   }
 
@@ -214,6 +218,10 @@ export class ConfigService {
    * @deprecated use configService.resolveRootPath() instead
    */
   public static resolveSrcPath(startPath: string): typeof ConfigService {
+    console.log(
+      `\x1b[33m%s\x1b[0m`,
+      `WARNING: Method 'resolveSrcPath' has been deprecated. Please use 'resolveRootPath'`,
+    );
     return this.resolveRootPath(startPath);
   }
 
