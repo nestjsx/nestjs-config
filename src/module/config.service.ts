@@ -280,7 +280,10 @@ export class ConfigService {
         this.helpers[`_${configName}`] = helper;
       }
 
-      if (typeof configObj[configName] === 'object' && configObj[configName] !== null) {
+      if (
+        typeof configObj[configName] === 'object' &&
+        configObj[configName] !== null
+      ) {
         configObj[configName] = this.bindCustomHelpers(configObj[configName]);
       }
 
