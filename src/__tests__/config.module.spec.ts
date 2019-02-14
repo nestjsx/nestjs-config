@@ -35,6 +35,23 @@ describe('Config Nest Module', () => {
     expect(ConfigService.srcPath).toEqual(expectedAppSrcPath);
   });
 
+  it('Will resolve application sources path with root', async () => {
+    const spy = jest.spyOn(ConfigService, 'resolveRootPath');
+
+    await Test.createTestingModule({
+      imports: [
+        ConfigModule.resolveRootPath(__dirname).load(
+          path.resolve('__stubs__', 'config.*.ts'),
+        ),
+      ],
+    }).compile();
+
+    const expectedAppRootPath = path.resolve(process.cwd(), 'src');
+
+    expect(spy).toHaveBeenCalled();
+    expect(ConfigService.rootPath).toEqual(expectedAppRootPath);
+  });
+
   it('Will Setup Modules with its Components', async () => {
     @Injectable()
     class ComponentTest {
