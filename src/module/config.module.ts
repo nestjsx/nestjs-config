@@ -4,8 +4,20 @@ import { ConfigService, ConfigOptions } from './config.service';
 @Global()
 @Module({})
 export class ConfigModule {
+  /**
+   * @param startPath
+   * @deprecated
+   */
   static resolveSrcPath(startPath: string): typeof ConfigModule {
     ConfigService.resolveSrcPath(startPath);
+    return this;
+  }
+
+  /**
+   * @param path
+   */
+  public static resolveRootPath(path: string): typeof ConfigModule {
+    ConfigService.resolveRootPath(path);
     return this;
   }
 
