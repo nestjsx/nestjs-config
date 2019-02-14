@@ -13,6 +13,8 @@
 
 ## Features
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/nestjs-community/nestjs-config.svg)](https://greenkeeper.io/)
+
 - Load your configuration files using globs
 - Support for different environment configurations, thanks to [dotenv](https://github.com/motdotla/dotenv)
 - Change and Load configuration at runtime
