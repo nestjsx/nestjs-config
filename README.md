@@ -455,9 +455,6 @@ import { ConfigModule } from 'nestjs-config';
 })
 export class AppModule {}
 ```
------
-
-Built by Fenos, Shekohex and Bashleigh
 
 #### root(path: string = ''): string
 
@@ -469,3 +466,7 @@ ConfigService.root('some/path/file.html'); // /var/www/src/some/path/file.html
 
 ConfigService.resolveRootPath(__dirname).root(); // /var/www/src/app (or wherever resolveRootPath has been called with)
 ```
+
+-----
+
+Built by Fenos, Shekohex and Bashleigh
