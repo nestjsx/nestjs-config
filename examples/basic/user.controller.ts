@@ -1,10 +1,10 @@
 import { Controller, Get } from '@nest/common';
-import { InjectConfig } from 'nestjs-config';
+import { InjectConfigService } from 'nestjs-config';
 import * as pug from 'pug';
 
 @Controller('user')
 export default class UserController {
-  constructor(@InjectConfig() config) {}
+  constructor(@InjectConfigService() private readonly config) {}
 
   @Get('')
   index(): object {
