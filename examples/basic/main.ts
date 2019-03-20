@@ -6,7 +6,9 @@ import UserController from './user.controller';
 
 @Module({
   imports: [
-    ConfigModule.load(path.resolve(__dirname, 'config', '**/!(*.d).{ts,js}')),
+    ConfigModule.forRootAsync(
+      path.resolve(__dirname, 'config', '**/!(*.d).{ts,js}'),
+    ),
   ],
   controllers: [UserController],
 })
