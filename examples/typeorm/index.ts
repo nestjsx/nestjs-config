@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from 'nestjs-config';
+import { ConfigModule } from 'nestjs-config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as path from 'path';
+import DatabaseConfig from './config/database';
 
 @Module({
   imports: [
-    ConfigModule.load(path.resolve(__dirname, 'config/**/!(*.d).{ts,js}')),
+    ConfigModule.forRootAsync(
+      path.resolve(__dirname, 'config/**/!(*.d).{ts,js}'),
+    ),
     TypeOrmModule.forRootAsync({
-      useFactory: async (config: ConfigService) => config.get('database'),
-      inject: [ConfigService],
+      useFactory: async (config: DatabaseConfig) => config,
+      inject: [DatabaseConfig],
     }),
   ],
 })

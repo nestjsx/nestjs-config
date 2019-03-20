@@ -1,17 +1,110 @@
+import { Test, TestingModule } from '@nestjs/testing';
 import * as path from 'path';
-import { ConfigService } from '../module';
+import { ConfigService } from '../config.service';
+import { ConfigModule } from './../config.module';
+import { InjectConfigService } from './../decorators';
+
+describe('ConfigService', () => {
+  it('ConfigService can call get with __provide reference', async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        ConfigModule.forRootAsync(
+          path.resolve(__dirname, '__stubs__', 'config', '**/!(*.d).{ts,js}'),
+        ),
+      ],
+    }).compile();
+
+    const service = module.get(ConfigService);
+
+    expect(service.get('set_by_manual.test')).toBe(3000);
+  });
+
+  it('ConfigService can call get with __name reference', async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        ConfigModule.forRootAsync(
+          path.resolve(__dirname, '__stubs__', 'config', '**/!(*.d).{ts,js}'),
+        ),
+      ],
+    }).compile();
+
+    const service = module.get(ConfigService);
+
+    expect(service.get('tester_test.test')).toBe('hello');
+  });
+
+  it('ConfigService can call get with file name reference', async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        ConfigModule.forRootAsync(
+          path.resolve(__dirname, '__stubs__', 'config', '**/!(*.d).{ts,js}'),
+        ),
+      ],
+    }).compile();
+
+    const service = module.get(ConfigService);
+
+    expect(service.get('file_named.test')).toBe('hello again');
+  });
+
+  it('ConfigService can inject with decorator', async () => {
+    class TestClass {
+      constructor(
+        @InjectConfigService() private readonly configService: ConfigService,
+      ) {}
+
+      getConfig() {
+        return this.configService;
+      }
+    }
+
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        ConfigModule.forRootAsync(
+          path.resolve(__dirname, '__stubs__', 'config', '**/!(*.d).{ts,js}'),
+        ),
+      ],
+      providers: [TestClass],
+    }).compile();
+
+    const service = module.get(TestClass);
+
+    expect(service.getConfig()).toBeInstanceOf(ConfigService);
+  });
+
+  it('ConfigService can inject with decorator with sync', async () => {
+    class TestClass {
+      constructor(
+        @InjectConfigService() private readonly configService: ConfigService,
+      ) {}
+
+      getConfig() {
+        return this.configService;
+      }
+    }
+
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModule.forRoot({})],
+      providers: [TestClass],
+    }).compile();
+
+    const service = module.get(TestClass);
+
+    expect(service.getConfig()).toBeInstanceOf(ConfigService);
+  });
+});
 
 describe('Config Service', () => {
   describe('Will load configurations from given a glob', () => {
     let configService: ConfigService;
     beforeEach(async () => {
-      configService = await ConfigService.load(
+      configService = await ConfigService.forRootAsync(
         path.resolve(__dirname, '__stubs__', '*.stub.ts'),
         false,
       );
     });
     it('Will return the value from a previously loaded config', () => {
-      expect(configService.get(['config.stub', 'port'])).toEqual(2000);
+      expect(configService.get('config.stub')).toEqual(2000);
     });
 
     it('Will return a given default value if the config path is not found', () => {
@@ -25,24 +118,7 @@ describe('Config Service', () => {
 
     it('Will check if the a config path exists', () => {
       expect(configService.has('notfound')).toBeFalsy();
-      expect(configService.has(['config.stub', 'port'])).toBeTruthy();
-    });
-
-    it('Will merge other config from file system', async () => {
-      await configService.merge(
-        path.resolve(__dirname, '__stubs__', '*.server.ts'),
-      );
-
-      expect(configService.get(['config.server', 'port'])).toEqual(2000);
-    });
-
-    it('Will load config synchronously', () => {
-      const syncConfigService = ConfigService.loadSync(
-        path.resolve(__dirname, '__stubs__', '*.stub.ts'),
-        false,
-      );
-
-      expect(syncConfigService.get(['config.stub', 'port'])).toEqual(2000);
+      expect(configService.has('config.stub')).toBeTruthy();
     });
 
     it('Will merge other config from file system synchronously', () => {
@@ -68,6 +144,7 @@ describe('Config Service', () => {
       expect(configService.environment()).toEqual('custom');
     });
   });
+
   describe('Will load configuration with a .env file', () => {
     let configService: ConfigService;
     beforeEach(async () => {
@@ -83,6 +160,7 @@ describe('Config Service', () => {
       );
     });
   });
+
   describe('Can resolve required paths', () => {
     let currentAppRoot: string;
     let realProcessCwd;
@@ -91,13 +169,11 @@ describe('Config Service', () => {
       realProcessCwd = process.cwd;
       process.cwd = () => __dirname;
 
-      currentAppRoot = ConfigService.srcPath;
-      ConfigService.srcPath = undefined;
+      currentAppRoot = ConfigService.rootPath;
       ConfigService.rootPath = undefined;
     });
 
     afterEach(() => {
-      ConfigService.srcPath = undefined;
       ConfigService.rootPath = undefined;
       process.cwd = realProcessCwd;
     });
@@ -120,8 +196,8 @@ describe('Config Service', () => {
         'app.module.js',
       );
 
-      ConfigService.resolveSrcPath(currentFilePath);
-      expect(ConfigService.srcPath).toEqual(expectedAppRoot);
+      ConfigService.resolveRootPath(currentFilePath);
+      expect(ConfigService.rootPath).toEqual(expectedAppRoot);
     });
 
     it('Will resolve application src path only once', () => {
@@ -139,29 +215,29 @@ describe('Config Service', () => {
         'app.module.js',
       );
 
-      ConfigService.resolveSrcPath(firstStartPath);
-      ConfigService.resolveSrcPath(secondStartPath);
+      ConfigService.resolveRootPath(firstStartPath);
+      ConfigService.resolveRootPath(secondStartPath);
       expect(ConfigService.rootPath).toEqual(expectedAppRoot);
     });
 
     it('Will throw error if start path for app src resolution is not an absolute path', done => {
       try {
-        ConfigService.resolveSrcPath('some/relative/path');
+        ConfigService.resolveRootPath('some/relative/path');
       } catch (e) {
         done();
       }
     });
 
     it('Will return a src path equal to process root by default', () => {
-      expect(ConfigService.src()).toEqual(__dirname);
+      expect(ConfigService.root()).toEqual(__dirname);
     });
 
     it('Will return resolved app src path without passed arguments', () => {
       const appSrcRoot = path.join(__dirname, 'dist');
       const startPath = path.join(appSrcRoot, 'app', 'app.module.js');
 
-      ConfigService.resolveSrcPath(startPath);
-      expect(ConfigService.src()).toEqual(appSrcRoot);
+      ConfigService.resolveRootPath(startPath);
+      expect(ConfigService.root()).toEqual(appSrcRoot);
     });
 
     it('Will return path, relative to resolved app src path', () => {
@@ -169,13 +245,13 @@ describe('Config Service', () => {
       const startPath = path.join(appSrcRoot, 'app', 'app.module.js');
       const expectedPath = path.join(appSrcRoot, 'config');
 
-      ConfigService.resolveSrcPath(startPath);
-      expect(ConfigService.src('config')).toEqual(expectedPath);
+      ConfigService.resolveRootPath(startPath);
+      expect(ConfigService.root('config')).toEqual(expectedPath);
     });
 
     it('Will return a src directory for absolute path', () => {
       const expectedPath = '/tmp/config';
-      expect(ConfigService.src('/tmp/config')).toEqual(expectedPath);
+      expect(ConfigService.root('/tmp/config')).toEqual(expectedPath);
     });
 
     it('Will resolve root with param', () => {
