@@ -1,9 +1,9 @@
 **Issue type:**
 
-[ ] question
-[ ] bug report
-[ ] feature request
-[ ] documentation issue
+- [ ] question
+- [ ] bug report
+- [ ] feature request
+- [ ] documentation issue
 
 **nestjs-config version**
 <!-- enter version tag here -->
