@@ -48,4 +48,8 @@ export class ConfigModule {
 			exports: providers,
 		};
 	}
+
+	public async forRootAsync(options: string | IConfigModuleOptions): Promise<DynamicModule> {
+		return ConfigModule.forRootAsync(options);
+	}
 }
