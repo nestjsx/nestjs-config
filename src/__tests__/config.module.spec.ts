@@ -35,7 +35,7 @@ describe('ConfigModule', () => {
     const expectedAppRootPath = path.resolve(process.cwd(), 'src');
 
     expect(spy).toHaveBeenCalled();
-    expect(ConfigService.rootPath).toEqual(expectedAppRootPath);
+    expect(ConfigService.root()).toEqual(expectedAppRootPath);
   });
 
   it('Will Setup Modules with its Components', async () => {
