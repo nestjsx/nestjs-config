@@ -5,6 +5,7 @@
     <a href="https://github.com/nestjs-community/nestjs-config/blob/master/LICENSE"><img src="https://img.shields.io/github/license/nestjs-community/nestjs-config.svg"/></a>
     <a href="https://coveralls.io/github/nestjs-community/nestjs-config?branch=master"><img src="https://coveralls.io/repos/github/nestjs-community/nestjs-config/badge.svg?branch=master"/></a>
     <a href="https://npm.packagequality.com/#?package=nestjs-config"><img src="https://npm.packagequality.com/shield/nestjs-config.svg"/></a>
+    <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/nestjs-community/nestjs-config.svg"/></a>
 </p>
 <h1 align="center">Nestjs Config</h1>
 
@@ -12,8 +13,6 @@
 
 
 ## Features
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/nestjs-community/nestjs-config.svg)](https://greenkeeper.io/)
 
 - Load your configuration files using globs
 - Support for different environment configurations, thanks to [dotenv](https://github.com/motdotla/dotenv)
