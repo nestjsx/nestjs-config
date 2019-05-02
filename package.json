@@ -41,7 +41,7 @@
     "@nestjs/common": "^5.1.0 || ^6.0.3"
   },
   "dependencies": {
-    "dotenv": "^6.1.0",
+    "dotenv": "^8.0.0",
     "glob": "^7.1.2",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
