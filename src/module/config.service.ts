@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as assert from 'assert';
 import * as get from 'lodash.get';
 import * as set from 'lodash.set';
-import * as dotenv from 'dotenv';
-import { DotenvConfigOptions } from 'dotenv';
+import { DotenvConfigOptions, config as dotenv } from 'dotenv';
 import * as path from 'path';
 import { Glob, sync as globSync } from 'glob';
 import { ProxyProperty } from '../decorators/proxy';
@@ -333,7 +332,7 @@ export class ConfigService {
    */
   protected static loadEnv(options?: DotenvConfigOptions | false): void {
     if (options !== false) {
-      dotenv.load(options || ConfigService.defaultDotenvConfig());
+      dotenv(options || ConfigService.defaultDotenvConfig());
     }
   }
 
