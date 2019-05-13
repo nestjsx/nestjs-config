@@ -93,16 +93,3 @@ describe('ConfigService', () => {
     expect(service.getConfig()).toBeInstanceOf(ConfigService);
   });
 });
-
-describe('Config Service', () => {
-  describe('Can resolve required paths', () => {
-    it('Will return path, reolated to resolved app root path', () => {
-      const root = path.join(__dirname, 'dist');
-      const startPath = path.join(root, 'app', 'app.module.js');
-      const expectedPath = path.join(root, 'config');
-
-      ConfigService.resolveRootPath(startPath);
-      expect(ConfigService.root('config')).toEqual(expectedPath);
-    });
-  });
-});
