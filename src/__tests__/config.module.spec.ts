@@ -35,7 +35,7 @@ describe('ConfigModule', () => {
     await Test.createTestingModule({
       imports: [
         ConfigModule.resolveRootPath(__dirname).forRootAsync(
-          path.resolve('__stubs__', 'config.*.ts'),
+          path.resolve('__stubs__', 'config.ts'),
         ),
       ],
     }).compile();
