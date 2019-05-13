@@ -1,7 +1,6 @@
 import {Injectable, Provider, Type} from '@nestjs/common';
 import {ModuleRef} from '@nestjs/core';
-import {DotenvConfigOptions} from 'dotenv';
-import * as dotenv from 'dotenv';
+import {DotenvConfigOptions, config as dotenv} from 'dotenv';
 import * as path from 'path';
 import * as assert from 'assert';
 import {Glob} from 'glob';
@@ -29,7 +28,7 @@ export class ConfigService {
 	 * @param options 
 	 */
 	public static loadDotEnv(options?: DotenvConfigOptions | false): void {
-		if (options !== false) dotenv.load(options || this.dotenvOptions);
+		if (options !== false) dotenv(options || this.dotenvOptions);
 	}
 
 	/**
