@@ -20,7 +20,7 @@ describe('ConfigModule.forRootAsync', () => {
             '**/!(*.d).{ts,js}',
           ),
           dotenv: {
-            path: path.resolve(__dirname, '__stubs', '.env'),
+            path: path.resolve(__dirname, '__stubs__', '.env'),
           },
         }),
       ],
