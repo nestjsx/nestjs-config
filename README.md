@@ -58,7 +58,7 @@ import * as path from 'path';
 
 @Module({
     imports: [
-        ConfigModule.load(path.resolve(__dirname, 'config', '**/!(*.d).{ts,js}')),
+        ConfigModule.forRootAsync(path.resolve(__dirname, 'config', '**/!(*.d).{ts,js}')),
     ],
 })
 export class AppModule {}
@@ -123,12 +123,12 @@ import { ConfigModule } from 'nestjs-config';
 
 @Module({
     imports: [
-      ConfigModule.load(path.resolve('config', '**/!(*.d).{ts,js}')),
+      ConfigModule.forRootAsync(path.resolve('config', '**/!(*.d).{ts,js}')),
     ],
 })
 export class BootstrapModule {}
 ```
-Setting the `ConfigService.rootPath` before calling `ConfigModule.load(...)` will change the default root dir of where your configs are loaded from.
+Setting the `ConfigService.rootPath` before calling `ConfigModule.forRootAsync(...)` will change the default root dir of where your configs are loaded from.
 
 Another method is to invoke `ConfigModule.resolveRootPath(__dirname)` from any module before loading the config and use glob with a relative path.
   ```ts
@@ -138,7 +138,7 @@ Another method is to invoke `ConfigModule.resolveRootPath(__dirname)` from any m
   
   @Module({
       imports: [
-        ConfigModule.resolveRootPath(__dirname).load('config/**/!(*.d).{ts,js}')
+        ConfigModule.resolveRootPath(__dirname).forRootAsync('config/**/!(*.d).{ts,js}')
       ],
   })
   export class BootstrapModule {}
@@ -174,7 +174,7 @@ import * as path from 'path';
 
 @Module({
     imports: [
-        ConfigModule.load(path.resolve(__dirname, '**/!(*.d).config.{ts,js}'), {
+        ConfigModule.forRootAsync(path.resolve(__dirname, '**/!(*.d).config.{ts,js}'), {
             modifyConfigName: name => name.replace('.config', ''),
         }),
     ],
@@ -209,7 +209,7 @@ export default {
 ```
 
 > **Note:** By default the package look for a `.env` file in the path that you have started your server from.
-If you want to specify another path for your `.env` file, use the second parameter of `ConfigModule.load()`.
+If you want to specify another path for your `.env` file, use the second parameter of `ConfigModule.forRootAsync()`.
 
 
 ### Usage
@@ -370,7 +370,7 @@ import * as path from 'path';
 
 @Module({
     imports: [
-        ConfigModule.load(path.resolve(__dirname, 'config', '**', '!(*.d).{ts,js}')),
+        ConfigModule.forRootAsync(path.resolve(__dirname, 'config', '**', '!(*.d).{ts,js}')),
         TypeOrmModule.forRootAsync({
             useFactory: (config: ConfigService) => config.get('database'),
             inject: [ConfigService],
@@ -400,6 +400,7 @@ export default {
 
 > We recommend using a `TYPEORM_` prefix so when running in production environments you're also able to use the same envs for running the typeorm cli. [More options here](http://typeorm.io/#/using-ormconfig/using-environment-variables)
 
+
 ## Custom env file path
 
 To use dotenv options, you will need to install `@types/dotenv` by running
@@ -414,6 +415,43 @@ Now you can specify dotenv options with the second parameter of the load method
 ConfigModule.load(path.resolve(__dirname, '*/**!(*.d).config.{ts,js}'), {
     path: path.resolve(__dirname, '..', '.env.staging')),
 });
+```
+## TypeORM config with types! 
+
+```ts
+//config.database
+export class DatabaseConfig {
+    type: 'mysql' | 'postgres' = 'mysql';
+    host: string = process.env.TYPEORM_HOST;
+    username: string = process.env.TYPEORM_USERNAME;
+    password: string = process.env.TYPEORM_PASSWORD;
+    name: string = process.env.TYPEORM_DATABASE;
+    port: number = parseInt(process.env.TYPEORM_PORT);
+    logging: boolean = process.env.TYPEORM_LOGGING === 'true' || process.env.TYPEORM_LOGGING === 1;
+    entitites: string[] = process.env.TYPEORM_ENTITIES.split(',');
+    migrationsRun: boolean = process.env.TYPEORM_MIGRATIONS_RUN === 'true';
+    synchronize: boolean = false;
+}
+
+```
+
+```ts
+import {Module} from '@nestjs/common';
+import {ConfigModule, ConfigService} from 'nestjs-config';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {DatabaseConfig} from './config/database';
+import * as path from 'path';
+
+@Module({
+    imports: [
+        ConfigModule.forRootAsync(path.resolve(__dirname, 'config', '**', '!(*.d).{ts,js}')),
+        TypeOrmModule.forRootAsync({
+            useFactory: (config: DatabaseConfig) => config,
+            inject: [DatabaseConfig],
+        }),
+    ],
+})
+export default class AppModule {}
 ```
 
 ## Using different env files
@@ -496,42 +534,11 @@ this.config.get('server.port'); // 3000
 this.config.get('an.undefined.value', 'foobar'); // 'foobar' is returned if the key does not exist
 ```
 
-#### set(param: string | string[], value: any = null): Config
-Set a value at runtime, it creates the specified key / value if it doesn't already exists.
-
-```ts
-this.config.set('server.port', 2000); // {server:{ port: 2000 }}
-```
-
 #### has(param: string | string[]): boolean
 Determine if the given path for a configuration exists and is set.
 
 ```ts
 this.config.has('server.port'); // true or false
-```
-
-#### merge(glob: string, options?: DotenvOptions): Promise<void>
-Load other configuration files at runtime. This is great for package development.
-
-```ts
-@Module({})
-export class PackageModule implements NestModule {
-
-    constructor(@InjectConfig() private readonly config) {}
-
-    async configure(consumer: MiddlewareConsumer) {
-        await this.config.merge(path.resolve(__dirname, '**/!(*.d).{ts,js}'));
-    }
-}
-```
-
-#### registerHelper(name: string, fn: (...args:any[]) => any): ConfigService
-Register a custom global helper function
-
-```ts
-this.config.registerHelper('isProduction', () => {
-    return this.get('express.environment') === 'production';
-});
 ```
 
 #### resolveRootPath(path: string): typeof ConfigService
@@ -543,7 +550,7 @@ import { ConfigModule } from 'nestjs-config';
 
 @Module({
     imports: [
-        ConfigModule.resolveRootPath(__dirname).load(path.resolve(__dirname, '**/!(*.d).{ts,js}')),
+        ConfigModule.resolveRootPath(__dirname).forRootAsync(path.resolve(__dirname, '**/!(*.d).{ts,js}')),
     ],
 })
 export class AppModule {}
