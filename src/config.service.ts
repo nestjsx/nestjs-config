@@ -108,7 +108,7 @@ export class ConfigService {
 		if (!provider.hasOwnProperty('useClass')) {
 			this.setReference(
 				required.default.__name || required.default.__provide || path.basename(file, '.' + file.split('.').pop()), 
-				provider.provide
+				typeof provider.provide === 'function' ? provider.provide['prototype'] : provider.provide,
 			);
 		}
 
