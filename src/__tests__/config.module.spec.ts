@@ -50,8 +50,7 @@ describe('ConfigModule', () => {
     @Injectable()
     class ComponentTest {
       constructor(
-        @InjectConfig('config')
-        private readonly configKey?: { port: number },
+        @InjectConfig('config') private readonly configKey?: { port: number },
       ) {}
 
       testConfig() {
@@ -81,8 +80,7 @@ describe('ConfigModule', () => {
     @Injectable()
     class ComponentTest {
       constructor(
-        @InjectConfig('config')
-        private readonly server?: { port: number },
+        @InjectConfig('config') private readonly server?: { port: number },
         @InjectConfig('config') private readonly stub?: { port: number },
       ) {}
 
