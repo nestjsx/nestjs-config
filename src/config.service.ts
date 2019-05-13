@@ -144,7 +144,7 @@ export class ConfigService {
 	 * @param name
 	 * @param token
 	 */
-	protected static setReference(name: string, token: string | symbol | Type<any>): typeof ConfigService {
+	public static setReference(name: string, token: string | symbol | Type<any>): typeof ConfigService {
 		ConfigService.tokenReferences[name] = token;
 		return this;
 	}

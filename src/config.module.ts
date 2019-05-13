@@ -25,7 +25,12 @@ export class ConfigModule {
 	 */
   public static forRoot(config: ConfigProvider, options?: DotenvConfigOptions): DynamicModule {
 		ConfigService.loadDotEnv(options);
-		const providers = [createProvider(config, ''), ConfigService];
+
+		const configProvider = createProvider(config, '');
+
+		const providers = [configProvider, ConfigService];
+
+		ConfigService.setReference(typeof configProvider.provide === 'function' ? configProvider.provide['prototype'] : configProvider.provide, 'default');
 
 		return {
 			module: ConfigModule,
@@ -49,6 +54,17 @@ export class ConfigModule {
 		};
 	}
 
+	/**
+	 * @param conifg
+	 * @param options
+	 */
+	public forRoot(conifg: ConfigProvider, options?: DotenvConfigOptions): DynamicModule {
+		return ConfigModule.forRoot(conifg, options);
+	}
+
+	/**
+	 * @param options
+	 */
 	public async forRootAsync(options: string | IConfigModuleOptions): Promise<DynamicModule> {
 		return ConfigModule.forRootAsync(options);
 	}
