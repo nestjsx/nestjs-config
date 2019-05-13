@@ -56,6 +56,11 @@ export class ConfigService {
     glob: string,
     options?: ConfigOptions | false,
   ): Promise<ConfigService> {
+    console.log(
+      `\x1b[33m%s\x1b[0m`,
+      `WARNING: Method 'load' will be deprecated as of v2.0.0. Please refer to documentation for forRootAsync usage`,
+    );
+
     const configs = await this.loadConfigAsync(glob, options);
     return new ConfigService(configs);
   }
@@ -105,6 +110,10 @@ export class ConfigService {
    * @returns {Config}
    */
   set(param: string | string[], value: any = null): Config {
+    console.log(
+      `\x1b[33m%s\x1b[0m`,
+      `WARNING: Method 'set' will be deprecated as of v2.0.0`,
+    );
     return set(ConfigService.config, param, value);
   }
 
@@ -125,6 +134,11 @@ export class ConfigService {
    */
   async merge(glob: string, options?: ConfigOptions): Promise<void> {
     const config = await ConfigService.loadConfigAsync(glob, options);
+
+    console.log(
+      `\x1b[33m%s\x1b[0m`,
+      `WARNING: Method 'merge' will be deprecated as of v2.0.0`,
+    );
 
     Object.keys(config).forEach(configName => {
       ConfigService.config[configName] = config[configName];
@@ -154,6 +168,11 @@ export class ConfigService {
    */
   registerHelper(name: string, fn: (...args: any[]) => any): ConfigService {
     this.helpers[name] = fn.bind(this);
+
+    console.log(
+      `\x1b[33m%s\x1b[0m`,
+      `WARNING: Method 'registerHelper' will be deprecated as of v2.0.0`,
+    );
 
     return this;
   }
