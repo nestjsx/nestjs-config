@@ -434,19 +434,20 @@ export default class AppModule {}
 
 ## ConfigService API
 
-#### get(param: string | string[], value: any = undefined): any
+#### get<T>(param: string, value: any = undefined): T
 Get a configuration value via path, you can use `dot notation` to traverse nested object. It returns a default value if the key does not exist.
 
 ```ts
-this.config.get('server.port'); // 3000
-this.config.get('an.undefined.value', 'foobar'); // 'foobar' is returned if the key does not exist
+this.configService.get('server.port'); // 3000 where file server exists with export property {port: 3000}
+this.configService.get('an.undefined.value', 'foobar'); // 'foobar' is returned if the key does not exist
 ```
 
-#### has(param: string | string[]): boolean
-Determine if the given path for a configuration exists and is set.
+#### has(name: string): boolean
+Determine if the given token name reference exists in the ConfigService
 
 ```ts
-this.config.has('server.port'); // true or false
+this.configService.has('some_string'); // true or false
+this.configService.has(SomeClass);
 ```
 
 #### resolveRootPath(path: string): typeof ConfigService
@@ -474,5 +475,18 @@ ConfigService.root('some/path/file.html'); // /var/www/src/some/path/file.html
 
 ConfigService.resolveRootPath(__dirname).root(); // /var/www/src/app (or wherever resolveRootPath has been called with)
 ```
+## Config API
 
------
+### get<T>(param: string, value: any = undefined): T 
+Finds a property on itself with a pattern
+```ts
+
+const config = new Config({
+    test: {
+        example: 123,
+    },
+});
+
+config.get<number>('test.example') // 123
+```
+
