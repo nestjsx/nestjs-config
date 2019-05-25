@@ -21,8 +21,8 @@ export function createProvider(
           configProvider.__provide
             ? configProvider.__provide
             : configProvider.__name
-            ? configProvider.__name
-            : fileName,
+              ? configProvider.__name
+              : fileName,
         );
 
   return isDynamicConfigProvider(configProvider)
