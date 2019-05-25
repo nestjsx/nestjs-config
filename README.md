@@ -588,20 +588,18 @@ ConfigService.root('some/path/file.html'); // /var/www/src/some/path/file.html
 
 ConfigService.resolveRootPath(__dirname).root(); // /var/www/src/app (or wherever resolveRootPath has been called with)
 ```
-
 ## Config API
 
-### get<T>(param: string, value: any = undefined): T
-
+### get<T>(param: string, value: any = undefined): T 
 Finds a property on itself with a pattern
-
 ```ts
+
 const config = new Config({
-  test: {
-    example: 123,
-  },
+    test: {
+        example: 123,
+    },
 });
 
-config.get<number>('test.example'); // 123
+config.get<number>('test.example') // 123
 ```
 
