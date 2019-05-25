@@ -22,7 +22,7 @@
 
 **Yarn**
 ```bash
-yarn add nestjs-config
+yarn add nestjs-config@2.0.0-beta
 ```
 
 **NPM**
