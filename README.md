@@ -11,6 +11,10 @@
 
 <p align="center">Configuration component for NestJs.</p>
 
+### V2 is here! 
+[v2.0.0-beta](https://github.com/nestjs-community/nestjs-config/tree/next) is here to try! Check it out now!
+
+Version ^1.3.* and version 2.0.0-beta are both compatible with @nestjs ^6.0.0. v2.0.0-beta offers improved features including DI and config types, custom tokening as well as a unified Config class. Also backwards compatible with v1.4.0 as much as possible.
 
 ## Features
 
