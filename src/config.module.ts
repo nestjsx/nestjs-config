@@ -53,4 +53,19 @@ export class ConfigModule {
 			exports: providers,
 		};
 	}
+
+	/**
+	 * @param conifg
+	 * @param options
+	 */
+	public forRoot(conifg: ConfigProvider, options?: DotenvConfigOptions): DynamicModule {
+		return ConfigModule.forRoot(conifg, options);
+	}
+
+	/**
+	 * @param options
+	 */
+	public async forRootAsync(options: string | IConfigModuleOptions): Promise<DynamicModule> {
+		return ConfigModule.forRootAsync(options);
+	}
 }
