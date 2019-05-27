@@ -1,7 +1,8 @@
 import * as get from 'lodash.get';
-import { IConfig } from './types';
 
-export class Config implements IConfig {
+export class Config {
+
+  [s: string]: any;
 
   /**
    * @param config
