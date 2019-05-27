@@ -1,8 +1,4 @@
-import {
-  ConfigProvider,
-  DynamicConfigProvider,
-  DefinedConfigProvider,
-} from '../types';
+import { ConfigProvider, DynamicConfigProvider } from '../types';
 import { configToken } from './config.token';
 import { Config } from '../config';
 import * as path from 'path';
@@ -40,10 +36,4 @@ export function isDynamicConfigProvider(
   configProvider: ConfigProvider,
 ): configProvider is DynamicConfigProvider {
   return configProvider instanceof Function;
-}
-
-export function isDefinedConfigProvider(
-  configProvider: ConfigProvider,
-): configProvider is DefinedConfigProvider {
-  return configProvider.__name || configProvider.__provide;
 }
