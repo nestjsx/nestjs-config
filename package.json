@@ -1,6 +1,6 @@
 {
   "name": "nestjs-config",
-  "version": "1.4.5",
+  "version": "2.0.0-beta",
   "description": "Easy to use Nest congifuration module",
   "main": "index.js",
   "repository": {
