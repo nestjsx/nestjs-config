@@ -24,3 +24,4 @@
  - `ConfigService.set` was removed
  - `ConfigService.registerHelper` was removed in favour of custom classes
  - `ConfigService.loadSync` was removed in favour of `mode` parameter
+ - `@InjectConfig` now injects a config token provider and not the config service. `ConfigService` injection has been changed to `@InjectConfigService`
