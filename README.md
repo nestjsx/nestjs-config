@@ -1,11 +1,11 @@
 <p align="center"><img src="https://avatars1.githubusercontent.com/u/41109786?s=200&v=4"/></p>
 <p align="center">
-    <a href="https://travis-ci.org/nestjs-community/nestjs-config"><img src="https://travis-ci.org/nestjs-community/nestjs-config.svg?branch=master"/></a>
+    <a href="https://travis-ci.org/nestjsx/nestjs-config"><img src="https://travis-ci.org/nestjsx/nestjs-config.svg?branch=master"/></a>
     <a href="https://www.npmjs.com/package/nestjs-config"><img src="https://img.shields.io/npm/v/nestjs-config.svg"/></a>
-    <a href="https://github.com/nestjs-community/nestjs-config/blob/master/LICENSE"><img src="https://img.shields.io/github/license/nestjs-community/nestjs-config.svg"/></a>
-    <a href="https://coveralls.io/github/nestjs-community/nestjs-config?branch=master"><img src="https://coveralls.io/repos/github/nestjs-community/nestjs-config/badge.svg?branch=master"/></a>
+    <a href="https://github.com/nestjsx/nestjs-config/blob/master/LICENSE"><img src="https://img.shields.io/github/license/nestjsx/nestjs-config.svg"/></a>
+    <a href="https://coveralls.io/github/nestjsx/nestjs-config?branch=master"><img src="https://coveralls.io/repos/github/nestjsx/nestjs-config/badge.svg?branch=master"/></a>
     <a href="https://npm.packagequality.com/#?package=nestjs-config"><img src="https://npm.packagequality.com/shield/nestjs-config.svg"/></a>
-    <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/nestjs-community/nestjs-config.svg"/></a>
+    <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/nestjsx/nestjs-config.svg"/></a>
 </p>
 <h1 align="center">Nestjs Config</h1>
 
@@ -469,5 +469,3 @@ ConfigService.resolveRootPath(__dirname).root(); // /var/www/src/app (or whereve
 ```
 
 -----
-
-Built by Fenos, Shekohex and Bashleigh
