@@ -279,6 +279,8 @@ export default {
 
 If you define just `__provide` it will be used for both token and pattern prefix. Defining just `__name` will also be used for both token and pattern prefix. Defining both means `__provide` will be your token and `__name` will be your pattern prefix.
 
+> Custom tokens can be injected using the `@InjectConfig(${__provide})` decorator. 
+
 ## Multi-modular config usage
 
 In some cases your structure might take on this shape
@@ -371,14 +373,14 @@ class SomeService {
 }
 ```
 
-You may also use the `@InjectConfig` decorator as following:
+You may also use the `@InjectConfigService` decorator as following:
 
 ```ts
-import { InjectConfig } from 'nestjs-config';
+import { InjectConfigService } from 'nestjs-config';
 
 @Injectable()
 class SomeService {
-  constructor(@InjectConfig() private readonly config) {
+  constructor(@InjectConfigService() private readonly config) {
     this.config = config;
   }
 }
