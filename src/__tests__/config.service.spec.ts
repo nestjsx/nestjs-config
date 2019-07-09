@@ -3,6 +3,7 @@ import * as path from 'path';
 import { ConfigService } from '../config.service';
 import { ConfigModule } from './../config.module';
 import { InjectConfigService } from './../decorators';
+import { Config } from '../config';
 
 describe('ConfigService', () => {
   it('ConfigService can call get with __provide reference', async () => {
@@ -91,5 +92,19 @@ describe('ConfigService', () => {
     const service = module.get(TestClass);
 
     expect(service.getConfig()).toBeInstanceOf(ConfigService);
+  });
+
+  it('Can get just provider', async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModule.forRootAsync(
+        path.resolve(__dirname, '__stubs__', 'config', '**/!(*.d).{ts,js}'),
+      )],
+    }).compile();
+
+    const config = module.get<ConfigService>(ConfigService);
+
+    expect(config.get<Config>('config')).toBeInstanceOf(Config);
+    expect(config.get<Config>('config').port).toBe(2000);
+    expect(config.get<Config>('config').get('port')).toBe(2000);
   });
 });
