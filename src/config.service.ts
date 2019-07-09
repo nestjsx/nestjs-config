@@ -183,11 +183,11 @@ export class ConfigService {
 			return value;
 		}
 
-		if (provider instanceof Config) {
+		if (provider instanceof Config && ashPattern) {
 			return provider.get<T>(ashPattern, value);
 		} 
-		
-		const result = get(provider, ashPattern);
+
+		const result = ashPattern ? get(provider, ashPattern) : provider;
 
 		return result ? result : value;
 	}
