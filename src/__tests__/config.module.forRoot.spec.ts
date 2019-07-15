@@ -101,4 +101,26 @@ describe('ConfigModule.forRoot', () => {
 
     expect(module.get(TestClass).getConfig()).toBe(true);
   });
+
+  it('Can get just provider with forRoot', async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        ConfigModule.forRoot({
+          test: {
+            something: {
+              somethingelse: 'test',
+            },
+          },
+        }),
+      ],
+    }).compile();
+
+    const provider = module.get(ConfigService);
+
+    expect(provider.get('test')).toEqual({
+      something: {
+        somethingelse: 'test',
+      },
+    });
+  });
 });
