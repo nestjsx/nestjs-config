@@ -4,7 +4,6 @@ import { ConfigService } from '../config.service';
 import { ConfigModule } from './../config.module';
 import { InjectConfigService } from './../decorators';
 import { Config } from '../config';
-import TestConfigClass from './__stubs__/config/test';
 
 describe('ConfigService', () => {
   it('ConfigService can call get with __provide reference', async () => {
@@ -97,9 +96,11 @@ describe('ConfigService', () => {
 
   it('Can get just provider', async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRootAsync(
-        path.resolve(__dirname, '__stubs__', 'config', '**/!(*.d).{ts,js}'),
-      )],
+      imports: [
+        ConfigModule.forRootAsync(
+          path.resolve(__dirname, '__stubs__', 'config', '**/!(*.d).{ts,js}'),
+        ),
+      ],
     }).compile();
 
     const config = module.get<ConfigService>(ConfigService);
@@ -107,27 +108,5 @@ describe('ConfigService', () => {
     expect(config.get<Config>('config')).toBeInstanceOf(Config);
     expect(config.get<Config>('config').port).toBe(2000);
     expect(config.get<Config>('config').get('port')).toBe(2000);
-  });
-
-  it('Can get just provider with forRoot', async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forRoot({
-          test: {
-            something: {
-              somethingelse: 'test',
-            },
-          },
-        }),
-      ],
-    }).compile();
-
-    const config = module.get<ConfigService>(ConfigService);
-
-    expect(config.get('test')).toBe({
-      something: {
-        somethingelse: 'test',
-      },
-    });
   });
 });
