@@ -5,3 +5,5 @@ export * from './config.service';
 export * from './config';
 export * from './exceptions';
 export * from './interfaces';
+export * from './utils';
+
