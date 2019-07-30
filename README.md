@@ -394,6 +394,22 @@ export default {
 
 > We recommend using a `TYPEORM_` prefix so when running in production environments you're also able to use the same envs for runnning the typeorm cli. [More options here](http://typeorm.io/#/using-ormconfig/using-environment-variables)
 
+## Custom env file path
+
+To use dotenv options, you will need to install `@types/dotenv` by running
+
+```bash
+$ yarn add --dev @types/dotenv
+```
+
+Now you can specify dotenv options with the second parameter of the load method
+
+```ts
+ConfigModule.load(path.resolve(__dirname, '*/**!(*.d).config.{ts,js}'), {
+    path: path.resolve(__dirname, '..', '.env.staging')),
+});
+```
+
 ## ConfigService API
 
 #### get(param: string | string[], value: any = undefined): any
