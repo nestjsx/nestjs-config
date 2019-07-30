@@ -52,4 +52,8 @@ describe('Config object', () => {
       }),
     ).toEqual({ eighth: true });
   });
+
+  it('Can instance without parameters', () => {
+    expect(new Config()).toBeInstanceOf(Config);
+  });
 });

@@ -7,8 +7,8 @@ export class Config {
   /**
    * @param config
    */
-  constructor(config: {[s: string]: any}) {
-    Object.keys(config).forEach(key => this[key] = config[key]);
+  constructor(config?: {[s: string]: any}) {
+    if (config) Object.keys(config).forEach(key => this[key] = config[key]);
   }
 
   /**
