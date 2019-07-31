@@ -414,6 +414,19 @@ ConfigModule.load(path.resolve(__dirname, '*/**!(*.d).config.{ts,js}'), {
 });
 ```
 
+## Support
+
+Any support is welcome. At least you can give us a star :star:
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/nestjsx/nestjs-config/graphs/contributors">
+  <img src="https://opencollective.com/nestjsx/contributors.svg?width=890&button=false" />
+</a>
+
 ## ConfigService API
 
 #### get(param: string | string[], value: any = undefined): any
