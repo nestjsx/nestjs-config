@@ -29,13 +29,13 @@
 **Yarn**
 
 ```bash
-yarn add nestjs-config@^2.0.0-beta
+yarn add nestjs-config@next
 ```
 
 **NPM**
 
 ```bash
-npm install nestjs-config@^2.0.0-beta --save
+npm install nestjs-config@next --save
 ```
 
 ### Getting Started
