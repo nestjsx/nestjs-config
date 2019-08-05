@@ -416,6 +416,63 @@ ConfigModule.load(path.resolve(__dirname, '*/**!(*.d).config.{ts,js}'), {
 });
 ```
 
+## Using different env files
+
+Create a `.env` file at the root directory of your application had always been the best practice.
+You could also create custom .env file per different environments.
+
+```bash
+# .env
+EXPRESS_PORT=3000
+
+# .env.dev
+EXPRESS_PORT=3001
+
+# .env.testing
+EXPRESS_PORT=3002
+
+# .env.staging
+EXPRESS_PORT=3003
+```
+
+```ts
+const ENV = process.env.NODE_ENV;
+
+ConfigModule.load(path.resolve(__dirname, '*/**!(*.d).config.{ts,js}'), {
+  path: path.resolve(process.cwd(), !ENV ? '.env' : `.env.${ENV}`),
+});
+```
+
+Perhaps you need a custom directory to manage env files.
+
+In this example, the name of the custom directory is `env`.
+
+```bash
+/
+├── dist/
+├── env/
+│   ├── .env.dev
+│   ├── .env.testing
+│   └── .env.staging
+│   │
+├── src/
+│   ├── config/
+│   │   └── typeorm.config.ts
+│   └── main.ts
+├── tsconfig.json
+└── package.json
+```
+
+```ts
+const ENV = process.env.NODE_ENV;
+
+ConfigModule.load(path.resolve(__dirname, '*/**!(*.d).config.{ts,js}'), {
+  path: path.resolve(process.cwd(), 'env', !ENV ? '.env' : `.env.${ENV}`),
+});
+```
+
+> **Note:** If you place env files inside an `src` directory, you won't be able to see env files included as a final output in `outDir` since TS compiler will never transpile files that do not match with \*.ts extension.
+
 ## Support
 
 Any support is welcome. At least you can give us a star :star:
