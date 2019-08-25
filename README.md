@@ -398,7 +398,7 @@ export default {
 };
 ```
 
-> We recommend using a `TYPEORM_` prefix so when running in production environments you're also able to use the same envs for runnning the typeorm cli. [More options here](http://typeorm.io/#/using-ormconfig/using-environment-variables)
+> We recommend using a `TYPEORM_` prefix so when running in production environments you're also able to use the same envs for running the typeorm cli. [More options here](http://typeorm.io/#/using-ormconfig/using-environment-variables)
 
 ## Custom env file path
 
