@@ -186,31 +186,6 @@ This feature was added mainly for use with other forRootAsync modules and to rem
 export class SomeModule {}
 ```
 
-### Drawback!
-
-The only drawback of using the DI structure is that the configs themselves are build dynamically meaning they don't exist before the ConfigModule has built them. Therefore they're only available for async providers etc.
-
-```ts
-@Injectable()
-class SomeProvider {
-  constructor(private readonly config: SomeClass) {}
-}
-
-@Module({
-  imports: [
-    ConfigModule.forRootAsync(path.resolve('config/**/!(*.d).{ts,js}')),
-  ],
-  providers: [
-    SomeClass, // Will fail
-    {
-      useFactory: (config: SomeClass) => new SomeProvider(config), // Will work!
-      injects: [SomeClass],
-    },
-  ],
-})
-export class SomeModule {}
-```
-
 ## Config Object
 
 By default config files are now converted into a Config object which is esentailly a stripped version of the ConfigService. The idea is you can pass and amend any structure and keep the `get` method to use lodash.get for patterns and the default value.
