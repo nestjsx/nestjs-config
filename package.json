@@ -1,6 +1,6 @@
 {
   "name": "nestjs-config",
-  "version": "1.4.3",
+  "version": "1.4.5",
   "description": "Easy to use Nest congifuration module",
   "main": "index.js",
   "repository": {
@@ -39,7 +39,7 @@
   },
   "peerDependencies": {
     "@nestjs/common": "^5.1.0 || ^6.0.3",
-    "@types/dotenv": "^6.1.1"
+    "@types/dotenv": "^8.2.0"
   },
   "dependencies": {
     "dotenv": "^8.0.0",
@@ -53,7 +53,7 @@
     "@nestjs/common": "^6.2.4",
     "@nestjs/core": "^6.2.4",
     "@nestjs/testing": "^6.2.4",
-    "@types/dotenv": "^6.1.1",
+    "@types/dotenv": "^8.2.0",
     "@types/glob": "^7.1.1",
     "@types/jest": "^24.0.11",
     "coveralls": "^3.0.3",
