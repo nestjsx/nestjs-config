@@ -38,8 +38,7 @@
     "prepublish": "npm run format && npm run build"
   },
   "peerDependencies": {
-    "@nestjs/common": "^5.1.0 || ^6.0.3",
-    "@types/dotenv": "^8.2.0"
+    "@nestjs/common": "^5.1.0 || ^6.0.3"
   },
   "dependencies": {
     "dotenv": "^8.0.0",
