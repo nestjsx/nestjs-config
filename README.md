@@ -402,13 +402,7 @@ export default {
 
 ## Custom env file path
 
-To use dotenv options, you will need to install `@types/dotenv` by running
-
-```bash
-$ yarn add --dev @types/dotenv
-```
-
-Now you can specify dotenv options with the second parameter of the load method
+You can specify dotenv options with the second parameter of the load method
 
 ```ts
 ConfigModule.load(path.resolve(__dirname, '*/**!(*.d).config.{ts,js}'), {
