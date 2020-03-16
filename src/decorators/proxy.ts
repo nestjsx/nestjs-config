@@ -1,3 +1,5 @@
+import { ConfigService } from '../module';
+
 /**
  * @param {string} propertyName
  * @returns {<T extends {new(...args: any[]): {}}>(constructor: T) => {new(...args: any[]): {}; prototype: {}}}
@@ -7,7 +9,7 @@ export const ProxyProperty = (propertyName: string) =>
   function classDecorator<T extends { new (...args: any[]): {} }>(
     constructor: T,
   ) {
-    return class extends constructor {
+    const decorated = class extends constructor {
       constructor(...args: any[]) {
         super(...args);
 
@@ -22,4 +24,9 @@ export const ProxyProperty = (propertyName: string) =>
         });
       }
     };
+    /**
+     * fix for node 12.16.0 issue: https://github.com/microsoft/TypeScript/issues/37157
+     * */
+    Object.defineProperty(decorated, 'name', { value: constructor.name });
+    return decorated;
   };
