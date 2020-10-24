@@ -162,7 +162,7 @@ Dependancy Injection for your configs.
 ```ts
 import { Config } from 'nestjs-config';
 
-export default class SomeClass extends Config {
+export class SomeClass extends Config {
   someProperty: process.env.SOME_ENV;
 }
 ```
@@ -174,11 +174,11 @@ This feature was added mainly for use with other forRootAsync modules and to rem
   imports: [
     ConfigModule.forRootAsync(path.resolve('config/**/!(*.d).{ts,js}')),
     TypeOrmModule.forRootAsync({
-      injects: [DatabaseConfig],
+      inject: [DatabaseConfig],
       useFactory: (config: DatabaseConfig) => config,
     }),
     AmqpModule.forRootAsync({
-      injects: [AmqpConfig],
+      inject: [AmqpConfig],
       useFactory: (config: AmqpConfig) => config,
     }),
   ],
@@ -209,7 +209,7 @@ export default {
     {
       useFactory: (config: SomeClass) =>
         new SomeProvider(config.get('some.value.in.pattern', 'default')),
-      injects: [SomeClass],
+      inject: [SomeClass],
     },
   ],
 })
@@ -220,7 +220,7 @@ It's also possible to extend the Config class from your config file and define y
 
 ```ts
 // config/anything.you.like.ts
-export default class MyConfig extends Config {
+export class MyConfig extends Config {
   value: {
     in: {
       pattern: false,
@@ -240,7 +240,7 @@ export default class MyConfig extends Config {
   providers: [
     {
       useFactory: (config: MyConfig) => new SomeProvider(config.getPattern()),
-      injects: [MyConfig],
+      inject: [MyConfig],
     },
   ],
 })
