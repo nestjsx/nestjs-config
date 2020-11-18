@@ -189,7 +189,7 @@ You might have notice the use of `config/**/!(*.d).{ts,js}` in the glob. When ru
 
 ## Environment Configuration
 
-This package ship with the amazing [dotenv](https://github.com/motdotla/dotenv) package that allows you to create
+This package ships with the amazing [dotenv](https://github.com/motdotla/dotenv) package that allows you to create
 a `.env` file in your preferred location.
 
 Let's create one, for demo purposes!
@@ -199,7 +199,7 @@ Let's create one, for demo purposes!
 EXPRESS_PORT=3000
 ```
 
-Now, in our `src/config/express.ts` configuration file, we can refer to that environment variable 
+Now, in our `src/config/express.ts` configuration file, we can refer to that environment variable.
 
 ```ts
 // src/config/express.ts
