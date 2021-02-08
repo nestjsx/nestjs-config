@@ -9,7 +9,12 @@ export const ConfigParam = (
   const existingParameters: any[] =
     Reflect.getMetadata(CONFIG_PARAMS, target, propertyKey) || [];
   // Add this parameter
-  existingParameters.push({ parameterIndex, propertyKey, configKey, fallback });
+  existingParameters.push({
+    parameterIndex,
+    propertyKey,
+    configKey,
+    fallback,
+  });
   // Update the required parameters for this method
   Reflect.defineMetadata(
     CONFIG_PARAMS,

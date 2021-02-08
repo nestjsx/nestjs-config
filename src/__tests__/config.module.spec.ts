@@ -90,7 +90,9 @@ describe('Config Nest Module', () => {
       providers: [ComponentTest],
     }).compile();
     const componentTest = module.get<ComponentTest>(ComponentTest);
-    expect(componentTest.testConfig({ port: 42 })).toEqual({ serverPort: 42 });
+    expect(componentTest.testConfig({ port: 42 })).toEqual({
+      serverPort: 42,
+    });
   });
   it('ConfigParam decorator on null argument', async () => {
     @Injectable()
@@ -319,7 +321,7 @@ describe('Config Nest Module', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts'), {
-          modifyConfigName: name => name.replace('config.', ''),
+          modifyConfigName: (name) => name.replace('config.', ''),
         }),
       ],
     }).compile();

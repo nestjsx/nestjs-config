@@ -1,3 +1,3 @@
 export default {
-    name: process.env.USERNAME,
+  name: process.env.USERNAME,
 };

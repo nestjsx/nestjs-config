@@ -1,3 +1,1 @@
-export const {
-  project: string = 'nest-config-ts',
-};
+export const { project: string = 'nest-config-ts' };
