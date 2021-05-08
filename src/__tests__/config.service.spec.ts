@@ -144,7 +144,7 @@ describe('Config Service', () => {
       expect(ConfigService.rootPath).toEqual(expectedAppRoot);
     });
 
-    it('Will throw error if start path for app src resolution is not an absolute path', done => {
+    it('Will throw error if start path for app src resolution is not an absolute path', (done) => {
       try {
         ConfigService.resolveSrcPath('some/relative/path');
       } catch (e) {

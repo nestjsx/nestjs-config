@@ -319,7 +319,7 @@ describe('Config Nest Module', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.load(path.resolve(__dirname, '__stubs__', '**/*.ts'), {
-          modifyConfigName: name => name.replace('config.', ''),
+          modifyConfigName: (name) => name.replace('config.', ''),
         }),
       ],
     }).compile();

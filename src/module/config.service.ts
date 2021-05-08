@@ -126,7 +126,7 @@ export class ConfigService {
   async merge(glob: string, options?: ConfigOptions): Promise<void> {
     const config = await ConfigService.loadConfigAsync(glob, options);
 
-    Object.keys(config).forEach(configName => {
+    Object.keys(config).forEach((configName) => {
       ConfigService.config[configName] = config[configName];
     });
   }
@@ -140,7 +140,7 @@ export class ConfigService {
   mergeSync(glob: string, options?: ConfigOptions): ConfigService {
     const config = ConfigService.loadConfigSync(glob, options);
 
-    Object.keys(config).forEach(configName => {
+    Object.keys(config).forEach((configName) => {
       ConfigService.config[configName] = config[configName];
     });
 
