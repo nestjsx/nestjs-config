@@ -33,7 +33,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: tests
-        run: yarn coveralls
+        run: yarn coverage
 
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@master
