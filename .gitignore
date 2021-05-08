@@ -4,7 +4,7 @@ yarn-debug.log*
 yarn-error.log*
 
 lib-cov
-src/coverage/
+coverage/
 node_modules/
 .env
 !src/__tests__/__stubs__/.env
