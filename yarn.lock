@@ -628,12 +628,12 @@
     uuid "8.3.2"
 
 "@nestjs/testing@^7.6.15":
-  version "7.6.15"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.6.15.tgz#eed34846a8b2b5ddb0ff6bd74cdcb4344c364c40"
-  integrity sha512-AWr8stnRoS0yCU/EotAJKveYXm1XSB4ZT+ReqFDXhPyqC1ppOfU+zZuCjQlQHorMzidsVHsAstK5/rUsXnrZUQ==
+  version "7.6.16"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.6.16.tgz#f5cfe7291a9b94d49cd70efea86e297f76aa2256"
+  integrity sha512-kVEznnhlPLdVe0HHyrksQL6az3qBqcTn5H4ACxDMZ1DPgw09zJ2Y6CBevP52vEWxyEVbRzihu16nNxlXlfsiJg==
   dependencies:
     optional "0.1.4"
-    tslib "2.1.0"
+    tslib "2.2.0"
 
 "@nuxtjs/opencollective@0.3.2":
   version "0.3.2"
@@ -3682,6 +3682,11 @@ tslib@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
   integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
+
+tslib@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.2.0.tgz#fb2c475977e35e241311ede2693cee1ec6698f5c"
+  integrity sha512-gS9GVHRU+RGn5KQM2rllAlR3dU6m7AcpJKdtH8gFvQiC4Otgk98XnmMU+nZenHt/+VhnBPWwgrJsyrdcw6i23w==
 
 tslib@^1.9.0:
   version "1.11.1"
