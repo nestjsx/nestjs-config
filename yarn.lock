@@ -615,9 +615,9 @@
     uuid "8.3.2"
 
 "@nestjs/core@^7.6.15":
-  version "7.6.16"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-7.6.16.tgz#c4d3a39e2a573ddcfa58542bad9e60b925ea1243"
-  integrity sha512-j2u62+HdQFdAaolWFlLiHu0KX47A/K2KByZ0X5t8l7gCE/b72QXNvbYRgAecQ1wx1TwNA3BFCfPeT2T8mEXDiA==
+  version "7.6.17"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-7.6.17.tgz#8fba8739e81f4206905109bec62b02a00530c258"
+  integrity sha512-dH7PGDj1dvBfOYgxJlxh54vdnFFSLst7+Spg3E7Jpo+n11Ht5Ee5mTjSzXieRVfFba/sI3NIHF/N1stn36bU9w==
   dependencies:
     "@nuxtjs/opencollective" "0.3.2"
     fast-safe-stringify "2.0.7"
