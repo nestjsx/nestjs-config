@@ -53,7 +53,7 @@
     "@nestjs/core": "^7.6.15",
     "@nestjs/testing": "^7.6.15",
     "@types/glob": "^7.1.1",
-    "@types/jest": "^26.0.23",
+    "@types/jest": "^27.0.1",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "ts-jest": "^26.5.6",
