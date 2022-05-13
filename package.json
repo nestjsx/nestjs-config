@@ -42,7 +42,7 @@
   "dependencies": {
     "@types/node": "^16.9.6",
     "dotenv": "^10.0.0",
-    "glob": "^7.1.2",
+    "glob": "^8.0.2",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "reflect-metadata": "^0.1.12",
