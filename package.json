@@ -49,7 +49,7 @@
     "rxjs": "^6.0.0"
   },
   "devDependencies": {
-    "@nestjs/common": "^7.6.15",
+    "@nestjs/common": "^8.4.7",
     "@nestjs/core": "^7.6.15",
     "@nestjs/testing": "^7.6.15",
     "@types/glob": "^7.1.1",
