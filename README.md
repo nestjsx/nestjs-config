@@ -331,7 +331,7 @@ import {TransformInterceptor} from '../interceptors';
 export default class UserController {
     
     @Configurable()
-    @Get('/')   // <-- nestjs decorator won't work because it placed after @Configurable()
+    @Get('/') // <-- nestjs decorator won't work because it placed after @Configurable()
     @UseInterceptors(TransformInterceptor)// <-- nestjs decorator won't work because it placed after @Configurable()
     index(@ConfigParam('my.parameter', 'default value') parameter?: string) {
         return { data: parameter };
@@ -347,8 +347,7 @@ import {TransformInterceptor} from '../interceptors';
 
 @Injectable()
 export default class UserController {
-    
-    
+
     @Get('/') // <-- nestjs decorator will work fine because it placed before @Configurable()
     @Configurable()
     @UseInterceptors(TransformInterceptor) // <-- nestjs decorator won't work because it placed after @Configurable()
