@@ -42,7 +42,7 @@
   "dependencies": {
     "@types/node": "^16.9.6",
     "dotenv": "^10.0.0",
-    "glob": "^7.1.2",
+    "glob": "^8.1.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "reflect-metadata": "^0.1.12",
@@ -52,7 +52,7 @@
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
     "@nestjs/testing": "^7.6.15",
-    "@types/glob": "^7.1.1",
+    "@types/glob": "^8.0.0",
     "@types/jest": "^27.0.2",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
